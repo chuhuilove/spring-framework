@@ -1,0 +1,1 @@
+java -jar copyfile-1.0-SNAPSHOT.jar
