@@ -420,11 +420,18 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		try {
 			/**
 			 * 扫描包下面的.class文件
-			 * 包名被传进来以后,转换成
 			 */
-			//classpath*:org/springframework/context/annotation6/**/*.class
+			//
+			//
+			// 将包名里面的.替换成/
+			String resolveBasePackage=resolveBasePackage(basePackage);
+			// 转换后者这种形式:classpath*:org/springframework/context/annotation6/**/*.class
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
+
+			/**
+			 * 扫描到的.class文件被描述成{@link Resource}
+			 */
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
