@@ -160,6 +160,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	}
 
 	/**
+	 * 扫描传入的包,将包下面所有的带有注解类加载进容器中.
+	 * 注意,在调用这个函数以后,必须手动调用{@link #refresh()}函数.
+	 *
 	 * Perform a scan within the specified base packages.
 	 * <p>Note that {@link #refresh()} must be called in order for the context
 	 * to fully process the new classes.
@@ -169,7 +172,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	@Override
 	public void scan(String... basePackages) {
-		Assert.notEmpty(basePackages, "At least one base package must be specified");
+
+		//Assert.notEmpty(basePackages, "At least one base package must be specified");
+
 		this.scanner.scan(basePackages);
 	}
 

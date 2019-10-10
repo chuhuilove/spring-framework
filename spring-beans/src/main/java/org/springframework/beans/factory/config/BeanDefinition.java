@@ -22,6 +22,10 @@ import org.springframework.core.AttributeAccessor;
 import org.springframework.lang.Nullable;
 
 /**
+ *
+ * Bean的描述实例.比如,在java中,我们用{@link Class}来描述一个类,在Spring中使用BeanDefinition来描述一个Bean.
+ * 比如,Bena的作用域,是否延迟加载等属性,都在这个里面进行描述
+ *
  * A BeanDefinition describes a bean instance, which has property values,
  * constructor argument values, and further information supplied by
  * concrete implementations.

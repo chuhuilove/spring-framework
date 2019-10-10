@@ -27,10 +27,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 
 /**
- * Enables Spring's annotation-driven transaction management capability, similar to
- * the support found in Spring's {@code <tx:*>} XML namespace. To be used on
- * {@link org.springframework.context.annotation.Configuration @Configuration}
- * classes as follows:
+ *
+ * 启用Spring基于注解的事务管理功能,类似于在xml启用{@code <tx:*>}名称空间.
+ * 在被{@link org.springframework.context.annotation.Configuration @Configuration}注解的类上使用:
  *
  * <pre class="code">
  * &#064;Configuration
