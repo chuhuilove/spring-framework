@@ -38,3 +38,4 @@ out
 test-output
 atlassian-ide-plugin.xml
 .gradletasknamecache
+copyfile-1.0-SNAPSHOT.jar
