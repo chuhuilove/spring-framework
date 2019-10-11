@@ -20,6 +20,15 @@ import org.springframework.beans.BeansException;
 import org.springframework.lang.Nullable;
 
 /**
+ *
+ * Spring的扩展点之一.能够让我们插手Bean的初始化过程.
+ *
+ * 对于{@link BeanPostProcessor }的使用,这里有一篇博文,很早之前写的一篇文章:https://blog.csdn.net/ZhanLunHui/article/details/80869466
+ *
+ *
+ *
+ *
+ *
  * Factory hook that allows for custom modification of new bean instances,
  * e.g. checking for marker interfaces or wrapping them with proxies.
  *
@@ -27,6 +36,11 @@ import org.springframework.lang.Nullable;
  * bean definitions and apply them to any beans subsequently created.
  * Plain bean factories allow for programmatic registration of post-processors,
  * applying to all beans created through this factory.
+ *
+ * ApplicationContexts可以在其Bean定义中自动检测BeanPostProcessor Bean,并将其应用于随后创建的任何Bean.
+ * 普通bean工厂允许对后处理器进行程序化注册,适用于通过该工厂创建的所有bean.
+ *
+
  *
  * <p>Typically, post-processors that populate beans via marker interfaces
  * or the like will implement {@link #postProcessBeforeInitialization},

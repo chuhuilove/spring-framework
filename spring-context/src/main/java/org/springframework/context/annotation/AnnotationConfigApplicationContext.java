@@ -72,6 +72,12 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
+		/**
+		 * 在调用本构造函数的时候,会先调用父类的构造函数
+		 * 在父类的构造函数中,存在一个{@linkplain beanFactory},默认是{@link DefaultListableBeanFactory}实现
+		 * 一切注册行为,最终都会进入到父类的{@linkplain beanFactory}中
+		 *
+		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}

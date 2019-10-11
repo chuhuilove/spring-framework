@@ -70,8 +70,31 @@ import org.springframework.util.StringUtils;
  */
 public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
 
-	/** Cache of singleton objects: bean name to bean instance. */
+	/** Cache of singleton objects: bean name to bean instance.
+	 * 在springIOC中.每个单例对象被创建以后,都会被缓存到这里
+	 * 这个map和{@linkplain DefaultListableBeanFactory#beanDefinitionMap }不一样,
+	 *
+	 * {@linkplain DefaultListableBeanFactory#beanDefinitionMap }内部存储的是BeanDefinition,而不是一个真正的实例对象
+	 *
+	 * 这个map中存储的是真正的实例对象
+	 *
+	 * 从什么地方呢个体现出来呢?
+	 * 比如说:
+	 * contex.getBaen(benaName).第一次调用这个函数,因为这个map中没有此对象,所以需要创建一次
+	 * 而第二次调用这个函数,则直接从这个map中获取,而不是再重新创建
+	 * 这就是.单例的实现
+	 *
+	 *
+	 *
+	 *
+	 *
+	 * */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
+
+	final public Map<String, Object> getSingletonObjects(){
+		return singletonObjects;
+	}
+
 
 	/** Cache of singleton factories: bean name to ObjectFactory. */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
@@ -165,6 +188,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 返回在给定名称下注册的(原始)单例对象.
+	 * 如果此单例对象已经被创建,则直接返回
 	 * Return the (raw) singleton object registered under the given name.
 	 * <p>Checks already instantiated singletons and also allows for an early
 	 * reference to a currently created singleton (resolving a circular reference).
@@ -174,13 +199,25 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+		/**
+		 * 1. 从缓存中获取beanName与之对应的实例
+		 */
 		Object singletonObject = this.singletonObjects.get(beanName);
+
+		/**
+		 * 2. 如果实例没有拿到,并且这个beanName没有被缓存到{@linkplain singletonsCurrentlyInCreation)中
+		 * 则需要创建一个实例
+		 */
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
 				singletonObject = this.earlySingletonObjects.get(beanName);
 				if (singletonObject == null && allowEarlyReference) {
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 					if (singletonFactory != null) {
+						// 创建对象
+						// 这个很有意思啊.一直以为是用直接在这里创建了
+						// 没想到啊..这里还有其他玩玩绕呢
+						// todo  2019年10月11日13:54:37 创建一个单例对象
 						singletonObject = singletonFactory.getObject();
 						this.earlySingletonObjects.put(beanName, singletonObject);
 						this.singletonFactories.remove(beanName);

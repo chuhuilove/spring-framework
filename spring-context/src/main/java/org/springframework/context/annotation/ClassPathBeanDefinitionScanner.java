@@ -18,9 +18,11 @@ package org.springframework.context.annotation;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinitionCustomizer;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionDefaults;
@@ -40,15 +42,24 @@ import org.springframework.util.PatternMatchUtils;
  * registering corresponding bean definitions with a given registry ({@code BeanFactory}
  * or {@code ApplicationContext}).
  *
- * <p>Candidate classes are detected through configurable type filters. The
- * default filters include classes that are annotated with Spring's
- * {@link org.springframework.stereotype.Component @Component},
- * {@link org.springframework.stereotype.Repository @Repository},
- * {@link org.springframework.stereotype.Service @Service}, or
- * {@link org.springframework.stereotype.Controller @Controller} stereotype.
  *
- * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and
- * JSR-330's {@link javax.inject.Named} annotations, if available.
+ * bean扫描器,它检测classpath的bean候选bean,并将符合条件的bean注册给定的({@code BeanFactory}或{@code ApplicationContext})注册器.
+ *
+ *
+ * 通过可配置的类型筛选器检测候选类.
+ *
+ * 需要被注册的类,必须被下面几种注解之一注解
+ *
+ * 1. {@link org.springframework.stereotype.Component @Component}
+ * 2. {@link org.springframework.stereotype.Repository @Repository},
+ * 3. {@link org.springframework.stereotype.Service @Service}
+ * 4. {@link org.springframework.stereotype.Controller @Controller}
+ *
+ * 也支持Java EE 6中的
+ * 5. {@link javax.annotation.ManagedBean}
+ * 和JSR-330中的
+ * 6. {@link javax.inject.Named}
+ *
  *
  * @author Mark Fisher
  * @author Juergen Hoeller
@@ -62,6 +73,10 @@ import org.springframework.util.PatternMatchUtils;
  */
 public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateComponentProvider {
 
+	/**
+	 * 扫描器的核心,注册器
+	 * 在构造方法中传递进来
+	 */
 	private final BeanDefinitionRegistry registry;
 
 	private BeanDefinitionDefaults beanDefinitionDefaults = new BeanDefinitionDefaults();
@@ -233,6 +248,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
+	 * 指定是否注册注解配置后处理器
 	 * Specify whether to register annotation config post-processors.
 	 * <p>The default is to register the post-processors. Turn this off
 	 * to be able to ignore the annotations or to process them differently.
@@ -248,11 +264,16 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @return number of beans registered
 	 */
 	public int scan(String... basePackages) {
+		/**
+		 * 获取当前注册器中的Bean工厂中注册了多少bean
+		 */
 		int beanCountAtScanStart = this.registry.getBeanDefinitionCount();
 
+		// 开始扫描,注册
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
+		// 将bean扫描注册到beanFactory以后,确认是否注册后置处理器
 		if (this.includeAnnotationConfig) {
 			AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 		}
@@ -261,6 +282,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
+	 * 这里的{@link #doScan(String...)} 和{@link AnnotatedBeanDefinitionReader#doRegisterBean(Class, Supplier, String, Class[], BeanDefinitionCustomizer...)}
+	 * 完成的功能差不多啊
+	 *
 	 * Perform a scan within the specified base packages,
 	 * returning the registered bean definitions.
 	 * <p>This method does <i>not</i> register an annotation config processor
@@ -285,6 +309,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 				//2. 获取Bean的名称
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
+
 				if (candidate instanceof AbstractBeanDefinition) {
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}
@@ -296,6 +321,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+					/**
+					 * 这里将Bean注册进bean工厂
+					 */
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}
@@ -304,6 +332,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
+	 * 后置处理器
 	 * Apply further settings to the given bean definition,
 	 * beyond the contents retrieved from scanning the component class.
 	 * @param beanDefinition the scanned bean definition

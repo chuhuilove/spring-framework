@@ -194,8 +194,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	// Implementation of BeanFactory interface
 	//---------------------------------------------------------------------
 
+
 	@Override
 	public Object getBean(String name) throws BeansException {
+		/**
+		 * 通过BeanName获取一个实例,
+		 * typeCheckOnly为false,不用进行类型检查
+		 */
 		return doGetBean(name, null, null, false);
 	}
 
@@ -225,9 +230,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 获取Bean示例
 	 * Return an instance, which may be shared or independent, of the specified bean.
 	 * @param name the name of the bean to retrieve
-	 * @param requiredType the required type of the bean to retrieve
+	 * @param requiredType 要获取的bean的类型
 	 * @param args arguments to use when creating a bean instance using explicit arguments
 	 * (only applied when creating a new instance as opposed to retrieving an existing one)
 	 * @param typeCheckOnly whether the instance is obtained for a type check,
@@ -239,7 +245,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 
+		/**
+		 * 1. 先将beanName进行转换
+		 */
 		final String beanName = transformedBeanName(name);
+
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
@@ -256,8 +266,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
-
 		else {
+			// 如果我们已经创建了这个bean实例,则失败:
+			// 可能进入了循环引用
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
 			if (isPrototypeCurrentlyInCreation(beanName)) {
@@ -265,6 +276,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			// Check if bean definition exists in this factory.
+			/**
+			 * 父子层级的beanFactory
+			 * //todo 这个怎么理解 2019年10月11日14:13:17
+			 *
+			 */
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
@@ -1124,6 +1140,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	//---------------------------------------------------------------------
 
 	/**
+	 * 将一个benaName转换成标准的beanName,因为传递进来的beanName可能会出现下面这两种情况:
+	 * 1. 传进来的beanName可能是一个以&开头的beanName
+	 * 2. 传进来的beanName可能是一个beanName的别名
+	 * 将这两种情况统统转换成标准的beanName.
+	 *
 	 * Return the bean name, stripping out the factory dereference prefix if necessary,
 	 * and resolving aliases to canonical names.
 	 * @param name the user-specified name
@@ -1621,6 +1642,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 *
+	 * 检查这个工厂是否已经启用
 	 * Check whether this factory's bean creation phase already started,
 	 * i.e. whether any bean has been marked as created in the meantime.
 	 * @since 4.2.2

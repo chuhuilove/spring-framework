@@ -97,7 +97,9 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	ClassLoader getBeanClassLoader();
 
 	/**
-	 * Specify a temporary ClassLoader to use for type matching purposes.
+	 *
+	 * 指定用于类型匹配目的的临时ClassLoader.
+	 *
 	 * Default is none, simply using the standard bean ClassLoader.
 	 * <p>A temporary ClassLoader is usually just specified if
 	 * <i>load-time weaving</i> is involved, to make sure that actual bean
@@ -278,6 +280,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 
 	/**
 	 * Provides a security access control context relevant to this factory.
+	 * 提供与此工厂相关的安全访问控制上下文
 	 * @return the applicable AccessControlContext (never {@code null})
 	 * @since 3.0
 	 */

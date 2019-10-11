@@ -41,6 +41,8 @@ import org.springframework.core.PriorityOrdered;
 import org.springframework.lang.Nullable;
 
 /**
+ * 后置处理器注册代理类
+ * 妈的,这个类好复杂
  * Delegate for AbstractApplicationContext's post-processor handling.
  *
  * @author Juergen Hoeller

@@ -508,6 +508,7 @@ public abstract class StringUtils {
 	}
 
 	/**
+	 * 首字母大写
 	 * Capitalize a {@code String}, changing the first letter to
 	 * upper case as per {@link Character#toUpperCase(char)}.
 	 * No other letters are changed.
@@ -522,6 +523,9 @@ public abstract class StringUtils {
 	 * Uncapitalize a {@code String}, changing the first letter to
 	 * lower case as per {@link Character#toLowerCase(char)}.
 	 * No other letters are changed.
+	 *
+	 * 首字母小写
+	 *
 	 * @param str the {@code String} to uncapitalize
 	 * @return the uncapitalized {@code String}
 	 */

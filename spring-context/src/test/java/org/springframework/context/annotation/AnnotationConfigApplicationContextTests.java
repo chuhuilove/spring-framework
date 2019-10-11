@@ -24,7 +24,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation6.ComponentForScanning;
@@ -47,8 +49,18 @@ public class AnnotationConfigApplicationContextTests {
 	@Test
 	public void scanAndRefresh() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.scan("org.springframework.context.*annotation6");
+		context.scan("org.springframework.context.annotation6");
 		context.refresh();
+
+//
+//		org.springframework.context.annotation.internalConfigurationAnnotationProcessor--->org.springframework.context.annotation.ConfigurationClassPostProcessor
+//		org.springframework.context.event.internalEventListenerFactory--->org.springframework.context.event.DefaultEventListenerFactory
+//		org.springframework.context.event.internalEventListenerProcessor--->org.springframework.context.event.EventListenerMethodProcessor
+//		org.springframework.context.annotation.internalAutowiredAnnotationProcessor--->org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+//		org.springframework.context.annotation.internalCommonAnnotationProcessor--->org.springframework.context.annotation.CommonAnnotationBeanPostProcessor
+
+
+
 
 		context.getBean(uncapitalize(ConfigForScanning.class.getSimpleName()));
 		context.getBean("testBean"); // contributed by ConfigForScanning
@@ -62,7 +74,16 @@ public class AnnotationConfigApplicationContextTests {
 	public void registerAndRefresh() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.register(Config.class, NameConfig.class);
+
+
 		context.refresh();
+
+
+		System.err.println("this is debug");
+		System.err.println("this is debug");
+		System.err.println("this is debug");
+		System.err.println("this is debug");
+
 
 		context.getBean("testBean");
 		context.getBean("name");

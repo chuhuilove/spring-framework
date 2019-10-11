@@ -74,9 +74,13 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 	}
 
 
+	/**
+	 * 在初始化Bean之前调用
+	 */
 	@Override
 	@Nullable
 	public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
+
 		AccessControlContext acc = null;
 
 		if (System.getSecurityManager() != null &&

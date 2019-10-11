@@ -35,6 +35,9 @@ import org.springframework.util.Assert;
 
 /**
  * Convenient adapter for programmatic registration of annotated bean classes.
+ *
+ *
+ *
  * This is an alternative to {@link ClassPathBeanDefinitionScanner}, applying
  * the same resolution of annotations but for explicitly registered classes only.
  *
@@ -226,11 +229,31 @@ public class AnnotatedBeanDefinitionReader {
 		}
 
 		abd.setInstanceSupplier(instanceSupplier);
+		/**
+		 * 解析Bean的作用域
+		 */
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 		abd.setScope(scopeMetadata.getScopeName());
+
+
+		/**
+		 * 生成Bean的名字
+ 		 */
+
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
 
+		//
+		/**
+		 * 解析通用注解
+		 * {@link Lazy}
+		 * {@link Primary}
+		 * {@link DependsOn}
+		 * {@link Role}
+		 * {@link Description}
+		 * 解析后的数据,会继续塞进adb中
+		 */
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
+
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
 				if (Primary.class == qualifier) {
@@ -244,12 +267,26 @@ public class AnnotatedBeanDefinitionReader {
 				}
 			}
 		}
+		/**
+		 * 解析自定义注解
+		 */
 		for (BeanDefinitionCustomizer customizer : definitionCustomizers) {
 			customizer.customize(abd);
 		}
 
+		/**
+		 * 将BeanDefinition和beanName包装成BeanDefinitionHolder对象
+		 */
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+		/**
+		 * scoped proxy Mode ??
+		 * // todo 2019年10月11日10:03:04 不懂,先跳过
+		 *
+		 */
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+		/**
+		 * 注册bean
+		 */
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 	}
 

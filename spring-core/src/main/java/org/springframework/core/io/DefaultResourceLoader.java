@@ -89,6 +89,8 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * Return the ClassLoader to load class path resources with.
 	 * <p>Will get passed to ClassPathResource's constructor for all
 	 * ClassPathResource objects created by this resource loader.
+	 *
+	 *
 	 * @see ClassPathResource
 	 */
 	@Override

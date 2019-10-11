@@ -126,6 +126,9 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 
 	private boolean requiredParameterValue = true;
 
+	/**
+	 * 初始化顺序
+	 */
 	private int order = Ordered.LOWEST_PRECEDENCE - 2;
 
 	@Nullable
