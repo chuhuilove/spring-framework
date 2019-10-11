@@ -23,6 +23,8 @@ import org.springframework.util.Assert;
  * Describes scope characteristics for a Spring-managed bean including the scope
  * name and the scoped-proxy behavior.
  *
+ * 默认情况下,Bean是"singleton"
+ *
  * <p>The default scope is "singleton", and the default is to <i>not</i> create
  * scoped-proxies.
  *

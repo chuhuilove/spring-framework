@@ -304,7 +304,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 
 	/**
-	 * 开始扫描包中的内容
+	 * 开始扫描给定包中的内容,比如.class文件,并将.class文件转换成{@link BeanDefinition}
 	 * Scan the class path for candidate components.
 	 * @param basePackage the package to check for annotated classes
 	 * @return a corresponding Set of autodetected bean definitions
@@ -430,7 +430,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
 
 			/**
-			 * 扫描到的.class文件被描述成{@link Resource}
+			 * 扫描到的.class文件被描述成{@link org.springframework.core.io.FileSystemResource}
+			 * path 为文件系统的绝对路径名D:/gitcode/chuhuilove/xxxx/ComponentForScanning.class
 			 */
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
@@ -441,11 +442,22 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				if (resource.isReadable()) {
 					try {
-						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						MetadataReaderFactory metadataReaderFactory = getMetadataReaderFactory();
+						MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
+						/**
+						 * 先判断获取到的resource是否需要进入准备阶段
+						 * 比如,不属于Spring Bean的.class文件,直接被过滤掉
+						 */
 						if (isCandidateComponent(metadataReader)) {
+
+							// 生成了一个Bean
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);
+
+							/**
+							 * 第二阶段过滤,将
+							 */
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
@@ -496,8 +508,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
+	 *
 	 * Determine whether the given class does not match any exclude filter
 	 * and does match at least one include filter.
+	 *
+	 * 确定给定的类是否不匹配任何排除筛选器,且是否匹配至少一个包含筛选器.
+	 *
 	 * @param metadataReader the ASM ClassReader for the class
 	 * @return whether the class qualifies as a candidate component
 	 */
@@ -530,15 +546,20 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
-	 * Determine whether the given bean definition qualifies as candidate.
+	 * 确定给定的bean定义是否符合候选定义.
 	 * <p>The default implementation checks whether the class is not an interface
 	 * and not dependent on an enclosing class.
+	 * 默认实现检查该类是否不是接口和不依赖于封闭类
 	 * <p>Can be overridden in subclasses.
 	 * @param beanDefinition the bean definition to check
 	 * @return whether the bean definition qualifies as a candidate component
 	 */
 	protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
 		AnnotationMetadata metadata = beanDefinition.getMetadata();
+		/**
+		 * (类必须是独立的)&& (
+		 * (类可以是接口,也可以是抽象类) || (如果类是抽象的,则必须有方法被{@link Lookup}注解))
+		 */
 		return (metadata.isIndependent() && (metadata.isConcrete() ||
 				(metadata.isAbstract() && metadata.hasAnnotatedMethods(Lookup.class.getName()))));
 	}

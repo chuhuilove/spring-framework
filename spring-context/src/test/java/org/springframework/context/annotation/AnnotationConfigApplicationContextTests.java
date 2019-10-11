@@ -47,7 +47,7 @@ public class AnnotationConfigApplicationContextTests {
 	@Test
 	public void scanAndRefresh() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.scan("org.springframework.context.annotation6");
+		context.scan("org.springframework.context.*annotation6");
 		context.refresh();
 
 		context.getBean(uncapitalize(ConfigForScanning.class.getSimpleName()));

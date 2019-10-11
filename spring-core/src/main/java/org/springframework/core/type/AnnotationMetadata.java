@@ -70,6 +70,9 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	/**
 	 * Determine whether the underlying class has any methods that are
 	 * annotated (or meta-annotated) with the given annotation type.
+	 *
+	 * 确定所描述的类是否具有使用给定注解类型进行注解(或元注解)的方法.
+	 *
 	 * @param annotationName the fully qualified class name of the annotation
 	 * type to look for
 	 */
