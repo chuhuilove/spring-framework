@@ -48,18 +48,14 @@ public class AnnotationConfigApplicationContextTests {
 
 	@Test
 	public void scanAndRefresh() {
+
+		/**
+		 * 调用scan 和Refresh
+		 */
+
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.scan("org.springframework.context.annotation6");
 		context.refresh();
-
-//
-//		org.springframework.context.annotation.internalConfigurationAnnotationProcessor--->org.springframework.context.annotation.ConfigurationClassPostProcessor
-//		org.springframework.context.event.internalEventListenerFactory--->org.springframework.context.event.DefaultEventListenerFactory
-//		org.springframework.context.event.internalEventListenerProcessor--->org.springframework.context.event.EventListenerMethodProcessor
-//		org.springframework.context.annotation.internalAutowiredAnnotationProcessor--->org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
-//		org.springframework.context.annotation.internalCommonAnnotationProcessor--->org.springframework.context.annotation.CommonAnnotationBeanPostProcessor
-
-
 
 
 		context.getBean(uncapitalize(ConfigForScanning.class.getSimpleName()));
@@ -74,16 +70,7 @@ public class AnnotationConfigApplicationContextTests {
 	public void registerAndRefresh() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.register(Config.class, NameConfig.class);
-
-
 		context.refresh();
-
-
-		System.err.println("this is debug");
-		System.err.println("this is debug");
-		System.err.println("this is debug");
-		System.err.println("this is debug");
-
 
 		context.getBean("testBean");
 		context.getBean("name");
@@ -120,8 +107,7 @@ public class AnnotationConfigApplicationContextTests {
 		try {
 			context.getBean(targetType);
 			fail("Should have thrown NoSuchBeanDefinitionException");
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			assertThat(ex.getMessage(), containsString(format("No qualifying bean of type '%s'", targetType.getName())));
 		}
 	}
@@ -132,8 +118,7 @@ public class AnnotationConfigApplicationContextTests {
 
 		try {
 			context.getBean(TestBean.class);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			assertThat(ex.getMessage(),
 					allOf(
 							containsString("No qualifying bean of type '" + TestBean.class.getName() + "'"),
@@ -146,6 +131,7 @@ public class AnnotationConfigApplicationContextTests {
 
 	/**
 	 * Tests that Configuration classes are registered according to convention
+	 *
 	 * @see org.springframework.beans.factory.support.DefaultBeanNameGenerator#generateBeanName
 	 */
 	@Test
@@ -185,6 +171,7 @@ public class AnnotationConfigApplicationContextTests {
 			public Object postProcessBeforeInitialization(Object bean, String beanName) {
 				return (bean instanceof TestBean ? null : bean);
 			}
+
 			@Override
 			public Object postProcessAfterInitialization(Object bean, String beanName) {
 				return bean;
@@ -196,6 +183,7 @@ public class AnnotationConfigApplicationContextTests {
 				bean.getClass().getName();
 				return bean;
 			}
+
 			@Override
 			public Object postProcessAfterInitialization(Object bean, String beanName) {
 				bean.getClass().getName();
@@ -243,9 +231,9 @@ public class AnnotationConfigApplicationContextTests {
 		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
 		assertSame(context, context.getBean(BeanB.class).applicationContext);
 
-		assertArrayEquals(new String[] {"annotationConfigApplicationContextTests.BeanA"},
+		assertArrayEquals(new String[]{"annotationConfigApplicationContextTests.BeanA"},
 				context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanB"));
-		assertArrayEquals(new String[] {"annotationConfigApplicationContextTests.BeanA"},
+		assertArrayEquals(new String[]{"annotationConfigApplicationContextTests.BeanA"},
 				context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanC"));
 	}
 
@@ -412,11 +400,13 @@ public class AnnotationConfigApplicationContextTests {
 	@Configuration
 	static class TwoTestBeanConfig {
 
-		@Bean TestBean tb1() {
+		@Bean
+		TestBean tb1() {
 			return new TestBean();
 		}
 
-		@Bean TestBean tb2() {
+		@Bean
+		TestBean tb2() {
 			return new TestBean();
 		}
 	}
@@ -424,16 +414,21 @@ public class AnnotationConfigApplicationContextTests {
 	@Configuration
 	static class NameConfig {
 
-		@Bean String name() { return "foo"; }
+		@Bean
+		String name() {
+			return "foo";
+		}
 	}
 
 	@Configuration
 	@Import(NameConfig.class)
 	static class AutowiredConfig {
 
-		@Autowired String autowiredName;
+		@Autowired
+		String autowiredName;
 
-		@Bean TestBean testBean() {
+		@Bean
+		TestBean testBean() {
 			TestBean testBean = new TestBean();
 			testBean.name = autowiredName;
 			return testBean;
@@ -445,7 +440,8 @@ public class AnnotationConfigApplicationContextTests {
 		BeanB b;
 		BeanC c;
 
-		@Autowired public BeanA(BeanB b, BeanC c) {
+		@Autowired
+		public BeanA(BeanB b, BeanC c) {
 			this.b = b;
 			this.c = c;
 		}
@@ -453,13 +449,15 @@ public class AnnotationConfigApplicationContextTests {
 
 	static class BeanB {
 
-		@Autowired ApplicationContext applicationContext;
+		@Autowired
+		ApplicationContext applicationContext;
 
 		public BeanB() {
 		}
 	}
 
-	static class BeanC {}
+	static class BeanC {
+	}
 
 	static class TypedFactoryBean implements FactoryBean<String> {
 
@@ -526,8 +524,7 @@ class TestBean {
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		}
-		else if (!name.equals(other.name))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

@@ -1,5 +1,5 @@
 /**
- * Support package for annotation-driven bean configuration.
+ * 基于注解驱动的支持包
  */
 @NonNullApi
 @NonNullFields

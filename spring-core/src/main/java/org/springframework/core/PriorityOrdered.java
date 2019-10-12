@@ -21,6 +21,9 @@ package org.springframework.core;
  * Spring 给定的扩展点之一,控制Bean的初始化顺序
  *
  *
+ *
+ *
+ *
  * Extension of the {@link Ordered} interface, expressing a <em>priority</em>
  * ordering: {@code PriorityOrdered} objects are always applied before
  * <em>plain</em> {@link Ordered} objects regardless of their order values.

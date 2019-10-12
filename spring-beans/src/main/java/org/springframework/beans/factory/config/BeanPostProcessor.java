@@ -17,6 +17,8 @@
 package org.springframework.beans.factory.config;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
 
 /**
@@ -24,6 +26,13 @@ import org.springframework.lang.Nullable;
  * Spring的扩展点之一.能够让我们插手Bean的初始化过程.
  *
  * 对于{@link BeanPostProcessor }的使用,这里有一篇博文,很早之前写的一篇文章:https://blog.csdn.net/ZhanLunHui/article/details/80869466
+ *
+ * Spring 还有其他扩展点.比如
+ *
+ * {@link Ordered} 可以用来控制Bean的初始化顺序
+ * {@link BeanFactoryPostProcessor} 控制配置元数据
+ * {@link FactoryBean}
+ *
  *
  *
  *
