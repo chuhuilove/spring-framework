@@ -538,8 +538,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			DefaultListableBeanFactory obtainContentFactory=(DefaultListableBeanFactory) beanFactory;
-
-			System.err.println("第一次调用");
+			System.err.println("refresh第一次调用");
 			getBeanFactoryContent(obtainContentFactory);
 
 			// Prepare the bean factory for use in this context.
@@ -549,7 +548,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			 *
 			 */
 			prepareBeanFactory(beanFactory);
-			System.err.println("第二次调用");
+			System.err.println("refresh第二次调用");
 			getBeanFactoryContent(obtainContentFactory);
 
 			try {
@@ -560,7 +559,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 该方法在web中有实现...暂时跳过
 				 */
 				postProcessBeanFactory(beanFactory);
-				System.err.println("第三次调用");
+				System.err.println("refresh第三次调用");
 				getBeanFactoryContent(obtainContentFactory);
 				// Invoke factory processors registered as beans in the context.
 				/**
@@ -568,7 +567,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 调用bean工厂的后置处理器
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
-				System.err.println("第四次调用");
+				System.err.println("refresh第四次调用");
 				getBeanFactoryContent(obtainContentFactory);
 				/**
 				 * 6.
@@ -578,7 +577,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 */
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
-				System.err.println("第五次调用");
+				System.err.println("refresh第五次调用");
 				getBeanFactoryContent(obtainContentFactory);
 				// Initialize message source for this context.
 				/**
@@ -586,7 +585,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 为上下文初始化消息资源
 				 */
 				initMessageSource();
-				System.err.println("第六次调用");
+				System.err.println("refresh第六次调用");
 				getBeanFactoryContent(obtainContentFactory);
 
 				// Initialize event multicaster for this context.
@@ -595,14 +594,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 为上下文初始化事件广播
 				 */
 				initApplicationEventMulticaster();
-				System.err.println("第七次调用");
+				System.err.println("refresh第七次调用");
 				getBeanFactoryContent(obtainContentFactory);
 				/**
 				 * 9.
 				 */
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
-				System.err.println("第八次调用");
+				System.err.println("refresh第八次调用");
 				getBeanFactoryContent(obtainContentFactory);
 				//
 				/**
@@ -611,7 +610,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 检查侦听器bean并注册它们.
 				 */
 				registerListeners();
-				System.err.println("第九次调用");
+				System.err.println("refresh第九次调用");
 				getBeanFactoryContent(obtainContentFactory);
 
 				// Instantiate all remaining (non-lazy-init) singletons.
@@ -620,7 +619,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 *  我们的bean,就是在这里进行初始化的
 				 */
 				finishBeanFactoryInitialization(beanFactory);
-				System.err.println("第十次调用");
+				System.err.println("refresh第十次调用");
 				getBeanFactoryContent(obtainContentFactory);
 				// Last step: publish corresponding event.
 				/**
@@ -628,7 +627,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 完成刷新
 				 */
 				finishRefresh();
-				System.err.println("第十一次调用");
+				System.err.println("refresh第十一次调用");
 				getBeanFactoryContent(obtainContentFactory);
 			}
 
@@ -661,10 +660,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		Map<String, Object> singletonObjects = beanFactory.getSingletonObjects();
 
-		System.err.println("=================================BeanDefinition");
+	//	System.err.println("=================================BeanDefinition");
 		beanFactory.getBeanDefinitionMap().forEach((key,value)-> System.err.println(key+"--->"+value.getBeanClassName()));
 
-		System.err.println("=================================Object");;
+		//System.err.println("=================================Object");;
 		if(singletonObjects.size()>0){
 			singletonObjects.forEach((key,value)-> System.err.println(key+"---->"+value.toString()));
 		}else{

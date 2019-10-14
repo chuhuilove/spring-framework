@@ -60,6 +60,19 @@ public class AnnotatedBeanDefinitionReader {
 
 
 	/**
+	 *
+	 *
+	 * 构造方法的参数BeanDefinitionRegistry是由{@link AnnotationConfigApplicationContext}作为this传递进来的.
+	 *
+	 * AnnotationConfigApplicationContext extends {@link org.springframework.context.support.GenericApplicationContext}
+	 * 而{@link org.springframework.context.support.GenericApplicationContext} implements  {@link BeanDefinitionRegistry}
+	 * {@link BeanDefinitionRegistry}是一个{@link BeanDefinition}的注册器
+	 *
+	 * so {@link AnnotationConfigApplicationContext}就是{@link BeanDefinition}的注册器,用注册器来初始化{@link BeanDefinition}的读取器
+	 *
+	 *
+	 *
+	 *
 	 * Create a new {@code AnnotatedBeanDefinitionReader} for the given registry.
 	 * If the registry is {@link EnvironmentCapable}, e.g. is an {@code ApplicationContext},
 	 * the {@link Environment} will be inherited, otherwise a new

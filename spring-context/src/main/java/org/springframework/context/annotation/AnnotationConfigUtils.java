@@ -25,7 +25,9 @@ import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.event.DefaultEventListenerFactory;
@@ -131,7 +133,6 @@ public abstract class AnnotationConfigUtils {
 				ClassUtils.isPresent(PERSISTENCE_ANNOTATION_PROCESSOR_CLASS_NAME, classLoader);
 	}
 
-
 	/**
 	 * Register all relevant annotation post processors in the given registry.
 	 * @param registry the registry to operate on
@@ -139,6 +140,7 @@ public abstract class AnnotationConfigUtils {
 	public static void registerAnnotationConfigProcessors(BeanDefinitionRegistry registry) {
 		registerAnnotationConfigProcessors(registry, null);
 	}
+
 
 	/**
 	 * Register all relevant annotation post processors in the given registry.
@@ -158,16 +160,34 @@ public abstract class AnnotationConfigUtils {
 
 		if (beanFactory != null) {
 			if (!(beanFactory.getDependencyComparator() instanceof AnnotationAwareOrderComparator)) {
+
+				/**
+				 * 2.1 添加AnnotationAwareOrderComparator对象
+				 */
 				beanFactory.setDependencyComparator(AnnotationAwareOrderComparator.INSTANCE);
 			}
 			if (!(beanFactory.getAutowireCandidateResolver() instanceof ContextAnnotationAutowireCandidateResolver)) {
+
+				/**
+				 * 2.2 添加ContextAnnotationAutowireCandidateResolver对象,提供延迟加载的功能
+				 */
 				beanFactory.setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver());
 			}
 		}
 
 		Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
 
+		// 准备将一些默认的东西注册进工厂
+		// BeanFactory
+
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+			/**
+			 * 将{@link ConfigurationClassPostProcessor}注册进bean工厂
+			 * 值得注意的是{@link ConfigurationClassPostProcessor}实现的是{@link BeanDefinitionRegistryPostProcessor }接口
+			 * {@link BeanDefinitionRegistryPostProcessor}继承的是{@link BeanFactoryPostProcessor}接口
+			 *
+			 *
+			 */
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
