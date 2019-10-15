@@ -43,6 +43,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 为root application context执行初始化工作.由{@link ContextLoaderListener}调用.
+ *
  * Performs the actual initialization work for the root application context.
  * Called by {@link ContextLoaderListener}.
  *

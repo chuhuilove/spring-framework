@@ -23,6 +23,9 @@ import org.springframework.lang.Nullable;
 /**
  * Interface to be implemented by objects that can resolve views by name.
  *
+ * 由可以通过名称解析视图的对象实现的接口.
+ *
+ *
  * <p>View state doesn't change during the running of the application,
  * so implementations are free to cache views.
  *

@@ -123,8 +123,8 @@ import org.springframework.util.StringUtils;
 @SuppressWarnings("serial")
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
 		implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
-
 	@Nullable
+
 	private static Class<?> javaxInjectProviderClass;
 
 	static {

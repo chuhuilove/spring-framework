@@ -34,6 +34,21 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 
 /**
+ *
+ * Web应用的入口
+ * 作用和{@link org.springframework.context.annotation.AnnotationConfigApplicationContext} 类似
+ *
+ * 顾名思义,这个类只解析基于注解的类.
+ * 比如:
+ * 1. 基于{@link org.springframework.context.annotation.Configuration @Configuration}的配置类
+ * 2. 基于{@link org.springframework.stereotype.Component @Component}注解的类
+ * 3. 基于JSR-330 {@code javax.inject}的;类
+ *
+ *
+ * 实际上 {@link org.springframework.context.annotation.AnnotationConfigApplicationContext AnnotationConfigApplicationContext}
+ * 相当于一个web环境.
+ *
+ *
  * {@link org.springframework.web.context.WebApplicationContext WebApplicationContext}
  * implementation which accepts annotated classes as input - in particular
  * {@link org.springframework.context.annotation.Configuration @Configuration}-annotated
@@ -41,6 +56,9 @@ import org.springframework.web.context.ContextLoader;
  * classes and JSR-330 compliant classes using {@code javax.inject} annotations. Allows
  * for registering classes one by one (specifying class names as config location) as well
  * as for classpath scanning (specifying base packages as config location).
+ *
+ *
+ *
  *
  * <p>This is essentially the equivalent of
  * {@link org.springframework.context.annotation.AnnotationConfigApplicationContext
@@ -50,6 +68,17 @@ import org.springframework.web.context.ContextLoader;
  * {@linkplain ContextLoader#CONTEXT_CLASS_PARAM "contextClass"} context-param for
  * ContextLoader and/or "contextClass" init-param for FrameworkServlet must be set to
  * the fully-qualified name of this class.
+ *
+ *
+ * 从spring3.1开始,
+ * 使用新的{@link org.springframework.web.WebApplicationInitializer WebApplicationInitializer}基于java代码的方式
+ * 取代{@code web.xml}.
+ * 这个类可以直接实例化,并将其注入到Spring的 {@code DispatcherServlet} 或 {@code ContextLoaderListener}
+ *
+ *
+ *
+ * 从Spring 3.1开始，使用新的基于WebApplicationInitializer代码的web.xml替代方法时，也可以直接实例化此类并将其注入Spring的DispatcherServlet或ContextLoaderListener中。
+ *
  *
  * <p>As of Spring 3.1, this class may also be directly instantiated and injected into
  * Spring's {@code DispatcherServlet} or {@code ContextLoaderListener} when using the
@@ -83,6 +112,14 @@ import org.springframework.web.context.ContextLoader;
  */
 public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWebApplicationContext
 		implements AnnotationConfigRegistry {
+
+	/**
+	 * 提供了一个无参构造函数
+	 * 必须
+	 */
+	public AnnotationConfigWebApplicationContext(){
+
+	}
 
 	@Nullable
 	private BeanNameGenerator beanNameGenerator;
@@ -137,6 +174,7 @@ public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWe
 
 
 	/**
+	 * 调用之后,必须手动调用#refresh()方法
 	 * Register one or more annotated classes to be processed.
 	 * <p>Note that {@link #refresh()} must be called in order for the context
 	 * to fully process the new classes.
@@ -147,12 +185,14 @@ public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWe
 	 * @see #setConfigLocation(String)
 	 * @see #refresh()
 	 */
+	@Override
 	public void register(Class<?>... annotatedClasses) {
 		Assert.notEmpty(annotatedClasses, "At least one annotated class must be specified");
 		Collections.addAll(this.annotatedClasses, annotatedClasses);
 	}
 
 	/**
+	 * 调用之后,必须手动调用#refresh()方法
 	 * Perform a scan within the specified base packages.
 	 * <p>Note that {@link #refresh()} must be called in order for the context
 	 * to fully process the new classes.
@@ -169,6 +209,9 @@ public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWe
 
 
 	/**
+	 *
+	 * 从BeanFactory中加载bean定义
+	 *
 	 * Register a {@link org.springframework.beans.factory.config.BeanDefinition} for
 	 * any classes specified by {@link #register(Class...)} and scan any packages
 	 * specified by {@link #scan(String...)}.

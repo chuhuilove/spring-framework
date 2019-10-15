@@ -20,6 +20,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
+ *
+ *
+ *
  * Bootstrap listener to start up and shut down Spring's root {@link WebApplicationContext}.
  * Simply delegates to {@link ContextLoader} as well as to {@link ContextCleanupListener}.
  *
@@ -37,6 +40,8 @@ import javax.servlet.ServletContextListener;
 public class ContextLoaderListener extends ContextLoader implements ServletContextListener {
 
 	/**
+	 *
+	 *
 	 * Create a new {@code ContextLoaderListener} that will create a web application
 	 * context based on the "contextClass" and "contextConfigLocation" servlet
 	 * context-params. See {@link ContextLoader} superclass documentation for details on
