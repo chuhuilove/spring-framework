@@ -26,6 +26,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
+ *
+ * 字符集过滤器,由于其继承了{@link OncePerRequestFilter}所以每次发送servlet请求的时候,都会校验字符集
+ *
+ *
  * Servlet Filter that allows one to specify a character encoding for requests.
  * This is useful because current browsers typically do not set a character
  * encoding even if specified in the HTML page or form.

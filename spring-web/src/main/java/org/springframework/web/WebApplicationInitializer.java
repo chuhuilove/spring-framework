@@ -20,17 +20,37 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 /**
+ *
+ * servlet 3.0+ 环境中的接口,为了方便以编程的方式配置{@link ServletContext},从而省略配置{@code web.xml}的烦恼
+ *
+ *
  * Interface to be implemented in Servlet 3.0+ environments in order to configure the
  * {@link ServletContext} programmatically -- as opposed to (or possibly in conjunction
  * with) the traditional {@code web.xml}-based approach.
+ *
+ *
+ * 该实现采用了SPI机制,web容器会自动寻找在SPI中已经配置的接口的实现.
+ *
+ * 在spring-web模块下,resources--->META-INF---->services---->里面有一个名为javax.servlet.ServletContainerInitializer的文件
+ * 在文件中配置了一个全类名{@code org.springframework.web.SpringServletContainerInitializer}
+ *
+ * 当我们点开这个类之后,会发现其不仅实现了{@code javax.servlet.ServletContainerInitializer}接口,还加上了一个注解{@code HandlesTypes}
+ *
+ * 这也是Servlet 3.0+中的机制
+ *
+ *
+ *
  *
  * <p>Implementations of this SPI will be detected automatically by {@link
  * SpringServletContainerInitializer}, which itself is bootstrapped automatically
  * by any Servlet 3.0 container. See {@linkplain SpringServletContainerInitializer its
  * Javadoc} for details on this bootstrapping mechanism.
  *
+ *
+ *
+ *
  * <h2>Example</h2>
- * <h3>The traditional, XML-based approach</h3>
+ * <h3>基于传统XML配置的示例</h3>
  * Most Spring users building a web application will need to register Spring's {@code
  * DispatcherServlet}. For reference, in WEB-INF/web.xml, this would typically be done as
  * follows:
@@ -52,6 +72,7 @@ import javax.servlet.ServletException;
  *   &lt;url-pattern&gt;/&lt;/url-pattern&gt;
  * &lt;/servlet-mapping&gt;</pre>
  *
+ * 利用{@code WebApplicationInitializer}实现基于java 代码的方式
  * <h3>The code-based approach with {@code WebApplicationInitializer}</h3>
  * Here is the equivalent {@code DispatcherServlet} registration logic,
  * {@code WebApplicationInitializer}-style:
