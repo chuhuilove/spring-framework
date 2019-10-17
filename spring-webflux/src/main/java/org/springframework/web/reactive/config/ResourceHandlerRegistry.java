@@ -34,6 +34,10 @@ import org.springframework.web.reactive.resource.ResourceWebHandler;
 import org.springframework.web.server.WebHandler;
 
 /**
+ *
+ * 通过Spring WebFlux存储为静态资源(如图像、css文件等)提供服务的资源处理程序的注册，包括设置为在web浏览器中有效加载而优化的缓存头文件。
+ *
+ *
  * Stores registrations of resource handlers for serving static resources such
  * as images, css files and others through Spring WebFlux including setting cache
  * headers optimized for efficient loading in a web browser. Resources can be

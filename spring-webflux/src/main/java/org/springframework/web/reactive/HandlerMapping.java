@@ -24,6 +24,8 @@ import org.springframework.web.server.ServerWebExchange;
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
  *
+ * 接口由定义请求和处理程序对象之间的映射的对象实现.
+ *
  * @author Rossen Stoyanchev
  * @author Sebastien Deleuze
  * @since 5.0

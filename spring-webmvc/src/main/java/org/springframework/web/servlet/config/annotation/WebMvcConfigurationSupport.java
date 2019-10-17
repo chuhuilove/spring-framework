@@ -99,6 +99,19 @@ import org.springframework.web.servlet.view.ViewResolverComposite;
 import org.springframework.web.util.UrlPathHelper;
 
 /**
+ *
+ *
+ * 这是提供MVC Java配置背后配置的主类.
+ *
+ * 它通常是通过将{@link EnableWebMvc @EnableWebMvc}添加到应用程序的{@link Configuration @Configuration}类来导入的.
+ *
+ * 另一个更高级的选项是直接从这个类扩展并根据需要覆盖方法,
+ * 记住将{@link Configuration @Configuration}添加到子类中，将{@link Bean @Bean}添加到覆盖的{@link Bean @Bean}方法中。
+ *
+ * 注意: 继承{@link WebMvcConfigurationSupport},则不能添加{@link EnableWebMvc EnableWebMvc}注解.
+ *
+ *
+ *
  * This is the main class providing the configuration behind the MVC Java config.
  * It is typically imported by adding {@link EnableWebMvc @EnableWebMvc} to an
  * application {@link Configuration @Configuration} class. An alternative more

@@ -661,11 +661,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		Map<String, Object> singletonObjects = beanFactory.getSingletonObjects();
 
 	//	System.err.println("=================================BeanDefinition");
-		beanFactory.getBeanDefinitionMap().forEach((key,value)-> System.err.println(key+"--->"+value.getBeanClassName()));
+	//	beanFactory.getBeanDefinitionMap().forEach((key,value)-> System.err.println(key+"--->"+value.getBeanClassName()));
 
 		//System.err.println("=================================Object");;
 		if(singletonObjects.size()>0){
-			singletonObjects.forEach((key,value)-> System.err.println(key+"---->"+value.toString()));
+			//singletonObjects.forEach((key,value)-> System.err.println(key+"---->"+value.toString()));
 		}else{
 			System.err.println("啥都没有呢");
 		}

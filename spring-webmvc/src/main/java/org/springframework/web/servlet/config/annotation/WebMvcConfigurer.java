@@ -35,6 +35,9 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * Defines callback methods to customize the Java-based configuration for
  * Spring MVC enabled via {@code @EnableWebMvc}.
  *
+ * 定义回调方法,以自定义通过{@code @EnableWebMvc}启用的Spring MVC的基于Java的配置.
+ *
+ *
  * <p>{@code @EnableWebMvc}-annotated configuration classes may implement
  * this interface to be called back and given a chance to customize the
  * default configuration.
