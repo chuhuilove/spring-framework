@@ -22,13 +22,15 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 /**
  * A contract for configuring a STOMP over WebSocket endpoint.
  *
+ * 在WebSocket端点上配置STOMP的约定
+ *
  * @author Rossen Stoyanchev
  * @since 4.0
  */
 public interface StompWebSocketEndpointRegistration {
 
 	/**
-	 * Enable SockJS fallback options.
+	 * 启用SockJS回调选项
 	 */
 	SockJsServiceRegistration withSockJS();
 

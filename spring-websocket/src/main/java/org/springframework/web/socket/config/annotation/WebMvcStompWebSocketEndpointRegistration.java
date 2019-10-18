@@ -39,6 +39,7 @@ import org.springframework.web.socket.sockjs.transport.handler.WebSocketTranspor
 
 /**
  * An abstract base class for configuring STOMP over WebSocket/SockJS endpoints.
+ * 配置STOMP的WebSocket/SockJS端点的抽象基类
  *
  * @author Rossen Stoyanchev
  * @since 4.0
