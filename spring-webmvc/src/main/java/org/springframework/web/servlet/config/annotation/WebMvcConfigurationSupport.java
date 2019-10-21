@@ -765,6 +765,10 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	}
 
 	/**
+	 * 重写这个方法来添加自定义的{@link HttpMessageConverter HttpMessageConverters},
+	 * 以便与{@link RequestMappingHandlerAdapter}和{@link ExceptionHandlerExceptionResolver}一起使用.
+	 *
+	 *
 	 * Override this method to add custom {@link HttpMessageConverter HttpMessageConverters}
 	 * to use with the {@link RequestMappingHandlerAdapter} and the
 	 * {@link ExceptionHandlerExceptionResolver}.

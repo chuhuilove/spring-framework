@@ -21,6 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.lang.Nullable;
 
 /**
+ * 用来描述handler的接口.
+ *
+ *
+ *
+ *
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
  *

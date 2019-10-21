@@ -40,6 +40,22 @@ import org.springframework.web.socket.messaging.WebSocketAnnotationMethodMessage
  * Extends {@link AbstractMessageBrokerConfiguration} and adds configuration for
  * receiving and responding to STOMP messages from WebSocket clients.
  *
+ * 这个类是{@link AbstractMessageBrokerConfiguration}的扩展类,并且是WebSocket的默认核心配置类,
+ * 该类用来接收和响应STOMP消息.
+ *
+ *
+ * 使用方式是在自定义的WebSocket配置雷伤加上{@link EnableWebSocketMessageBroker @EnableWebSocketMessageBroker}
+ * 注解.
+ * 也可以直接继承,然后重写其内部方法.
+ *
+ *
+ * 其子类{@link DelegatingWebSocketMessageBrokerConfiguration}是WebSocket配置的具体核心实现.
+ * 在{@link EnableWebSocketMessageBroker}注解上,有一个{@link org.springframework.context.annotation.Import}注解,
+ * 其内部注入的类就是{@link DelegatingWebSocketMessageBrokerConfiguration}.
+ * 所以,当我们在自己的Websocket配置中启用{@code EnableWebSocketMessageBroker}后,实际上注入的是{@code DelegatingWebSocketMessageBrokerConfiguration}类.
+ *
+ *
+ *
  * <p>Typically used in conjunction with
  * {@link EnableWebSocketMessageBroker @EnableWebSocketMessageBroker} but can
  * also be extended directly.
@@ -69,6 +85,10 @@ public abstract class WebSocketMessageBrokerConfigurationSupport extends Abstrac
 		return registry;
 	}
 
+	/**
+	 * 创建端点映射
+	 * @return
+	 */
 	@Bean
 	public HandlerMapping stompWebSocketHandlerMapping() {
 		WebSocketHandler handler = decorateWebSocketHandler(subProtocolWebSocketHandler());

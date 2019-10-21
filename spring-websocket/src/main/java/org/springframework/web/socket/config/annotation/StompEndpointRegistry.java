@@ -20,7 +20,13 @@ import org.springframework.web.socket.messaging.StompSubProtocolErrorHandler;
 import org.springframework.web.util.UrlPathHelper;
 
 /**
- * A contract for registering STOMP over WebSocket endpoints.
+ * 通过WebSocket端点注册STOMP的约定
+ *
+ * 其默认实现是{@link WebMvcStompEndpointRegistry},这个实现在{@link WebSocketMessageBrokerConfigurationSupport#stompWebSocketHandlerMapping}中被默认启用
+ *
+ * {@code stompWebSocketHandlerMapping }被加上了一个{@code code}注解,代表只要应用程序启动,就会自动创建一个端点注册器.
+ *
+ *
  *
  * @author Rossen Stoyanchev
  * @since 4.0
