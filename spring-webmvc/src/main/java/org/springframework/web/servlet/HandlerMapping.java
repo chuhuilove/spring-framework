@@ -18,16 +18,34 @@ package org.springframework.web.servlet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.lang.Nullable;
 
 /**
- * 用来描述handler的接口.
  *
+ * spring mvc的组件之一.
  *
- *
+ * 由定义请求和处理程序对象之间的映射关系的对象实现的接口.
  *
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
+ *
+ *
+ * 开发者可以定义自定义这个类,但是通常没有啥必要,因为spring通常已经提供了实现.比如:
+ *
+ * {@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
+ * 和
+ * {@link org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping}
+ *
+ * 当在应用程序中没有指定{@code HandlerMapping}时,默认启用{@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
+ * 可以在{@link DispatcherServlet#initHandlerMappings(ApplicationContext)}中验证.
+ *
+ * 还可以设置拦截器.....
+ *
+ *
+ * 这个接口存在的意义,到底是什么????
+ *
+ *
  *
  * <p>This class can be implemented by application developers, although this is not
  * necessary, as {@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}

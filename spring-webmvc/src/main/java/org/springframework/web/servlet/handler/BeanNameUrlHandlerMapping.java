@@ -22,6 +22,11 @@ import java.util.List;
 import org.springframework.util.StringUtils;
 
 /**
+ *
+ * 该接口从URL映射到名称以斜杠("/")开头的bean,类似于Struts如何将URL映射到动作名称.
+ *
+ * 实现了{@link org.springframework.web.servlet.mvc.Controller}接口的类
+ *
  * Implementation of the {@link org.springframework.web.servlet.HandlerMapping}
  * interface that map from URLs to beans with names that start with a slash ("/"),
  * similar to how Struts maps URLs to action names.

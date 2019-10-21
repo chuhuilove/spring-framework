@@ -123,6 +123,14 @@ public class HandlerExecutionChain {
 
 
 	/**
+	 *
+	 * 按照从前向后的顺序依次执行请求的拦截器:只执行请求执行前的拦截
+	 *
+	 * 每个拦截器分为三个阶段:请求执行前,请求执行中,请求执行后
+	 *
+	 * 若其中一个拦截器执行失败,则立即执行请求执行后的请求,然后认为这个请求执行失败.
+	 *
+	 *
 	 * Apply preHandle methods of registered interceptors.
 	 * @return {@code true} if the execution chain should proceed with the
 	 * next interceptor or the handler itself. Else, DispatcherServlet assumes

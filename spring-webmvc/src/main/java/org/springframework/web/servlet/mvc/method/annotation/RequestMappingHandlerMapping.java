@@ -48,6 +48,10 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 /**
+ * 这个HandlerMapping配合 {@link RequestMapping @RequestMapping}和{@link Controller @Controller}这两个注解使用.
+ * 也是我们最常用的mapping
+ *
+ *
  * Creates {@link RequestMappingInfo} instances from type and method-level
  * {@link RequestMapping @RequestMapping} annotations in
  * {@link Controller @Controller} classes.

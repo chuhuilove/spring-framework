@@ -59,6 +59,7 @@ public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 	private final Map<String, Object> urlMap = new LinkedHashMap<>();
 
 
+
 	/**
 	 * Map URL paths to handler bean names.
 	 * This is the typical way of configuring this HandlerMapping.

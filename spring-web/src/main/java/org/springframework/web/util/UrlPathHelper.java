@@ -32,8 +32,21 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 /**
+ *
+ * URL路径匹配帮助类,提供对{@code RequestDispatcher}包含的URL路径的支持,并支持一致的URL解码.
+ *
  * Helper class for URL path matching. Provides support for URL paths in
  * {@code RequestDispatcher} includes and support for consistent URL decoding.
+ *
+ *
+ * {@link org.springframework.web.servlet.handler.AbstractUrlHandlerMapping}和
+ * {@link org.springframework.web.servlet.support.RequestContext}用于路径匹配和/或URI确定.
+ *
+ * 最典型的,是在{@link org.springframework.web.servlet.handler.AbstractUrlHandlerMapping}中的
+ * {@link org.springframework.web.servlet.handler.AbstractUrlHandlerMapping#getHandlerInternal(HttpServletRequest)}
+ * 方法中,从{@code HttpRequest}中提取出请求路径
+ *
+ *
  *
  * <p>Used by {@link org.springframework.web.servlet.handler.AbstractUrlHandlerMapping}
  * and {@link org.springframework.web.servlet.support.RequestContext} for path matching
@@ -181,7 +194,11 @@ public class UrlPathHelper {
 	 * Return the path within the servlet mapping for the given request,
 	 * i.e. the part of the request's URL beyond the part that called the servlet,
 	 * or "" if the whole URL has been used to identify the servlet.
-	 * <p>Detects include request URL if called within a RequestDispatcher include.
+	 *
+	 * 返回给定请求的servlet映射内的路径,即请求URL的超出servlet的部分;
+	 * 如果已使用整个URL标识servlet,则返回"".
+	 *
+	 * <p>检测包含请求URL(如果在RequestDispatcher include中调用).
 	 * <p>E.g.: servlet mapping = "/*"; request URI = "/test/a" -> "/test/a".
 	 * <p>E.g.: servlet mapping = "/"; request URI = "/test/a" -> "/test/a".
 	 * <p>E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -> "/a".
@@ -234,7 +251,8 @@ public class UrlPathHelper {
 
 	/**
 	 * Return the path within the web application for the given request.
-	 * <p>Detects include request URL if called within a RequestDispatcher include.
+	 * 返回给定请求的web应用程序内的路径
+	 * <p>检测包含请求URL(如果在RequestDispatcher include中调用).
 	 * @param request current HTTP request
 	 * @return the path within the web application
 	 * @see #getLookupPathForRequest

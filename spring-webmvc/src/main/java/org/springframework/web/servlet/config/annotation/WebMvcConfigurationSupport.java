@@ -110,6 +110,11 @@ import org.springframework.web.util.UrlPathHelper;
  *
  * 注意: 继承{@link WebMvcConfigurationSupport},则不能添加{@link EnableWebMvc EnableWebMvc}注解.
  *
+ * {@link WebMvcConfigurationSupport} 这个类在什么地方初始化的??
+ *
+ *
+ *
+ *
  *
  *
  * This is the main class providing the configuration behind the MVC Java config.

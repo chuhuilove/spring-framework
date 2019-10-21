@@ -44,7 +44,7 @@ import org.springframework.web.socket.messaging.WebSocketAnnotationMethodMessage
  * 该类用来接收和响应STOMP消息.
  *
  *
- * 使用方式是在自定义的WebSocket配置雷伤加上{@link EnableWebSocketMessageBroker @EnableWebSocketMessageBroker}
+ * 使用方式是在自定义的WebSocket配置加上{@link EnableWebSocketMessageBroker @EnableWebSocketMessageBroker}
  * 注解.
  * 也可以直接继承,然后重写其内部方法.
  *

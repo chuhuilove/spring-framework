@@ -16,9 +16,27 @@
 
 package org.springframework.web.multipart;
 
+import org.springframework.context.ApplicationContext;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ *
+ * 大文件,或者多文件上传接口
+ *
+ * 这个接口有两个实现,对应着上传文件有两种方式
+ *
+ * 使用Apache 的common-upload的方式,需要注册一个{@link org.springframework.web.multipart.commons.CommonsMultipartResolver}bean
+ *
+ * 使用servlet3.1+的方式,需要注册一个{@link org.springframework.web.multipart.support.StandardServletMultipartResolver}bean
+ *
+ * 这两种方式只能使用其中一个,且,无论使用哪一种方式,都必须将beanName设置成{@link org.springframework.web.servlet.DispatcherServlet#MULTIPART_RESOLVER_BEAN_NAME}
+ *
+ * 具体原因请看{@link org.springframework.web.servlet.DispatcherServlet#initMultipartResolver(ApplicationContext)};
+ *
+ *
+ *
+ *
  * A strategy interface for multipart file upload resolution in accordance
  * with <a href="https://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
  * Implementations are typically usable both within an application context

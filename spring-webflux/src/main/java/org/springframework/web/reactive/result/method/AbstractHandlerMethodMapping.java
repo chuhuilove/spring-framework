@@ -32,6 +32,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.web.HttpRequestHandler;
 import reactor.core.publisher.Mono;
 
 import org.springframework.aop.support.AopUtils;
@@ -49,8 +50,27 @@ import org.springframework.web.reactive.handler.AbstractHandlerMapping;
 import org.springframework.web.server.ServerWebExchange;
 
 /**
+ *
+ * 在Spring mvc中,Controller的实现有三种方式,记录一下:
+ * 1. {@code Controller}+ {@code RequestMapping}的方式,也是最常使用的方式
+ * 2. 实现{@link org.springframework.web.servlet.mvc.Controller}接口,返回一个{@link ModelAndView}对象
+ * 3. 实现{@link  org.springframework.web.HttpRequestHandler}
+ *
+ *
  * Abstract base class for {@link HandlerMapping} implementations that define
  * a mapping between a request and a {@link HandlerMethod}.
+ *
+ * {@link HandlerMapping}接口的实现抽象基类,
+ * 这些实现定义了请求和{@link HandlerMethod}之间的映射.
+ *
+ * 对于每个已注册的处理程序方法,唯一的映射将由子类维护,
+ * 这些子类定义了映射类型{@code <T>}的详细信息.
+ *
+ *
+ *
+ *
+ *
+ *
  *
  * <p>For each registered handler method, a unique mapping is maintained with
  * subclasses defining the details of the mapping type {@code <T>}.

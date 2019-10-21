@@ -55,6 +55,13 @@ import org.springframework.web.servlet.HandlerMapping;
  * <p>For each registered handler method, a unique mapping is maintained with
  * subclasses defining the details of the mapping type {@code <T>}.
  *
+ *
+ * 此类用来有一个子类:{@link org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping}
+ *
+ * 该类维护了spring中controller实现的方式之一:{@code Controller}+ {@code RequestMapping}注解的方式
+ *
+ *
+ *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
@@ -373,7 +380,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	/**
 	 * Look up the best-matching handler method for the current request.
 	 * If multiple matches are found, the best match is selected.
-	 * @param lookupPath mapping lookup path within the current servlet mapping
+	 * 查找当前请求的最佳匹配处理程序方法.
+	 * 如果找到多个,则选择最佳匹配.
+	 * @param lookupPath 映射当前servlet映射中的查找路径
 	 * @param request the current request
 	 * @return the best-matching handler method, or {@code null} if no match
 	 * @see #handleMatch(Object, String, HttpServletRequest)
@@ -517,6 +526,10 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	/**
 	 * A registry that maintains all mappings to handler methods, exposing methods
 	 * to perform lookups and providing concurrent access.
+	 *
+	 * 维护所有到处理程序方法的映射的注册表.
+	 * 暴露出用于执行查找的方法并提供并发访问.
+	 *
 	 * <p>Package-private for testing purposes.
 	 */
 	class MappingRegistry {

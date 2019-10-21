@@ -44,9 +44,12 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 /**
+ *
+ * 注册视图解析器
+ *
  * Assist with the configuration of a chain of
  * {@link org.springframework.web.servlet.ViewResolver ViewResolver} instances.
- * This class is expected to be used via {@link WebMvcConfigurer#configureViewResolvers}.
+ * 这个类将通过{@link WebMvcConfigurer#configureViewResolvers}使用.
  *
  * @author Sebastien Deleuze
  * @author Rossen Stoyanchev

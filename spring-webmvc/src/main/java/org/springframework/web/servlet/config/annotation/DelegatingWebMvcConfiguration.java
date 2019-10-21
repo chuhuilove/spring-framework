@@ -31,10 +31,23 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 /**
+ *
+ * {@code WebMvcConfigurationSupport}的子类,
+ * 它检测并委托给所有类型为{@link WebMvcConfigurer}的bean,
+ * 允许它们自定义{@code WebMvcConfigurationSupport}提供的配置.
+ *
+ * 当在一个配置类上使用{@link EnableWebMvc @EnableWebMvc}注解时,实际上导入的是这个类.
+ *
+ *
+ *
+ *
  * A subclass of {@code WebMvcConfigurationSupport} that detects and delegates
  * to all beans of type {@link WebMvcConfigurer} allowing them to customize the
  * configuration provided by {@code WebMvcConfigurationSupport}. This is the
  * class actually imported by {@link EnableWebMvc @EnableWebMvc}.
+ *
+ *
+ *
  *
  * @author Rossen Stoyanchev
  * @since 3.1

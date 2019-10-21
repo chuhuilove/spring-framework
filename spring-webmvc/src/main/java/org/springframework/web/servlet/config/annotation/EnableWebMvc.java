@@ -83,6 +83,11 @@ import org.springframework.context.annotation.Import;
  *
  * 注意: 继承{@link WebMvcConfigurationSupport},则不能添加{@link EnableWebMvc EnableWebMvc}注解
  *
+ * 因为{@link WebMvcConfigurationSupport}是一个抽象类,而其直接子类是{@link DelegatingWebMvcConfiguration},
+ * 并且,根据{@code DelegatingWebMvcConfiguration}的源码及其说明.可以得知,使用{@code EnableWebMvc @EnableWebMvc}时.
+ * 实际上导入的是{@code DelegatingWebMvcConfiguration}这个类.
+ *
+ *
  *
  * <p>If {@link WebMvcConfigurer} does not expose some more advanced setting that
  * needs to be configured consider removing the {@code @EnableWebMvc}
