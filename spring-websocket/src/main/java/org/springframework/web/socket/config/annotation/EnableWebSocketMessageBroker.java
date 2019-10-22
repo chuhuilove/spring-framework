@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Import;
 /**
  * Add this annotation to an {@code @Configuration} class to enable broker-backed
  * messaging over WebSocket using a higher-level messaging sub-protocol.
- *
+ * <p>
  * 这个注解只能被添加到一个有{@code @Configuration}的类上,
  *
  * <pre class="code">
@@ -37,6 +37,9 @@ import org.springframework.context.annotation.Import;
  *
  * }
  * </pre>
+ * {@link EnableWebSocketMessageBroker}只能和{@link WebSocketMessageBrokerConfigurer}这个接口配合使用
+ * 可以选择单独继承{@link WebSocketMessageBrokerConfigurationSupport}这个类
+ * 换句话说,添加 {@link EnableWebSocketMessageBroker}注解和继承{@link WebSocketMessageBrokerConfigurationSupport}二选一
  *
  * 定制导入的websocket配置,需要实现{@link WebSocketMessageBrokerConfigurer} 接口:
  * <p>Customize the imported configuration by implementing the
