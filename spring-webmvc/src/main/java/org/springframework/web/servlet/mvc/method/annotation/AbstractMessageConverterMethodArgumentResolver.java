@@ -179,6 +179,7 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 		}
 
 		Class<?> contextClass = parameter.getContainingClass();
+		// 确定需要转换的类型
 		Class<T> targetClass = (targetType instanceof Class ? (Class<T>) targetType : null);
 		if (targetClass == null) {
 			ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
@@ -192,10 +193,12 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 		try {
 			message = new EmptyBodyCheckingHttpInputMessage(inputMessage);
 
+			// post请求体转换
 			for (HttpMessageConverter<?> converter : this.messageConverters) {
 				Class<HttpMessageConverter<?>> converterType = (Class<HttpMessageConverter<?>>) converter.getClass();
 				GenericHttpMessageConverter<?> genericConverter =
 						(converter instanceof GenericHttpMessageConverter ? (GenericHttpMessageConverter<?>) converter : null);
+				// 确定可读条件
 				if (genericConverter != null ? genericConverter.canRead(targetType, contextClass, contentType) :
 						(targetClass != null && converter.canRead(targetClass, contentType))) {
 					if (message.hasBody()) {
