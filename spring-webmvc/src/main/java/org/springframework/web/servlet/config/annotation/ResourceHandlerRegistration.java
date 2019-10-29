@@ -30,6 +30,8 @@ import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 /**
  * Encapsulates information required to create a resource handler.
  *
+ * 封装创建资源处理器所需的信息
+ *
  * @author Rossen Stoyanchev
  * @author Keith Donald
  * @author Brian Clozel
@@ -62,7 +64,9 @@ public class ResourceHandlerRegistration {
 
 
 	/**
+	 * 添加一个或多个资源路径,以从其路径中获取静态资源.
 	 * Add one or more resource locations from which to serve static content.
+	 *
 	 * Each location must point to a valid directory. Multiple locations may
 	 * be specified as a comma-separated list, and the locations will be checked
 	 * for a given resource in the order specified.
@@ -85,6 +89,11 @@ public class ResourceHandlerRegistration {
 	}
 
 	/**
+	 * 指定资源处理器服务的资源的缓存周期(以秒为单位).
+	 * 默认设置是不发送任何缓存头,而仅依赖上次修改的时间戳.
+	 * 设置为0以发送防止缓存的缓存头,或者设置为正数秒以发送具有给定的max-age值的缓存头.
+	 *
+	 *
 	 * Specify the cache period for the resources served by the resource handler, in seconds. The default is to not
 	 * send any cache headers but to rely on last-modified timestamps only. Set to 0 in order to send cache headers
 	 * that prevent caching, or to a positive number of seconds to send cache headers with the given max-age value.
@@ -99,6 +108,7 @@ public class ResourceHandlerRegistration {
 	/**
 	 * Specify the {@link org.springframework.http.CacheControl} which should be used
 	 * by the resource handler.
+	 * 设置自定义的值,则会覆盖掉{@link #setCachePeriod}里面设置的值.
 	 * <p>Setting a custom value here will override the configuration set with {@link #setCachePeriod}.
 	 * @param cacheControl the CacheControl configuration to use
 	 * @return the same {@link ResourceHandlerRegistration} instance, for chained method invocation

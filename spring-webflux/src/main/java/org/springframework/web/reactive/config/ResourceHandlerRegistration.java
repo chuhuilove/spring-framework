@@ -31,6 +31,9 @@ import org.springframework.web.reactive.resource.ResourceWebHandler;
 /**
  * Assist with creating and configuring a static resources handler.
  *
+ * 协助创建和配置一个静态资源处理器
+ *
+ *
  * @author Rossen Stoyanchev
  * @since 5.0
  */

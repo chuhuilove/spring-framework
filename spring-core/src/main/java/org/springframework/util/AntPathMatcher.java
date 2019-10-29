@@ -32,11 +32,11 @@ import org.springframework.lang.Nullable;
  *
  * <p>Part of this mapping code has been kindly borrowed from <a href="https://ant.apache.org">Apache Ant</a>.
  *
- * <p>The mapping matches URLs using the following rules:<br>
+ * <p>模式匹配使用下面的规则:<br>
  * <ul>
- * <li>{@code ?} matches one character</li>
- * <li>{@code *} matches zero or more characters</li>
- * <li>{@code **} matches zero or more <em>directories</em> in a path</li>
+ * <li>{@code ?} 匹配一个字符</li>
+ * <li>{@code *} 匹配0个或多个字符</li>
+ * <li>{@code **} 在路径中匹配0个或多个<em>目录</em></li>
  * <li>{@code {spring:[a-z]+}} matches the regexp {@code [a-z]+} as a path variable named "spring"</li>
  * </ul>
  *

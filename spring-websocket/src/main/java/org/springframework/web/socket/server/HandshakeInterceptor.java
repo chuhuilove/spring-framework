@@ -24,6 +24,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.socket.WebSocketHandler;
 
 /**
+ * WebSocket握手请求的拦截器.可用于检查握手请求和响应,以及将属性传递给目标WebSocketHandler.
+ *
  * Interceptor for WebSocket handshake requests. Can be used to inspect the
  * handshake request and response as well as to pass attributes to the target
  * {@link WebSocketHandler}.

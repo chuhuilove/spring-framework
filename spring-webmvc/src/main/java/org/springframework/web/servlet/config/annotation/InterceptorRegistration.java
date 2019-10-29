@@ -121,6 +121,12 @@ public class InterceptorRegistration {
 	 * type is {@link MappedInterceptor}; otherwise {@link HandlerInterceptor}.
 	 */
 	protected Object getInterceptor() {
+		/**
+		 * 自己定义的{@link HandlerInterceptor}对象,
+		 * 在{@link WebMvcConfigurationSupport#addInterceptors(InterceptorRegistry)}进行添加时,
+		 * 若没有执行{@link #addPathPatterns(String...)}或 {@link #excludePathPatterns(String...)},
+		 * 则之后的每一个请求,都会走到自定义的{@code HandlerInterceptor }中.
+		 */
 		if (this.includePatterns.isEmpty() && this.excludePatterns.isEmpty()) {
 			return this.interceptor;
 		}

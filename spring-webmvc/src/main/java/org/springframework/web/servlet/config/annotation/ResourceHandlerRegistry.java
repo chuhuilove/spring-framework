@@ -37,6 +37,9 @@ import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.springframework.web.util.UrlPathHelper;
 
 /**
+ *
+ * 资源处理注册器
+ *
  * Stores registrations of resource handlers for serving static resources such as images, css files and others
  * through Spring MVC including setting cache headers optimized for efficient loading in a web browser.
  * Resources can be served out of locations under web application root, from the classpath, and others.
@@ -47,6 +50,44 @@ import org.springframework.web.util.UrlPathHelper;
  * <p>Then use additional methods on the returned {@link ResourceHandlerRegistration} to add one or more
  * locations from which to serve static content from (e.g. {{@code "/"},
  * {@code "classpath:/META-INF/public-web-resources/"}}) or to specify a cache period for served resources.
+ *
+ *
+ * 通过Spring MVC存储为静态资源(如图像、css文件等)提供服务的资源处理程序的注册,
+ * 包括设置为在web浏览器中有效加载而优化的缓存头文件.
+ *
+ * 可以从web应用程序根目录下的位置、类路径和其他位置提供资源.
+ *
+ * 创建资源处理器,使用 {@link #addResourceHandler(String...)}提供URL路径模式,
+ * 应调用该URL路径处理器以提供静态资源(e.g. {@code "/resources/**"}).
+ *
+ * 然后在返回的{@link ResourceHandlerRegistration}上使用其他方法来添加一个或多个位置,
+ * 以从中提供静态内容(e.g. {{@code "/"},{@code "classpath:/META-INF/public-web-resources/"}})
+ * 或为所资源指定缓存期.
+ *
+ *
+ * 这个类最主要的功能就是设置静态资源映射,在{@link WebMvcConfigurationSupport#resourceHandlerMapping()} 中创建
+ * 然后由程序员去实现添加静态资源.
+ * 本类除了构造方法外,{@link #hasMappingForPattern(String)}用来进行匹配之外,
+ * {@link #addResourceHandler(String...)}用来添加映射资源,其返回的{@link ResourceHandlerRegistration},用来表示该资源的属性,
+ * 如具体的路径,资源的缓存周期等.
+ *
+ * 比如,一个js文件,在调用{@link #addResourceHandler(String...)}后,再设置{@link ResourceHandlerRegistration#addResourceLocations}来表示
+ * 该js的具体路径.
+ *
+ *
+ * 如:
+ *      	registry.addResourceHandler("images/**").addResourceLocations("/images/");
+ *         registry.addResourceHandler("css/**").addResourceLocations("/css/");
+ *         registry.addResourceHandler("js/**").addResourceLocations("/js/");
+ *         registry.addResourceHandler("fonts/**").addResourceLocations("/fonts/");
+ *         registry.addResourceHandler("layui/**").addResourceLocations("/layui/");
+ *         registry.addResourceHandler("webjars/**").addResourceLocations("/webjars/");
+ *         registry.addResourceHandler("*.html").addResourceLocations("/WEB-INF/chathtml/");
+ *
+ *	将静态资源放过去,不进行拦截
+ *
+ *
+ *
  *
  * @author Rossen Stoyanchev
  * @since 3.1
@@ -109,11 +150,19 @@ public class ResourceHandlerRegistry {
 
 
 	/**
+	 *
+	 * 添加一个资源处理器,用于根据指定的URL路径模式提供静态资源.
+	 * 处理器将为每个与指定路径模式之一匹配的传入请求调用.
+	 *
+	 *
 	 * Add a resource handler for serving static resources based on the specified URL path patterns.
 	 * The handler will be invoked for every incoming request that matches to one of the specified
 	 * path patterns.
-	 * <p>Patterns like {@code "/static/**"} or {@code "/css/{filename:\\w+\\.css}"} are allowed.
-	 * See {@link org.springframework.util.AntPathMatcher} for more details on the syntax.
+	 *
+	 * 类似于{@code "/static/**"}或{@code "/css/{filename:\\w+\\.css}"}这种模式都可以通过.
+	 * 更详细的语义,请移步这里:{@link org.springframework.util.AntPathMatcher}
+	 *
+	 *
 	 * @return a {@link ResourceHandlerRegistration} to use to further configure the
 	 * registered resource handler
 	 */
@@ -177,6 +226,13 @@ public class ResourceHandlerRegistry {
 			}
 		}
 
+		// 返回一个对象
+		/**
+		 * 返回一个{@link SimpleUrlHandlerMapping}对象.
+		 * 这个函数在{@link WebMvcConfigurationSupport#resourceHandlerMapping()}中调用.
+		 * 这里只对Mapping对象设置了基本的属性,没有设置更多的拦截器.
+		 * 拦截器在{@link WebMvcConfigurationSupport#resourceHandlerMapping()}中设置.
+		 */
 		SimpleUrlHandlerMapping handlerMapping = new SimpleUrlHandlerMapping();
 		handlerMapping.setOrder(this.order);
 		handlerMapping.setUrlMap(urlMap);
