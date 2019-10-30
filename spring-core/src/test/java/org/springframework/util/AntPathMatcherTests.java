@@ -691,4 +691,5 @@ public class AntPathMatcherTests {
 		assertFalse(pathMatcher.isPattern("/test/foo{bar"));
 	}
 
+
 }

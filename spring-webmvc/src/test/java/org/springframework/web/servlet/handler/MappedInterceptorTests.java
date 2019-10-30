@@ -15,7 +15,9 @@
  */
 package org.springframework.web.servlet.handler;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,7 @@ import org.junit.Test;
 
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -56,7 +59,7 @@ public class MappedInterceptorTests {
 
 	@Test
 	public void includePattern() {
-		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[] { "/foo/*" }, this.interceptor);
+		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[]{"/foo/*"}, this.interceptor);
 
 		assertTrue(mappedInterceptor.matches("/foo/bar", pathMatcher));
 		assertFalse(mappedInterceptor.matches("/bar/foo", pathMatcher));
@@ -64,22 +67,52 @@ public class MappedInterceptorTests {
 
 	@Test
 	public void includePatternWithMatrixVariables() {
-		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[] { "/foo*/*" }, this.interceptor);
+		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[]{"/foo*/*"}, this.interceptor);
 		assertTrue(mappedInterceptor.matches("/foo;q=1/bar;s=2", pathMatcher));
 	}
 
 	@Test
 	public void excludePattern() {
-		MappedInterceptor mappedInterceptor = new MappedInterceptor(null, new String[] { "/admin/**" }, this.interceptor);
+		MappedInterceptor mappedInterceptor = new MappedInterceptor(null, new String[]{"/admin/**"}, this.interceptor);
 
 		assertTrue(mappedInterceptor.matches("/foo", pathMatcher));
 		assertFalse(mappedInterceptor.matches("/admin/foo", pathMatcher));
 	}
 
+
+	@Test
+	public void matchCustom() {
+
+		/**
+		 * 尝试匹配html文件,css文件...等
+		 */
+
+		List<String> excludes = new ArrayList<>();
+		excludes.add("/**/{filename:\\w+}.html");
+		excludes.add("/**/{filename:\\w.+}.css");
+		excludes.add("/**/{filename:\\w.+}.js");
+		excludes.add("/**/{filename:\\w+}.jsp");
+
+		String[] exclude = StringUtils.toStringArray(excludes);
+		MappedInterceptor mappedInterceptor = new MappedInterceptor(null, exclude, interceptor);
+
+		PathMatcher pathMatcher = new AntPathMatcher();
+
+
+		assertFalse(mappedInterceptor.matches("/aini/sdadjkadnkj/woaini.jsp", pathMatcher));
+		assertFalse(mappedInterceptor.matches("/index.html", pathMatcher));
+		assertFalse(mappedInterceptor.matches("/webjars/bootstrap/3.3.7/css/bootstrap.min.css", pathMatcher));
+		assertFalse(mappedInterceptor.matches("/webjars/bootstrap/3.3.7/css/bootstrapmin.css", pathMatcher));
+		assertFalse(mappedInterceptor.matches("/webjars/sockjs-client/1.0.2/sockjs.min.js", pathMatcher));
+		assertFalse(mappedInterceptor.matches("/webjars/sockjsclient/1.0.2/sockjsmin.js", pathMatcher));
+
+	}
+
+
 	@Test
 	public void includeAndExcludePatterns() {
 		MappedInterceptor mappedInterceptor = new MappedInterceptor(
-				new String[] { "/**" }, new String[] { "/admin/**" }, this.interceptor);
+				new String[]{"/**"}, new String[]{"/admin/**"}, this.interceptor);
 
 		assertTrue(mappedInterceptor.matches("/foo", pathMatcher));
 		assertFalse(mappedInterceptor.matches("/admin/foo", pathMatcher));
@@ -87,7 +120,7 @@ public class MappedInterceptorTests {
 
 	@Test
 	public void customPathMatcher() {
-		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[] { "/foo/[0-9]*" }, this.interceptor);
+		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[]{"/foo/[0-9]*"}, this.interceptor);
 		mappedInterceptor.setPathMatcher(new TestPathMatcher());
 
 		assertTrue(mappedInterceptor.matches("/foo/123", pathMatcher));
@@ -97,7 +130,7 @@ public class MappedInterceptorTests {
 	@Test
 	public void preHandle() throws Exception {
 		HandlerInterceptor interceptor = mock(HandlerInterceptor.class);
-		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[] { "/**" }, interceptor);
+		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[]{"/**"}, interceptor);
 		mappedInterceptor.preHandle(mock(HttpServletRequest.class), mock(HttpServletResponse.class), null);
 
 		then(interceptor).should().preHandle(any(HttpServletRequest.class), any(HttpServletResponse.class), any());
@@ -106,7 +139,7 @@ public class MappedInterceptorTests {
 	@Test
 	public void postHandle() throws Exception {
 		HandlerInterceptor interceptor = mock(HandlerInterceptor.class);
-		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[] { "/**" }, interceptor);
+		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[]{"/**"}, interceptor);
 		mappedInterceptor.postHandle(mock(HttpServletRequest.class), mock(HttpServletResponse.class),
 				null, mock(ModelAndView.class));
 
@@ -116,13 +149,12 @@ public class MappedInterceptorTests {
 	@Test
 	public void afterCompletion() throws Exception {
 		HandlerInterceptor interceptor = mock(HandlerInterceptor.class);
-		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[] { "/**" }, interceptor);
+		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[]{"/**"}, interceptor);
 		mappedInterceptor.afterCompletion(mock(HttpServletRequest.class), mock(HttpServletResponse.class),
 				null, mock(Exception.class));
 
 		then(interceptor).should().afterCompletion(any(), any(), any(), any());
 	}
-
 
 
 	public static class TestPathMatcher implements PathMatcher {

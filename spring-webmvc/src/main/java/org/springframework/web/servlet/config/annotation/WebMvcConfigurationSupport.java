@@ -74,11 +74,7 @@ import org.springframework.web.method.support.CompositeUriComponentsContributor;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.*;
-import org.springframework.web.servlet.handler.AbstractHandlerMapping;
-import org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping;
-import org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor;
-import org.springframework.web.servlet.handler.HandlerExceptionResolverComposite;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+import org.springframework.web.servlet.handler.*;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
@@ -364,9 +360,57 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	/**
 	 * Override this method to add Spring MVC interceptors for
 	 * pre- and post-processing of controller invocation.
+	 *
+	 * 重写这个方法来添加自定义拦截器
+	 *
+	 *
 	 * @see InterceptorRegistry
 	 */
 	protected void addInterceptors(InterceptorRegistry registry) {
+		/**
+		 * 这个方法及其重要,涉及到如下几个方面.
+		 * 2019年10月30日13:46:10
+		 *
+		 * {@code registry.addInterceptor}会返回一个{@link InterceptorRegistration}对象.
+		 * 这个对象有两个重要的方法{@link InterceptorRegistration#excludePathPatterns}和{@link InterceptorRegistration#addPathPatterns}.
+		 * 这里只说前者{@code excludePathPatterns}方法,里面可以添加N多正则表达式字符串.添加了正则字符串以后,当调用对象的{@link InterceptorRegistration#getInterceptor}
+		 * 时,返回的是一个{@link MappedInterceptor}对象. 先告一段落.
+		 *
+		 * 我想添加一个拦截器,拦截一切没有session的请求,静态资源和登录请求除外.
+		 *
+		 * 之前为了避免视图解析器的拦截,调用{@link #addResourceHandlers(ResourceHandlerRegistry)}来设置放过静态资源.
+		 *
+		 * 现在需要在上面添加一层拦截器.由于{@link #resourceHandlerMapping()}返回的是一个{@code HandlerMapping},所以我们没办法在这个地方动手了.
+		 *
+		 * 走一遍代码流程,其实可以知道,任何请求都要走HandlerMapping,获得一个handlerMapping,然后获得一个Handler,中间有一个处理,
+		 * 将Handler封装成{@link HandlerExecutionChain)}对象,在此过程中,会调用一个函数
+		 * {@link AbstractHandlerMapping#getHandlerExecutionChain(Object,HttpServletRequest)}来进行处理.
+		 * 这个函数中,会添加拦截器,而添加的拦截器,就是来自于这个函数及其符函数中产生的拦截器.
+		 *
+		 * 在这个过程中,会进行一次判断,如果你在添加自定义的拦截器的时候,没有设置表达式匹配,则在判断的过程中,进行判断的时候,直接跳过.
+		 * 否则,会进行match操作.整个调用过程
+		 *
+		 * {@link AbstractHandlerMapping#getHandlerExecutionChain(Object,HttpServletRequest)}的后半段
+		 *
+		 *		for (HandlerInterceptor interceptor : this.adaptedInterceptors) {
+		 * 			if (interceptor instanceof MappedInterceptor) {
+		 * 				MappedInterceptor mappedInterceptor = (MappedInterceptor) interceptor;
+		 * 				if (mappedInterceptor.matches(lookupPath, this.pathMatcher)) {
+		 * 					chain.addInterceptor(mappedInterceptor.getInterceptor());
+		 *                  }
+		 *            } else {
+		 * 				chain.addInterceptor(interceptor);
+		 * 			}
+		 * 		}
+		 *
+		 * 这里的判断,就是需要判断一下,请求是不是需要经过我们自定义的拦截器,还是经过自定义拦截器的包装类{@link MappedInterceptor}.
+		 * 主要的匹配方式在函数 {@link  MappedInterceptor#matches(String,PathMatcher)}中.
+		 *
+		 * 可能还是不知道怎么说吧...自己知道揪心....
+		 *
+		 *
+		 *
+		 */
 	}
 
 	/**

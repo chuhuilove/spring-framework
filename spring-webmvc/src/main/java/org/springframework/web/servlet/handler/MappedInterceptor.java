@@ -145,14 +145,8 @@ public final class MappedInterceptor implements HandlerInterceptor {
 	 * @return {@code true} if the interceptor applies to the given request path
 	 */
 	public boolean matches(String lookupPath, PathMatcher pathMatcher) {
-		// TODO 这里的匹配方式...关系到
 		/**
-		 * 这里的匹配方式,关系到
-		 * {@link WebMvcConfigurationSupport#addInterceptors(InterceptorRegistry)}
-		 * 添加自定义拦截器后,能不能进行匹配的问题
-		 * 能匹配到/**.html 却不能匹配到/**.css
-		 * //TOdo 这个问题很严重,严重到为了这件事,老子捣鼓了一整天
-		 * //todo 2019年10月29日20:42:28
+		 * 这里的关系,请直接看{@link WebMvcConfigurationSupport#addInterceptors(InterceptorRegistry)}的注释.
 		 *
 		 */
 		PathMatcher pathMatcherToUse = (this.pathMatcher != null ? this.pathMatcher : pathMatcher);

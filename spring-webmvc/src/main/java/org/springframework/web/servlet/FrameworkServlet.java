@@ -947,7 +947,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	protected final void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		logger.warn("GET method request path:" + request.getRequestURI());
+
 		processRequest(request, response);
 	}
 
@@ -960,7 +960,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	protected final void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		logger.warn("POST method request path:" + request.getRequestURI());
+
 		processRequest(request, response);
 	}
 
@@ -1046,6 +1046,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 */
 	protected final void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		logger.warn(request.getMethod().toUpperCase()+" method request path:" + request.getRequestURI());
 
 		long startTime = System.currentTimeMillis();
 		Throwable failureCause = null;
