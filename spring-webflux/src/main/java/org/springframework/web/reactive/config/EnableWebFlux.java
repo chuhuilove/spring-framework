@@ -25,6 +25,15 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Import;
 
 /**
+ *
+ * 添加这个注解到一个 {@code @Configuration}类上,以导入Spring WebFlux配置,
+ *
+ * 感觉这个东西和{@code @EnableMVC}很相似..
+ *
+ * 启用这个注解,实现{@code WebFluxConfigurer}接口
+ * 继承{@code WebFluxConfigurationSupport} 就不能启用注解.
+ *
+ *
  * Adding this annotation to an {@code @Configuration} class imports the Spring
  * WebFlux configuration from {@link WebFluxConfigurationSupport} that enables
  * use of annotated controllers and functional endpoints.

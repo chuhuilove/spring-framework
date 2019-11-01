@@ -64,6 +64,19 @@ import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
 import org.springframework.web.util.UriTemplateHandler;
 
 /**
+ *
+ *
+ * 从5.0开始,非阻塞,反应式{@code org.springframework.web.reactive.function.client.WebClient}
+ * 提供了{@code RestTemplate}的现代替代方案,并有效支持同步和异步以及流方案.
+ *
+ * {@code RestTemplate}将会被废弃掉,所以,这个东西就不必再研究了.
+ *
+ *
+ *
+ * 执行HTTP请求的同步客户端,将一些底层的HTTP客户端,如JDK的{@code HttpURLConnection},
+ * apache的HttpComponents等进一步封装,以暴露出简单易用的API
+ *
+ *
  * Synchronous client to perform HTTP requests, exposing a simple, template
  * method API over underlying HTTP client libraries such as the JDK
  * {@code HttpURLConnection}, Apache HttpComponents, and others.
@@ -71,6 +84,8 @@ import org.springframework.web.util.UriTemplateHandler;
  * <p>The RestTemplate offers templates for common scenarios by HTTP method, in
  * addition to the generalized {@code exchange} and {@code execute} methods that
  * support of less frequent cases.
+ *
+
  *
  * <p><strong>NOTE:</strong> As of 5.0, the non-blocking, reactive
  * {@code org.springframework.web.reactive.client.WebClient} offers a

@@ -197,6 +197,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * BeanFactoryPostProcessors to apply on refresh.
+	 *
+	 * beanFactory的后置处理器
+	 *
 	 */
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
@@ -291,6 +294,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Set the unique id of this application context.
+	 *
+	 * 设置这个应用上下文的唯一id
 	 * <p>Default is the object id of the context instance, or the name
 	 * of the context bean if the context is itself defined as a bean.
 	 *
@@ -585,7 +590,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			DefaultListableBeanFactory obtainContentFactory = (DefaultListableBeanFactory) beanFactory;
-			logger.debug("refresh第一次调用");
+			logger.debug("refresh invoked: get beanFactory "+this.getClass().getTypeName());
 			getBeanFactoryContent(obtainContentFactory);
 
 			// Prepare the bean factory for use in this context.
@@ -595,7 +600,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			 *
 			 */
 			prepareBeanFactory(beanFactory);
-			logger.debug("refresh第二次调用");
+			logger.debug("refresh invoked:prepareBeanFactory");
 			getBeanFactoryContent(obtainContentFactory);
 
 			try {
@@ -711,7 +716,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		if (singletonObjects.size() > 0) {
 			singletonObjects.forEach((key, value) -> logger.trace(key + "---->" + value.toString()));
 		} else {
-			System.err.println("啥都没有呢");
+			System.err.println("no something");
 		}
 
 
@@ -847,7 +852,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		/**
 		 * 注册默认环境的bean
-		 *
 		 */
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
@@ -874,7 +878,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Instantiate and invoke all registered BeanFactoryPostProcessor beans,
 	 * respecting explicit order if given.
-	 * <p>Must be called before singleton instantiation.
+	 * <p>必须在单例实例化之前调用.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
@@ -1221,6 +1225,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
+	 *
+	 * 用于销毁此上下文管理的所有bean的模板方法.
+	 * 默认实现是释放所有在这个上下文中被缓存的单例,
+	 *
 	 * Template method for destroying all beans that this context manages.
 	 * The default implementation destroy all cached singletons in this context,
 	 * invoking {@code DisposableBean.destroy()} and/or the specified
@@ -1543,12 +1551,34 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 
 	//---------------------------------------------------------------------
-	// Abstract methods that must be implemented by subclasses
+	// 子类必须实现的抽象方法
 	//---------------------------------------------------------------------
 
 	/**
 	 * Subclasses must implement this method to perform the actual configuration load.
+	 *
+	 * 子类必须实现这个方法来执行实际的配置加载.
+	 * 在进行任何其他初始化工作之前，{@link #refresh()}将调用该方法.
+	 *
 	 * The method is invoked by {@link #refresh()} before any other initialization work.
+	 *
+	 * 子类要么将创建一个新的bean工厂并保存对其的引用,
+	 * 要么返回它持有的单个BeanFactory实例.
+	 * 如果是后者,则在多次刷新上下文的情况下,通常会抛出IllegalStateException.
+	 *
+	 * 这个方法有两个实现
+	 * {@link AbstractRefreshableApplicationContext#refreshBeanFactory()}
+	 * 和{@link GenericApplicationContext#refreshBeanFactory()}
+	 *
+	 * 由于{@code GenericApplicationContext#refreshBeanFactory()}中只设置了上下文的id,
+	 * 所以,研究一下{@link AbstractRefreshableApplicationContext#refreshBeanFactory()}中的实现
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
 	 * <p>A subclass will either create a new bean factory and hold a reference to it,
 	 * or return a single BeanFactory instance that it holds. In the latter case, it will
 	 * usually throw an IllegalStateException if refreshing the context more than once.
@@ -1567,6 +1597,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected abstract void closeBeanFactory();
 
 	/**
+	 * 子类必须返回它们自己的bean工厂.
+	 *
 	 * Subclasses must return their internal bean factory here. They should implement the
 	 * lookup efficiently, so that it can be called repeatedly without a performance penalty.
 	 * <p>Note: Subclasses should check whether the context is still active before

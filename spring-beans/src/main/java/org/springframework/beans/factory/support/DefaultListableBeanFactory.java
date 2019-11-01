@@ -152,6 +152,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Whether to allow re-registration of a different definition with the same name.
+	 * 是否允许用相同的beanName重新注册一个不同的beanDefinition
 	 */
 	private boolean allowBeanDefinitionOverriding = true;
 
@@ -213,6 +214,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Cached array of bean definition names in case of frozen configuration.
+	 * 所有的benName,存储在这里
+	 * 通过{@link #getBeanDefinitionNames()}来获取
 	 */
 	@Nullable
 	private volatile String[] frozenBeanDefinitionNames;
@@ -265,9 +268,40 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
+	 * 设置是否应该通过注册具有相同名称的其他定义(自动替换前者)来覆盖Bean定义.
+	 * 如果没有,则抛出异常.这也适用于覆盖别名.
+	 *
+	 * <strong>适用场景,动态注册bean</>
+	 *
+	 * 两个类 com.chuhui.service.IndexService和com.chuhui.service.login.IndexService
+	 * 这个两个类中有相同的方法{@code getIndexService}
+	 * 用来打印类的全限定名
+	 *
+	 *
+	 * 	 AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext();
+	 *   context.register(AppConfig.class); //com.chuhui.service.IndexService被扫描进来
+	 *   context.refresh();
+	 *
+	 *
+	 *  Object indexService = context.getBean("indexService");
+	 *  Method indesServiceMethod = ReflectionUtils.findMethod(indexService.getClass(), "getIndexService");
+	 *  indesServiceMethod.invoke(indexService);// 打印的是com.chuhui.service.IndexService
+	 *
+	 *  // 动态注册com.chuhui.service.login.IndexService
+	 *  context.register(IndexService.class);
+	 *
+	 *  indexService = context.getBean("indexService");
+	 *  indesServiceMethod = ReflectionUtils.findMethod(indexService.getClass(), "getIndexService");
+	 *  indesServiceMethod.invoke(indexService); // 打印的是com.chuhui.service.login.IndexService
+	 *
+	 *   如果将{@link #allowBeanDefinitionOverriding}设置为{@code false},则在动态注册时候,会出错
+	 *   如.
+	 *
+	 *
 	 * Set whether it should be allowed to override bean definitions by registering
 	 * a different definition with the same name, automatically replacing the former.
 	 * If not, an exception will be thrown. This also applies to overriding aliases.
+	 *
 	 * <p>Default is "true".
 	 *
 	 * @see #registerBeanDefinition
@@ -806,6 +840,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				new BeanDefinitionHolder(mbd, beanName, getAliases(beanDefinitionName)), descriptor);
 	}
 
+	/**
+	 * 通过beanName获取beanDefinition
+	 * @param beanName name of the bean to find a definition for
+	 * @return
+	 * @throws NoSuchBeanDefinitionException
+	 */
 	@Override
 	public BeanDefinition getBeanDefinition(String beanName) throws NoSuchBeanDefinitionException {
 		BeanDefinition bd = this.beanDefinitionMap.get(beanName);
@@ -945,6 +985,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 			/**
 			 * 1. 判断是否允许覆盖
+			 * 请看{@link #setAllowBeanDefinitionOverriding(boolean)}的注释
 			 */
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);

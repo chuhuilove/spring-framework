@@ -84,6 +84,13 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 /**
+ * 解析被{@link Configuration}注解的类定义.
+ *
+ * 解析Configuration类定义，填充ConfigurationClass对象的集合
+ *
+ * 解析单个Configuration类可能会导致任意数量的ConfigurationClass对象,
+ * 因为一个Configuration类可能会使用{@link Import}注解导入另一个ConfigurationClass
+ *
  * Parses a {@link Configuration} class definition, populating a collection of
  * {@link ConfigurationClass} objects (parsing a single Configuration class may result in
  * any number of ConfigurationClass objects because one Configuration class may import
@@ -96,6 +103,8 @@ import org.springframework.util.StringUtils;
  *
  * <p>This ASM-based implementation avoids reflection and eager class loading in order to
  * interoperate effectively with lazy class loading in a Spring ApplicationContext.
+ * 这种基于ASM的实现避免了反射和立即加载类,
+ * 以便在Spring ApplicationContext中有效地与懒加载类进行互操作.
  *
  * @author Chris Beams
  * @author Juergen Hoeller
@@ -299,9 +308,15 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @Import annotations
+		/**
+		 * 处理@Import注解
+		 */
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
+		/**
+		 * 处理@ImportResource注解
+		 */
 		AnnotationAttributes importResource =
 				AnnotationConfigUtils.attributesFor(sourceClass.getMetadata(), ImportResource.class);
 		if (importResource != null) {

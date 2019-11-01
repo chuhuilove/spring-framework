@@ -70,7 +70,9 @@ import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 import org.springframework.web.server.i18n.LocaleContextResolver;
 
 /**
- * The main class for Spring WebFlux configuration.
+ *
+ * Spring WebFlux主要配置类
+ *
  *
  * <p>Import directly or extend and override protected methods to customize.
  *
@@ -162,6 +164,8 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 * Override to configure how the requested content type is resolved.
 	 */
 	protected void configureContentTypeResolver(RequestedContentTypeResolverBuilder builder) {
+
+		// 重写
 	}
 
 	/**
@@ -182,6 +186,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 * @see CorsRegistry
 	 */
 	protected void addCorsMappings(CorsRegistry registry) {
+		// 重写
 	}
 
 	/**
@@ -200,6 +205,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 * Override to configure path matching options.
 	 */
 	public void configurePathMatching(PathMatchConfigurer configurer) {
+		// 重写
 	}
 
 	@Bean
@@ -262,6 +268,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 * @see ResourceHandlerRegistry
 	 */
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+		// 重写
 	}
 
 	@Bean
@@ -289,6 +296,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 * Configure resolvers for custom controller method arguments.
 	 */
 	protected void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
+		// 重写
 	}
 
 	/**
@@ -319,6 +327,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 * Override to configure the HTTP message readers and writers to use.
 	 */
 	protected void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
+		// 重写
 	}
 
 	/**
@@ -353,6 +362,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 * @see #webFluxConversionService()
 	 */
 	protected void addFormatters(FormatterRegistry registry) {
+		// 重写
 	}
 
 	/**
@@ -468,6 +478,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 * @see ViewResolverRegistry
 	 */
 	protected void configureViewResolvers(ViewResolverRegistry registry) {
+		// 重写
 	}
 
 

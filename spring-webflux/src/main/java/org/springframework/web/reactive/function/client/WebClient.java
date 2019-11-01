@@ -44,6 +44,9 @@ import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriBuilderFactory;
 
 /**
+ *
+ * 非阻塞,反应式客户端执行HTTP请求,
+ *
  * Non-blocking, reactive client to perform HTTP requests, exposing a fluent,
  * reactive API over underlying HTTP client libraries such as Reactor Netty.
  *

@@ -54,10 +54,19 @@ final class PostProcessorRegistrationDelegate {
 	}
 
 
+	/**
+	 * 调用bean给定beanFactory的后置处理器
+	 * @param beanFactory
+	 * @param beanFactoryPostProcessors
+	 */
 	public static void invokeBeanFactoryPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
+		/**
+		 * 如果有{@link BeanFactoryPostProcessor}则先处理...
+		 *
+		 */
 		Set<String> processedBeans = new HashSet<>();
 
 		if (beanFactory instanceof BeanDefinitionRegistry) {

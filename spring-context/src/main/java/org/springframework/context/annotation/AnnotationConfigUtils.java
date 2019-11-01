@@ -261,7 +261,15 @@ public abstract class AnnotationConfigUtils {
 		processCommonDefinitionAnnotations(abd, abd.getMetadata());
 	}
 
+	/**
+	 * 处理一般性注解
+	 * @param abd
+	 * @param metadata
+	 */
 	static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata) {
+		/**
+		 * 判断bd是否拥有{@link Lazy}注解
+		 */
 		AnnotationAttributes lazy = attributesFor(metadata, Lazy.class);
 		if (lazy != null) {
 			abd.setLazyInit(lazy.getBoolean("value"));
@@ -273,9 +281,15 @@ public abstract class AnnotationConfigUtils {
 			}
 		}
 
+		/**
+		 * 判断bd是否拥有{@link Primary}注解
+		 */
 		if (metadata.isAnnotated(Primary.class.getName())) {
 			abd.setPrimary(true);
 		}
+		/**
+		 * 判断bd是否拥有{@link DependsOn}注解
+		 */
 		AnnotationAttributes dependsOn = attributesFor(metadata, DependsOn.class);
 		if (dependsOn != null) {
 			abd.setDependsOn(dependsOn.getStringArray("value"));
