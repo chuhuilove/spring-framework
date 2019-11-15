@@ -28,10 +28,25 @@ import org.springframework.stereotype.Controller;
 /**
  * A convenience annotation that is itself annotated with
  * {@link Controller @Controller} and {@link ResponseBody @ResponseBody}.
+ *
+ *
+ * 一个方便的注解,它本身使用{@link Controller @Controller}和{@link ResponseBody @ResponseBody}进行注解.
+ *
+ * 带有此注解的类型被视为控制器,其中{@link RequestMapping @RequestMapping}方法默认情况下采用{@link ResponseBody @ResponseBody}语义.
+ *
+ *
  * <p>
  * Types that carry this annotation are treated as controllers where
  * {@link RequestMapping @RequestMapping} methods assume
  * {@link ResponseBody @ResponseBody} semantics by default.
+ *
+ *
+ * 注意:
+ *
+ * 如果配置了适当的{@code HandlerMapping}-{@code HandlerAdapter}对,
+ * {@code RequestMappingHandlerMapping}-{@code RequestMappingHandlerAdapter},
+ * {@code RequestMappingHandlerAdapter}将被处理,这是MVC Java配置和MVC名称空间中的默认值.
+ *
  *
  * <p><b>NOTE:</b> {@code @RestController} is processed if an appropriate
  * {@code HandlerMapping}-{@code HandlerAdapter} pair is configured such as the

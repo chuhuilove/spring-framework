@@ -19,6 +19,11 @@ package org.springframework.web.socket;
 /**
  * A handler for WebSocket messages and lifecycle events.
  *
+ * websocket消息和生命周期时间的处理器
+ *
+ *
+ *
+ *
  * <p>Implementations of this interface are encouraged to handle exceptions locally where
  * it makes sense or alternatively let the exception bubble up in which case by default
  * the exception is logged and the session closed with
@@ -37,6 +42,10 @@ public interface WebSocketHandler {
 	/**
 	 * Invoked after WebSocket negotiation has succeeded and the WebSocket connection is
 	 * opened and ready for use.
+	 *
+	 * 在WebSocket协商成功且WebSocket连接已打开并可以使用后调用.
+	 *
+	 *
 	 * @throws Exception this method can handle or propagate exceptions; see class-level
 	 * Javadoc for details.
 	 */
