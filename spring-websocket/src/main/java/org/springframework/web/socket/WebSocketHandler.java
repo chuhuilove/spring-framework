@@ -53,6 +53,9 @@ public interface WebSocketHandler {
 
 	/**
 	 * Invoked when a new WebSocket message arrives.
+	 *
+	 * 当一个新的消息达到时调用
+	 *
 	 * @throws Exception this method can handle or propagate exceptions; see class-level
 	 * Javadoc for details.
 	 */

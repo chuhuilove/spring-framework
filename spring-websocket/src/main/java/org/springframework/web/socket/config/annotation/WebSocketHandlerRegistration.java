@@ -21,7 +21,7 @@ import org.springframework.web.socket.server.HandshakeHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
 /**
- * Provides methods for configuring a WebSocket handler.
+ * 为配置websocket的handler提供方法.
  *
  * @author Rossen Stoyanchev
  * @since 4.0
@@ -65,6 +65,7 @@ public interface WebSocketHandlerRegistration {
 
 	/**
 	 * Enable SockJS fallback options.
+	 * 启用SockJs选项
 	 */
 	SockJsServiceRegistration withSockJS();
 

@@ -28,6 +28,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 
 /**
+ *
+ * websocket session的接口. 提供了发送的接口
+ *
  * A WebSocket session abstraction. Allows sending messages over a WebSocket
  * connection and closing it.
  *
