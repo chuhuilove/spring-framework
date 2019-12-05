@@ -431,7 +431,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Publish the given event to all listeners.
+	 * 将给定的事件发布给所有侦听器.
 	 *
 	 * @param event     the event to publish (may be an {@link ApplicationEvent}
 	 *                  or a payload object to be turned into a {@link PayloadApplicationEvent})

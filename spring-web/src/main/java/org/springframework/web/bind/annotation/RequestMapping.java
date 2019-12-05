@@ -28,11 +28,10 @@ import org.springframework.core.annotation.AliasFor;
  * Annotation for mapping web requests onto methods in request-handling classes
  * with flexible method signatures.
  *
- * <p>Both Spring MVC and Spring WebFlux support this annotation through a
- * {@code RequestMappingHandlerMapping} and {@code RequestMappingHandlerAdapter}
- * in their respective modules and package structure. For the exact list of
- * supported handler method arguments and return types in each, please use the
- * reference documentation links below:
+ * <p>
+ * Spring MVC和Spring WebFlux都通过各自模块和包结构中的{@code RequestMappingHandlerMapping}
+ * 和{@code RequestMappingHandlerAdapter}支持此注解.
+ * 有关每个中支持的处理程序方法参数和返回类型的确切列表,请使用下面的参考文档链接:
  * <ul>
  * <li>Spring MVC
  * <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-arguments">Method Arguments</a>
@@ -46,11 +45,10 @@ import org.springframework.core.annotation.AliasFor;
  * </li>
  * </ul>
  *
- * <p><strong>Note:</strong> This annotation can be used both at the class and
- * at the method level. In most cases, at the method level applications will
- * prefer to use one of the HTTP method specific variants
+ * <p><strong>Note:</strong>这个注解既可以被用于类级别,也可以被用于方法级别.
+ * 在大多数情况下,在方法级别,应用程序倾向于使用特定于HTTP方法的下列变体之一:
  * {@link GetMapping @GetMapping}, {@link PostMapping @PostMapping},
- * {@link PutMapping @PutMapping}, {@link DeleteMapping @DeleteMapping}, or
+ * {@link PutMapping @PutMapping}, {@link DeleteMapping @DeleteMapping},或者
  * {@link PatchMapping @PatchMapping}.</p>
  *
  * <p><b>NOTE:</b> When using controller interfaces (e.g. for AOP proxying),

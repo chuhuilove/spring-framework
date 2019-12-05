@@ -20,8 +20,12 @@ package org.springframework.web.bind.annotation;
  * Java 5 enumeration of HTTP request methods. Intended for use with the
  * {@link RequestMapping#method()} attribute of the {@link RequestMapping} annotation.
  *
- * <p>Note that, by default, {@link org.springframework.web.servlet.DispatcherServlet}
- * supports GET, HEAD, POST, PUT, PATCH and DELETE only. DispatcherServlet will
+ * <p>注意,默认情况下,{@link org.springframework.web.servlet.DispatcherServlet}只
+ * 支持 GET, HEAD, POST, PUT, PATCH and DELETE .
+ * DispatcherServlet将使用默认的HttpServlet行为处理TRACE和OPTIONS,除非明确告知也要分派这些请求类型:
+ * 检出"dispatchOptionsRequest"和"dispatchTraceRequest"属性,并在必要时将其切换为"true".
+ *
+ * DispatcherServlet will
  * process TRACE and OPTIONS with the default HttpServlet behavior unless explicitly
  * told to dispatch those request types as well: Check out the "dispatchOptionsRequest"
  * and "dispatchTraceRequest" properties, switching them to "true" if necessary.
