@@ -28,11 +28,17 @@ import org.springframework.lang.Nullable;
 
 /**
  * SPI interface to be implemented by most if not all application contexts.
+ * 大多数应用程序上下文(如果不是全部的话)将实现SPI接口.
+ * 除了{@link org.springframework.context.ApplicationContext}接口中的应用程序上下文客户端方法之外,
+ * 还提供了配置应用程序上下文的功能.
  * Provides facilities to configure an application context in addition
  * to the application context client methods in the
  * {@link org.springframework.context.ApplicationContext} interface.
  *
- * <p>Configuration and lifecycle methods are encapsulated here to avoid
+ * <p>
+ *  这里封装了配置和生命周期方法,避免将这个代码暴露到客户端,既不想被使用者看到.
+ *  目前的方法只能在启动和关闭代码中使用.
+ *  Configuration and lifecycle methods are encapsulated here to avoid
  * making them obvious to ApplicationContext client code. The present
  * methods should only be used by startup and shutdown code.
  *
@@ -52,8 +58,8 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	String CONFIG_LOCATION_DELIMITERS = ",; \t\n";
 
 	/**
-	 * Name of the ConversionService bean in the factory.
-	 * If none is supplied, default conversion rules apply.
+	 * bean工厂中ConversionService 实例的名称.
+	 * 如果没有提供,则应用默认转换规则.
 	 * @since 3.0
 	 * @see org.springframework.core.convert.ConversionService
 	 */

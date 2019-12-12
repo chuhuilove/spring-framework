@@ -24,30 +24,30 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.lang.Nullable;
 
 /**
+ * 为应用提供配置的中心接口.在应用程序运行时,它是只读的,但是如果实现支持,则可以实现重新加载数据.
+ *
  * Central interface to provide configuration for an application.
  * This is read-only while the application is running, but may be
  * reloaded if the implementation supports this.
  *
- * <p>An ApplicationContext provides:
+ * <p>ApplicationContext提供:
  * <ul>
- * <li>Bean factory methods for accessing application components.
- * Inherited from {@link org.springframework.beans.factory.ListableBeanFactory}.
- * <li>The ability to load file resources in a generic fashion.
- * Inherited from the {@link org.springframework.core.io.ResourceLoader} interface.
- * <li>The ability to publish events to registered listeners.
- * Inherited from the {@link ApplicationEventPublisher} interface.
- * <li>The ability to resolve messages, supporting internationalization.
- * Inherited from the {@link MessageSource} interface.
- * <li>Inheritance from a parent context. Definitions in a descendant context
- * will always take priority. This means, for example, that a single parent
- * context can be used by an entire web application, while each servlet has
- * its own child context that is independent of that of any other servlet.
+ * <li>用于访问应用程序组件的Bean工厂方法.
+ * 从{@link org.springframework.beans.factory.ListableBeanFactory}继承而来.
+ * <li>以通用方式加载文件资源的能力.
+ * 从{@link org.springframework.core.io.ResourceLoader}继承而来.
+ * <li>将事件发布到注册监听器的能力.
+ * 从{@link ApplicationEventPublisher}接口继承而来.
+ * <li>解析消息,支持国际化的能力.
+ * 从{@link MessageSource}接口继承而来.
+ * <li>从父上下文继承.在后代上下文中的定义将始终优先.
+ * 例如,这意味着单个父上下文可以被整个web应用程序使用,而每个servlet都有自己独立于任何其他servlet的子上下文.
  * </ul>
  *
- * <p>In addition to standard {@link org.springframework.beans.factory.BeanFactory}
- * lifecycle capabilities, ApplicationContext implementations detect and invoke
- * {@link ApplicationContextAware} beans as well as {@link ResourceLoaderAware},
- * {@link ApplicationEventPublisherAware} and {@link MessageSourceAware} beans.
+ * <p>
+ * 除了标准的{@link org.springframework.beans.factory.BeanFactory}生命周期功能外,
+ * ApplicationContext实现还检测和调用{@link ApplicationContextAware} bean以及{@link ResourceLoaderAware},
+ * {@link ApplicationEventPublisherAware}和{@link MessageSourceAware} beans bean.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

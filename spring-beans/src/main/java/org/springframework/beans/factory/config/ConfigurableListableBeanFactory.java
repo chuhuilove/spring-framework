@@ -21,14 +21,22 @@ import java.util.Iterator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.lang.Nullable;
 
 /**
  * Configuration interface to be implemented by most listable bean factories.
- * In addition to {@link ConfigurableBeanFactory}, it provides facilities to
- * analyze and modify bean definitions, and to pre-instantiate singletons.
  *
- * <p>This subinterface of {@link org.springframework.beans.factory.BeanFactory}
+ * 除了{@link ConfigurableBeanFactory},它还提供了用于分析和修改Bean定义以及预实例化单例的工具.
+ * 这玩意有一个具体的实现类: {@link DefaultListableBeanFactory}.
+ *
+ *
+ * <p>
+ * {@link org.springframework.beans.factory.BeanFactory}的这个子接口并不打算在提供给程序员使用.
+ * 对于典型的用例,还是使用{@link org.springframework.beans.factory.BeanFactory}
+ * 或{@link org.springframework.beans.factory.ListableBeanFactory}.
+ * 即使需要访问bean工厂配置方法,该接口也仅允许框架内部即插即用.
+ * This subinterface of {@link org.springframework.beans.factory.BeanFactory}
  * is not meant to be used in normal application code: Stick to
  * {@link org.springframework.beans.factory.BeanFactory} or
  * {@link org.springframework.beans.factory.ListableBeanFactory} for typical

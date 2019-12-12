@@ -84,25 +84,32 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * <p>
  * Spring中{@link ConfigurableListableBeanFactory}和{@link BeanDefinitionRegistry}接口的默认实现:
- * 基于bean定义元数据,可以通过后置处理器扩展的成熟的bean工厂
- * <p>
- * <p>
+ * 基于bean定义元数据,可以通过后置处理器扩展的成熟的bean工厂.
  * Spring's default implementation of the {@link ConfigurableListableBeanFactory}
  * and {@link BeanDefinitionRegistry} interfaces: a full-fledged bean factory
  * based on bean definition metadata, extensible through post-processors.
  *
- * <p>Typical usage is registering all bean definitions first (possibly read
+ * <p>
+ * 典型的用法是在访问bean之前首先注册所有bean定义(可能从bean定义文件中读取).
+ * 因此,在本地Bean定义表中,通过名称查找Bean是一种廉价的操作,它对预先解析的Bean定义元数据对象进行操作.
+ * Typical usage is registering all bean definitions first (possibly read
  * from a bean definition file), before accessing beans. Bean lookup by name
  * is therefore an inexpensive operation in a local bean definition table,
  * operating on pre-resolved bean definition metadata objects.
- *
- * <p>Note that readers for specific bean definition formats are typically
+ * <p>
+ * 注意,特定bean定义格式的读取器通常是单独实现的,而不是作为bean工厂的子类:
+ * 示例诸如{@link PropertiesBeanDefinitionReader}和{@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}.
+ * Note that readers for specific bean definition formats are typically
  * implemented separately rather than as bean factory subclasses:
  * see for example {@link PropertiesBeanDefinitionReader} and
  * {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}.
  *
- * <p>For an alternative implementation of the
+ * <p>
+ * 要获得{@link org.springframework.beans.factory.ListableBeanFactory}接口的另一种实现,
+ * 请查看{@link StaticListableBeanFactory},它管理现有的bean实例,而不是基于bean定义创建新实例.
+ * For an alternative implementation of the
  * {@link org.springframework.beans.factory.ListableBeanFactory} interface,
  * have a look at {@link StaticListableBeanFactory}, which manages existing
  * bean instances rather than creating new ones based on bean definitions.
@@ -125,6 +132,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
 	@Nullable
 
+	/**
+	 * Java注入提供类
+	 */
 	private static Class<?> javaxInjectProviderClass;
 
 	static {
@@ -894,6 +904,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return (this.configurationFrozen || super.isBeanEligibleForMetadataCaching(beanName));
 	}
 
+
 	@Override
 	public void preInstantiateSingletons() throws BeansException {
 		if (logger.isTraceEnabled()) {
@@ -904,10 +915,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		// While this may not be part of the regular factory bootstrap, it does otherwise work fine.
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
 
-		// Trigger initialization of all non-lazy singleton beans...
+		// 触发所有非懒加载的单例bean进行初始化
 		for (String beanName : beanNames) {
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+			/**
+			 * 如果bd不是抽象的,bd是单例的,bd不是懒加载
+			 */
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
+				// 该bd是否是FactoryBean
 				if (isFactoryBean(beanName)) {
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
 					if (bean instanceof FactoryBean) {

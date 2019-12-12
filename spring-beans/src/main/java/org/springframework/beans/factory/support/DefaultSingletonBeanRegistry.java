@@ -83,10 +83,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * contex.getBaen(benaName).第一次调用这个函数,因为这个map中没有此对象,所以需要创建一次
 	 * 而第二次调用这个函数,则直接从这个map中获取,而不是再重新创建
 	 * 这就是.单例的实现
-	 *
-	 *
-	 *
-	 *
+	 * 这里存储的是普通的单例bean的实例
 	 *
 	 * */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
@@ -96,16 +93,16 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 
-	/** Cache of singleton factories: bean name to ObjectFactory. */
+	/** 单例工厂的缓存: bean name to ObjectFactory. */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
-	/** Cache of early singleton objects: bean name to bean instance. */
+	/** 早期单例对象的缓存: bean name to bean instance. */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
 	/** Set of registered singletons, containing the bean names in registration order. */
 	private final Set<String> registeredSingletons = new LinkedHashSet<>(256);
 
-	/** Names of beans that are currently in creation. */
+	/** 当前正在创建的bean的名称. */
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 
@@ -357,7 +354,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
-	 * Return whether the specified singleton bean is currently in creation
+	 * 返回当前是否正在创建指定的单例bean
 	 * (within the entire factory).
 	 * @param beanName the name of the bean
 	 */

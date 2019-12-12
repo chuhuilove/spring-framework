@@ -173,6 +173,7 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 
 
 	/**
+	 * 两个RequestMappingInfo合并
 	 * Combine "this" request mapping info (i.e. the current instance) with another request mapping info instance.
 	 * <p>Example: combine type- and method-level request mappings.
 	 * @return a new request mapping info instance; never {@code null}
@@ -297,6 +298,11 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 		return 0;
 	}
 
+	/**
+	 * 正是这里写的一堆比较代码,才能唯一确定,url是唯一的
+	 * @param other
+	 * @return
+	 */
 	@Override
 	public boolean equals(Object other) {
 		if (this == other) {

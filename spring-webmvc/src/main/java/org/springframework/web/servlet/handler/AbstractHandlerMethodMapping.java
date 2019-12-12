@@ -271,6 +271,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		if (handlerType != null) {
 			Class<?> userType = ClassUtils.getUserClass(handlerType);
+			// 提取出所有Method+RequestMappingInfo
 			Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
 					(MethodIntrospector.MetadataLookup<T>) method -> {
 						try {
@@ -284,6 +285,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			if (logger.isTraceEnabled()) {
 				logger.trace(formatMappings(userType, methods));
 			}
+			// 注册
 			methods.forEach((method, mapping) -> {
 				Method invocableMethod = AopUtils.selectInvocableMethod(method, userType);
 				registerHandlerMethod(handler, invocableMethod, mapping);
@@ -536,6 +538,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		private final Map<T, MappingRegistration<T>> registry = new HashMap<>();
 
+		// 这里,才是存储url的地方
 		private final Map<T, HandlerMethod> mappingLookup = new LinkedHashMap<>();
 
 		private final MultiValueMap<String, T> urlLookup = new LinkedMultiValueMap<>();
@@ -547,6 +550,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
 		/**
+		 * //返回所有加了RequestMapping注解的方法和类
 		 * Return all mappings and handler methods. Not thread-safe.
 		 * @see #acquireReadLock()
 		 */

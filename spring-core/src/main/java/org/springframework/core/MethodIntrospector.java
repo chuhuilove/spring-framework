@@ -32,7 +32,10 @@ import org.springframework.util.ReflectionUtils;
  * including interfaces and parent classes while also dealing with parameterized methods
  * as well as common scenarios encountered with interface and class-based proxies.
  *
- * <p>Typically, but not necessarily, used for finding annotated handler methods.
+ * 定义用于搜索与元数据相关的方法的详尽算法,包括接口和父类,同时还处理参数化方法以及基于接口和基于类的代理遇到的常见情况.
+ *
+ * <p>通常(但不一定)用于查找带注解的处理程序方法.
+ * Typically, but not necessarily, used for finding annotated handler methods.
  *
  * @author Juergen Hoeller
  * @author Rossen Stoyanchev
@@ -141,6 +144,7 @@ public final class MethodIntrospector {
 
 	/**
 	 * A callback interface for metadata lookup on a given method.
+	 * 用于在给定方法上查找元数据的回调接口.
 	 * @param <T> the type of metadata returned
 	 */
 	@FunctionalInterface

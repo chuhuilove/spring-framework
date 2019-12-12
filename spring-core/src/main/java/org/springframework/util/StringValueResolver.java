@@ -19,7 +19,7 @@ package org.springframework.util;
 import org.springframework.lang.Nullable;
 
 /**
- * Simple strategy interface for resolving a String value.
+ * 用于解析字符串值的简单策略接口.
  * Used by {@link org.springframework.beans.factory.config.ConfigurableBeanFactory}.
  *
  * @author Juergen Hoeller

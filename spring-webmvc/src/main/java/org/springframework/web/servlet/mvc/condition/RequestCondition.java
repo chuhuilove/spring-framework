@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.lang.Nullable;
 
 /**
- * Contract for request mapping conditions.
+ * 请求映射条件的约定.
  *
  * <p>Request conditions can be combined via {@link #combine(Object)}, matched to
  * a request via {@link #getMatchingCondition(HttpServletRequest)}, and compared

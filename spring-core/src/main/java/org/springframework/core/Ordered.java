@@ -17,17 +17,14 @@
 package org.springframework.core;
 
 /**
- * {@code Ordered} is an interface that can be implemented by objects that
- * should be <em>orderable</em>, for example in a {@code Collection}.
+ * {@code Ordered}是一个接口,它可以由应该<em>orderable</em>的对象(例如集合中的对象)来实现.
  *
- * <p>The actual {@link #getOrder() order} can be interpreted as prioritization,
- * with the first object (with the lowest order value) having the highest
- * priority.
+ * <p>
+ * 实际的{@link #getOrder() order}可以被解释为优先级,第一个对象(具有最低的order值)具有最高的优先级.
  *
- * <p>Note that there is also a <em>priority</em> marker for this interface:
- * {@link PriorityOrdered}. Order values expressed by {@code PriorityOrdered}
- * objects always apply before same order values expressed by <em>plain</em>
- * {@link Ordered} objects.
+ * <p>注意,此接口还有一个<em>优先级</em>标记:{@link PriorityOrdered}
+ *
+ * 由{@code PriorityOrdered}对象表示的Order值始终在由<em>普通</em>{@link Ordered}对象表示的相同Order值之前应用.
  *
  * <p>Consult the Javadoc for {@link OrderComparator} for details on the
  * sort semantics for non-ordered objects.
@@ -56,12 +53,10 @@ public interface Ordered {
 
 
 	/**
-	 * Get the order value of this object.
-	 * <p>Higher values are interpreted as lower priority. As a consequence,
-	 * the object with the lowest value has the highest priority (somewhat
-	 * analogous to Servlet {@code load-on-startup} values).
-	 * <p>Same order values will result in arbitrary sort positions for the
-	 * affected objects.
+	 * 获得这个对象的order值.
+	 * <p>值越大,表示优先级越低.因此,最小的值将拥有最高的优先级.(有点类似Servlet {@code load-on-startup}的值)
+	 * <p>
+	 * 相同的order值,将导致受影响的对象任意排序.
 	 * @return the order value
 	 * @see #HIGHEST_PRECEDENCE
 	 * @see #LOWEST_PRECEDENCE
