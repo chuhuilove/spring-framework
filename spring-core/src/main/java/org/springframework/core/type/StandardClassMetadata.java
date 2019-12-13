@@ -32,6 +32,9 @@ import org.springframework.util.StringUtils;
  */
 public class StandardClassMetadata implements ClassMetadata {
 
+	/**
+	 * 需要内省的类
+	 */
 	private final Class<?> introspectedClass;
 
 

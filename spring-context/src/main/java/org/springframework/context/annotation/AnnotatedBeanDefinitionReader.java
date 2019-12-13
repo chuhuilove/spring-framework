@@ -71,8 +71,6 @@ public class AnnotatedBeanDefinitionReader {
 	 * so {@link AnnotationConfigApplicationContext}就是{@link BeanDefinition}的注册器,用注册器来初始化{@link BeanDefinition}的读取器
 	 *
 	 *
-	 *
-	 *
 	 * Create a new {@code AnnotatedBeanDefinitionReader} for the given registry.
 	 * If the registry is {@link EnvironmentCapable}, e.g. is an {@code ApplicationContext},
 	 * the {@link Environment} will be inherited, otherwise a new
@@ -140,11 +138,11 @@ public class AnnotatedBeanDefinitionReader {
 
 
 	/**
-	 * Register one or more annotated classes to be processed.
-	 * <p>Calls to {@code register} are idempotent; adding the same
-	 * annotated class more than once has no additional effect.
-	 * @param annotatedClasses one or more annotated classes,
-	 * e.g. {@link Configuration @Configuration} classes
+	 * 注册一个或多个要处理的组件类.
+	 * <p>调用{@code register}是幂等的;多次添加相同的组件类不会产生额外的效果.
+	 * 这个函数在spring-boot的{@code BeanDefinitionLoader#load(Class<?> source)}被调用.
+	 * 传参是一个被添加了{@code @SpringBootApplication}注解的类.
+	 * @param annotatedClasses 一个或多个组件类,例如{@link Configuration @Configuration}类
 	 */
 	public void register(Class<?>... annotatedClasses) {
 		for (Class<?> annotatedClass : annotatedClasses) {

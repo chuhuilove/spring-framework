@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
  * implementations in order to expose their singleton management facility
  * in a uniform manner.
  *
- * <p>The {@link ConfigurableBeanFactory} interface extends this interface.
+ * <p>{@link ConfigurableBeanFactory} 接口扩展了这个接口.
  *
  * @author Juergen Hoeller
  * @since 2.0
@@ -35,6 +35,8 @@ import org.springframework.lang.Nullable;
 public interface SingletonBeanRegistry {
 
 	/**
+	 * 将给定的单例对象注册到bean工厂中.beanName是该单例对象的beanName
+	 *
 	 * Register the given existing object as singleton in the bean registry,
 	 * under the given bean name.
 	 * <p>The given instance is supposed to be fully initialized; the registry

@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.annotation;
 
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.MethodMetadata;
@@ -47,15 +48,26 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 
 	private final AnnotationMetadata metadata;
 
+	/**
+	 * 用来存储类上所有拥有的注解
+	 */
 	@Nullable
 	private MethodMetadata factoryMethodMetadata;
 
 
 	/**
-	 * Create a new AnnotatedGenericBeanDefinition for the given bean class.
+	 * 用给定的bean类创建一个新的AnnotatedGenericBeanDefinition.
 	 * @param beanClass the loaded bean class
 	 */
 	public AnnotatedGenericBeanDefinition(Class<?> beanClass) {
+
+		/**
+		 * 由于继承的关系,先调用了{@link  AbstractBeanDefinition#AbstractBeanDefinition()}的空构造函数
+		 * 调用了{@code GenericBeanDefinition}的空构造函数
+		 * 只设置了两个值{@link #constructorArgumentValues}和{@link #propertyValues}
+		 * 但是都设置为{@code null}
+		 */
+
 		setBeanClass(beanClass);
 		this.metadata = new StandardAnnotationMetadata(beanClass, true);
 	}

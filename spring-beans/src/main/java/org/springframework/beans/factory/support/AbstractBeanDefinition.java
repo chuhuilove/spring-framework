@@ -137,6 +137,10 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	public static final String INFER_METHOD = "(inferred)";
 
 
+	/**
+	 * 这个是bean的原始类型.
+	 * 在创建{@code AnnotatedGenericBeanDefinition}的时候AnnotatedGenericBeanDefinition的构造函数中调用了{@link #setBeanClass(Class)};
+	 */
 	@Nullable
 	private volatile Object beanClass;
 
@@ -804,7 +808,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	}
 
 	/**
-	 * Specify constructor argument values for this bean.
+	 * 指定这个bean的构造函数参数值.
 	 */
 	public void setConstructorArgumentValues(ConstructorArgumentValues constructorArgumentValues) {
 		this.constructorArgumentValues = constructorArgumentValues;
@@ -831,6 +835,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	/**
 	 * Specify property values for this bean, if any.
+	 * 如果有的话,指定这个bean的属性值.
 	 */
 	public void setPropertyValues(MutablePropertyValues propertyValues) {
 		this.propertyValues = propertyValues;

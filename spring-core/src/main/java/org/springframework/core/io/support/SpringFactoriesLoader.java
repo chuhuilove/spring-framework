@@ -41,18 +41,17 @@ import org.springframework.util.StringUtils;
 
 /**
  * General purpose factory loading mechanism for internal use within the framework.
+ * 框架内部使用的通用工厂加载机制.
  *
- * <p>{@code SpringFactoriesLoader} {@linkplain #loadFactories loads} and instantiates
- * factories of a given type from {@value #FACTORIES_RESOURCE_LOCATION} files which
- * may be present in multiple JAR files in the classpath. The {@code spring.factories}
- * file must be in {@link Properties} format, where the key is the fully qualified
- * name of the interface or abstract class, and the value is a comma-separated list of
- * implementation class names. For example:
+ * <p>
+ * {@code SpringFactoriesLoader} {@linkplain #loadFactories loads}{@value #FACTORIES_RESOURCE_LOCATION}文件中加载并实例化给定类型的工厂,
+ * 这些文件可能存在于类路径中的多个JAR文件中.
+ * {@code spring.factories}文件必须采用{@link Properties}格式,其中key是接口或抽象类的完全限定名称,
+ * 而值是用逗号分隔的实现类名称列表.比如:
  *
  * <pre class="code">example.MyService=example.MyServiceImpl1,example.MyServiceImpl2</pre>
  *
- * where {@code example.MyService} is the name of the interface, and {@code MyServiceImpl1}
- * and {@code MyServiceImpl2} are two implementations.
+ * 其中{@code example.MyService}是接口的名称,而{@code MyServiceImpl1}和{@code MyServiceImpl2} 是两个实现.
  *
  * @author Arjen Poutsma
  * @author Juergen Hoeller
@@ -108,9 +107,9 @@ public final class SpringFactoriesLoader {
 	}
 
 	/**
-	 * Load the fully qualified class names of factory implementations of the
-	 * given type from {@value #FACTORIES_RESOURCE_LOCATION}, using the given
-	 * class loader.
+	 *
+	 * 使用给定的类加载器从{@value #FACTORIES_RESOURCE_LOCATION}中加载给定类型的工厂实现的标准类名.
+	 *
 	 * @param factoryClass the interface or abstract class representing the factory
 	 * @param classLoader the ClassLoader to use for loading resources; can be
 	 * {@code null} to use the default
