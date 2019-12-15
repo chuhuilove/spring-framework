@@ -65,14 +65,21 @@ import org.springframework.util.ClassUtils;
 
 import static org.springframework.context.annotation.AnnotationConfigUtils.CONFIGURATION_BEAN_NAME_GENERATOR;
 
-/**
+ /**
+ *
+  *
+  * 这类用来解析被{@code @Configuration}注解过的类
+  *
+ * {@link BeanFactoryPostProcessor}用于{@link Configuration @Configuration}类的自举处理.
  * {@link BeanFactoryPostProcessor} used for bootstrapping processing of
  * {@link Configuration @Configuration} classes.
  *
- * <p>Registered by default when using {@code <context:annotation-config/>} or
- * {@code <context:component-scan/>}. Otherwise, may be declared manually as
- * with any other BeanFactoryPostProcessor.
+ * <p>使用{@code <context:annotation-config/>}或{@code <context:component-scan/>}时默认注册.
+ * 或者,也可以像其他任何BeanFactoryPostProcessor一样手动声明.
  *
+ * <p>
+ * 这个后处理器是优先级排序的，因为在{@code @Configuration}类中声明的任何{@link Bean}方法都必须在任何其他{@link BeanFactoryPostProcessor}执行之前注册它们相应的Bean定义,
+ * 这一点很重要。
  * <p>This post processor is priority-ordered as it is important that any
  * {@link Bean} methods declared in {@code @Configuration} classes have
  * their corresponding bean definitions registered before any other
@@ -396,6 +403,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			return;
 		}
 
+		/**
+		 * 如果类没有添加{@link @Configuration}注解,是不会进入下面这个方法的
+		 */
 		ConfigurationClassEnhancer enhancer = new ConfigurationClassEnhancer();
 		for (Map.Entry<String, AbstractBeanDefinition> entry : configBeanDefs.entrySet()) {
 			AbstractBeanDefinition beanDef = entry.getValue();

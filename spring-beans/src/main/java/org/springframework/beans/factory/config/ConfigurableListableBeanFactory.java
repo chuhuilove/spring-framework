@@ -30,7 +30,6 @@ import org.springframework.lang.Nullable;
  * 除了{@link ConfigurableBeanFactory},它还提供了用于分析和修改Bean定义以及预实例化单例的工具.
  * 这玩意有一个具体的实现类: {@link DefaultListableBeanFactory}.
  *
- *
  * <p>
  * {@link org.springframework.beans.factory.BeanFactory}的这个子接口并不打算在提供给程序员使用.
  * 对于典型的用例,还是使用{@link org.springframework.beans.factory.BeanFactory}
@@ -51,6 +50,9 @@ public interface ConfigurableListableBeanFactory
 		extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
 
 	/**
+	 *
+	 * 忽略给定的依赖类型进行自动装配:例如,字符串.默认为无.
+	 *
 	 * Ignore the given dependency type for autowiring:
 	 * for example, String. Default is none.
 	 * @param type the dependency type to ignore
@@ -58,12 +60,12 @@ public interface ConfigurableListableBeanFactory
 	void ignoreDependencyType(Class<?> type);
 
 	/**
-	 * Ignore the given dependency interface for autowiring.
-	 * <p>This will typically be used by application contexts to register
-	 * dependencies that are resolved in other ways, like BeanFactory through
-	 * BeanFactoryAware or ApplicationContext through ApplicationContextAware.
-	 * <p>By default, only the BeanFactoryAware interface is ignored.
-	 * For further types to ignore, invoke this method for each type.
+	 * 忽略给定的依赖接口进行自动装配.
+	 * <p>
+	 * 应用程序上下文通常会使用它来注册以其他方式解决的依赖关系,
+	 * 例如通过BeanFactoryAware的BeanFactory或通过ApplicationContextAware的ApplicationContext.
+	 * <p>
+	 * 默认情况下,仅BeanFactoryAware接口被忽略.要忽略其他类型,请为每种类型调用此方法.
 	 * @param ifc the dependency interface to ignore
 	 * @see org.springframework.beans.factory.BeanFactoryAware
 	 * @see org.springframework.context.ApplicationContextAware

@@ -81,6 +81,8 @@ public class AnnotatedBeanDefinitionReader {
 	 * @see #setEnvironment(Environment)
 	 */
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry) {
+
+
 		this(registry, getOrCreateEnvironment(registry));
 	}
 
@@ -94,10 +96,22 @@ public class AnnotatedBeanDefinitionReader {
 	 * @since 3.1
 	 */
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry, Environment environment) {
+
+		/**
+		 * 创建AnnotatedBeanDefinitionReader对象,向里面注册了
+		 */
+
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		Assert.notNull(environment, "Environment must not be null");
 		this.registry = registry;
 		this.conditionEvaluator = new ConditionEvaluator(registry, environment, null);
+		/**
+		 * 向工厂中注册进四个类
+		 * org.springframework.context.annotation.ConfigurationClassPostProcessor
+		 * org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+		 * org.springframework.context.event.EventListenerMethodProcessor
+		 * org.springframework.context.event.DefaultEventListenerFactory
+		 */
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 	}
 
@@ -303,8 +317,9 @@ public class AnnotatedBeanDefinitionReader {
 
 
 	/**
-	 * Get the Environment from the given registry if possible, otherwise return a new
-	 * StandardEnvironment.
+	 * 如果给定的registry是可用的,则从其中获取Environment
+	 * 否则返回一个StandardEnvironment;
+	 *
 	 */
 	private static Environment getOrCreateEnvironment(BeanDefinitionRegistry registry) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");

@@ -227,7 +227,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private Thread shutdownHook;
 
 	/**
-	 * ResourcePatternResolver used by this context.
+	 * 此上下文使用的ResourcePatternResolver.
 	 */
 	private ResourcePatternResolver resourcePatternResolver;
 
@@ -595,6 +595,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			 * 3. 准备bean工厂以供在此上下文中使用
 			 * 为bean工厂设置类加载器,添加后置处理器等等
 			 *
+			 *
 			 */
 			prepareBeanFactory(beanFactory);
 			logger.debug("refresh invoked:prepareBeanFactory");
@@ -605,7 +606,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				/**
 				 * 4.
 				 * 允许在上下文子类中对bean工厂进行后置处理.
-				 * 该方法在web中有实现...暂时跳过
+				 * 该方法在{@link org.springframework.web.context.support.GenericWebApplicationContext}中,
+				 * 添加了一个{@link org.springframework.web.context.support.ServletContextAwareProcessor}处理器
+				 *
+				 *
 				 */
 				postProcessBeanFactory(beanFactory);
 				logger.debug("refresh第三次调用");
@@ -771,6 +775,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Tell the subclass to refresh the internal bean factory.
+	 * 告诉子类刷新内部的bean工厂
 	 *
 	 * @return the fresh BeanFactory instance
 	 * @see #refreshBeanFactory()
@@ -812,7 +817,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Configure the bean factory with context callbacks.
 		/**
-		 * 为Bean工厂添加后置处理器
+		 * 这是第一次Tina及内置的后置处理器
+		 * 为Bean工厂添加后置处理器ApplicationContextAwareProcessor
 		 * 最典型的一个例子,我们的bean实现{@link ApplicationContextAware}后,需要实现一个{@link ApplicationContextAware#setApplicationContext(ApplicationContext)}方法
 		 * 有没有考虑过,参数中的ApplicationContext是从哪里来的?就是在这个类中实现的
 		 */
@@ -836,7 +842,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
 		/**
-		 * 注册早期的后处理器以将内部bean检测为ApplicationListeners。
+		 * 注册早期的后处理器以将内部bean检测为ApplicationListeners.
+		 * 第二次添加后置处理器
 		 */
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
@@ -1582,11 +1589,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 *
 	 * 由于{@code GenericApplicationContext#refreshBeanFactory()}中只设置了上下文的id,
 	 * 所以,研究一下{@link AbstractRefreshableApplicationContext#refreshBeanFactory()}中的实现
-	 *
-	 *
-	 *
-	 *
-	 *
 	 *
 	 *
 	 * <p>A subclass will either create a new bean factory and hold a reference to it,

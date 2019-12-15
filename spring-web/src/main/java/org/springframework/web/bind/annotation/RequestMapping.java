@@ -76,8 +76,10 @@ public @interface RequestMapping {
 
 	/**
 	 * Assign a name to this mapping.
-	 * <p><b>Supported at the type level as well as at the method level!</b>
-	 * When used on both levels, a combined name is derived by concatenation
+	 *
+	 * 为这个映射分配一个名称
+	 * <p><b>在类型级别和方法级别都受支持!</b>
+	 * 当在两个级别上使用时,组合名称是通过以"#"作为分隔符的串联而派生的.
 	 * with "#" as separator.
 	 * @see org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
 	 * @see org.springframework.web.servlet.handler.HandlerMethodMappingNamingStrategy
@@ -86,10 +88,10 @@ public @interface RequestMapping {
 
 	/**
 	 * The primary mapping expressed by this annotation.
-	 * <p>This is an alias for {@link #path}. For example
-	 * {@code @RequestMapping("/foo")} is equivalent to
-	 * {@code @RequestMapping(path="/foo")}.
-	 * <p><b>Supported at the type level as well as at the method level!</b>
+	 * <p>这是{@link #path}的别名.比如{@code @RequestMapping("/foo")}
+	 * 和{@code @RequestMapping(path="/foo")}是对等的
+	 * <p><b>在类型级别和方法级别都受支持!</b>
+	 * 当在一个类上使用时,所有方法级别的映射都继承这个主映射,从而为特定的处理方法缩小其范围.
 	 * When used at the type level, all method-level mappings inherit
 	 * this primary mapping, narrowing it for a specific handler method.
 	 */
@@ -97,12 +99,17 @@ public @interface RequestMapping {
 	String[] value() default {};
 
 	/**
-	 * The path mapping URIs (e.g. "/myPath.do").
-	 * Ant-style path patterns are also supported (e.g. "/myPath/*.do").
+	 * 路径映射URL,(比如 "/myPath.do").
+	 * 还支持ant样式的路径模式(比如:"/myPath/*.do").
 	 * At the method level, relative paths (e.g. "edit.do") are supported
 	 * within the primary mapping expressed at the type level.
-	 * Path mapping URIs may contain placeholders (e.g. "/${connect}").
-	 * <p><b>Supported at the type level as well as at the method level!</b>
+	 *
+	 * 在方法级别,相关路径(比如:"edit.do")支持和Clasc级别的路径进行组合.
+	 * 比如.在class级别上设置路径为"/order",和方法级别组合后,生成"/order/edit.do"路径
+	 *
+	 * 路径映射uri可能包含占位符(比如:"/${connect}").
+	 *
+	 * <p><b>在class级别和方法级别都支持!</b>
 	 * When used at the type level, all method-level mappings inherit
 	 * this primary mapping, narrowing it for a specific handler method.
 	 * @see org.springframework.web.bind.annotation.ValueConstants#DEFAULT_NONE
@@ -112,7 +119,7 @@ public @interface RequestMapping {
 	String[] path() default {};
 
 	/**
-	 * The HTTP request methods to map to, narrowing the primary mapping:
+	 * HTTP请求方法:
 	 * GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE, TRACE.
 	 * <p><b>Supported at the type level as well as at the method level!</b>
 	 * When used at the type level, all method-level mappings inherit

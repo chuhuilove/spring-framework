@@ -73,10 +73,15 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext() {
 		/**
+		 * 根据{@code AnnotationConfigApplicationContext}的继承体系,无参构造函数中,分别初始化了下面几件事情
+		 *
+		 * 1. {@link org.springframework.core.io.DefaultResourceLoader} 初始化了类加载器{@link #classLoader}
+		 * 2. {@link org.springframework.context.support.AbstractApplicationContext} 初始化了一个ResourcePatternResolver{@link #resourcePatternResolver}
+		 * 3. {@link GenericApplicationContext} 初始化了beanFactory,{@link #beanFactory},这个beanFactory的类型为{@link DefaultListableBeanFactory}
+		 *
 		 * 在调用本构造函数的时候,会先调用父类的构造函数
 		 * 在父类的构造函数中,存在一个{@linkplain beanFactory},默认是{@link DefaultListableBeanFactory}实现
 		 * 一切注册行为,最终都会进入到父类的{@linkplain beanFactory}中
-		 *
 		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);

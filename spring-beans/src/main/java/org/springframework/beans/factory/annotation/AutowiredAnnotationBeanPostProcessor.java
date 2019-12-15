@@ -66,15 +66,21 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link org.springframework.beans.factory.config.BeanPostProcessor} implementation
- * that autowires annotated fields, setter methods and arbitrary config methods.
- * Such members to be injected are detected through a Java 5 annotation: by default,
- * Spring's {@link Autowired @Autowired} and {@link Value @Value} annotations.
  *
- * <p>Also supports JSR-330's {@link javax.inject.Inject @Inject} annotation,
- * if available, as a direct alternative to Spring's own {@code @Autowired}.
+ * {@link org.springframework.beans.factory.config.BeanPostProcessor}实现,这个类可自动注入:
+ * 1. 带注解的字段
+ * 2. setter方法
+ * 3. 任意配置方法.
  *
- * <p>Only one constructor (at max) of any given bean class may declare this annotation
+ * 通过Java 5注解检测要注入的此类成员:默认情况下,注入的是被Spring的{@link Autowired @Autowired}和{@link Value @Value}注解的字段.
+ *
+ * <p>还支持JSR-330的{@link javax.inject.Inject @Inject}注解(如果可用),以替代Spring自己的{@code @Autowired}.
+ *
+ * <p>
+ * 任何给定bean类的构造器（最大）只能使用“ required”参数设置为true来声明此批注，指示在用作Spring bean时要自动装配的构造器。
+ *
+ *
+ *     Only one constructor (at max) of any given bean class may declare this annotation
  * with the 'required' parameter set to {@code true}, indicating <i>the</i> constructor
  * to autowire when used as a Spring bean. If multiple <i>non-required</i> constructors
  * declare the annotation, they will be considered as candidates for autowiring.

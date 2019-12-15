@@ -163,6 +163,7 @@ public abstract class ClassUtils {
 	}
 
 	/**
+	 * 返回要使用的默认类加载器:通常是线程上下文ClassLoader;
 	 * Return the default ClassLoader to use: typically the thread context
 	 * ClassLoader, if available; the ClassLoader that loaded the ClassUtils
 	 * class will be used as fallback.
