@@ -18,12 +18,15 @@ package org.springframework.beans.factory.support;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+
+import java.util.List;
 
 /**
  * 对标准{@link BeanFactoryPostProcessor} SPI的扩展,
- * 允许在常规BeanFactoryPostProcessor检测开始<i>之前</i>注册更多的Bean定义.
- *
- * 特别是,BeanDefinitionRegistryPostProcessor可以注册其他bean定义,这些定义又定义了BeanFactoryPostProcessor实例。
+ * 允许在常规BeanFactoryPostProcessor检测开始<i>之前</i>注册更多的bean定义(BeanDefinition).
+ * 在{@link org.springframework.context.support.PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory, List)}
+ * 中有体现.特别是,BeanDefinitionRegistryPostProcessor可以注册其他bean定义(BeanDefinition),这些定义又定义了BeanFactoryPostProcessor实例.
  *
  * Extension to the standard {@link BeanFactoryPostProcessor} SPI, allowing for
  * the registration of further bean definitions <i>before</i> regular
@@ -38,6 +41,9 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 public interface BeanDefinitionRegistryPostProcessor extends BeanFactoryPostProcessor {
 
 	/**
+	 * 在标准初始化之后,修改应用程序上下文的内部bean定义注册表.
+	 * 所有常规bean定义都将被加载,但尚未实例化任何bean.
+	 * 这允许在下一个post-processing开始之前添加更多的bean定义.
 	 * Modify the application context's internal bean definition registry after its
 	 * standard initialization. All regular bean definitions will have been loaded,
 	 * but no beans will have been instantiated yet. This allows for adding further

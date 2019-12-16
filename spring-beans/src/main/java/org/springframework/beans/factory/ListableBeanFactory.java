@@ -24,6 +24,10 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
 /**
+ *
+ * {@link BeanFactory}接口的扩展将由可以枚举其所有bean实例的bean工厂来实现,而不是按客户端的要求按名称一一尝试进行bean查找.
+ * 预加载其所有bean定义的BeanFactory实现(例如,基于XML的工厂)可以实现此接口.
+ *
  * Extension of the {@link BeanFactory} interface to be implemented by bean factories
  * that can enumerate all their bean instances, rather than attempting bean lookup
  * by name one by one as requested by clients. BeanFactory implementations that
@@ -144,22 +148,35 @@ public interface ListableBeanFactory extends BeanFactory {
 	String[] getBeanNamesForType(@Nullable Class<?> type);
 
 	/**
-	 * Return the names of beans matching the given type (including subclasses),
-	 * judging from either bean definitions or the value of {@code getObjectType}
-	 * in the case of FactoryBeans.
-	 * <p><b>NOTE: This method introspects top-level beans only.</b> It does <i>not</i>
-	 * check nested beans which might match the specified type as well.
-	 * <p>Does consider objects created by FactoryBeans if the "allowEagerInit" flag is set,
+	 *
+	 * 根据bean定义或FactoryBeans中{@code getObjectType}的值判断,返回与给定类型(包括子类)匹配的bean的名称.
+	 *
+	 *
+	 * <p><b>注意:此方法仅内省顶级bean.</b>它<i>不</i>检查可能也与指定类型匹配的嵌套bean.
+	 * <p>
+	 * 如果设置了"allowEagerInit"标志,是否考虑了FactoryBeans创建的对象,这意味着将初始化FactoryBeans.
+	 * 如果FactoryBean创建的对象不匹配,原始的FactoryBean本身将根据类型进行匹配.
+	 * 如果未设置"allowEagerInit”,则仅检查原始FactoryBean(不需要初始化每个FactoryBean).
+	 * Does consider objects created by FactoryBeans if the "allowEagerInit" flag is set,
 	 * which means that FactoryBeans will get initialized. If the object created by the
 	 * FactoryBean doesn't match, the raw FactoryBean itself will be matched against the
 	 * type. If "allowEagerInit" is not set, only raw FactoryBeans will be checked
 	 * (which doesn't require initialization of each FactoryBean).
-	 * <p>Does not consider any hierarchy this factory may participate in.
+	 *
+	 * <p>
+	 * 不考虑该工厂可能加入的任何层次结构.
+	 * 也可以使用BeanFactoryUtils的{@code beanNamesForTypeIncludingAncestors}在父工厂中包含bean.
+	 * Does not consider any hierarchy this factory may participate in.
 	 * Use BeanFactoryUtils' {@code beanNamesForTypeIncludingAncestors}
 	 * to include beans in ancestor factories too.
-	 * <p>Note: Does <i>not</i> ignore singleton beans that have been registered
+	 *
+	 * <p>注意:<i>不</i>要忽略通过bean定义以外的其他方式注册的单例bean.
+	 * Note: Does <i>not</i> ignore singleton beans that have been registered
 	 * by other means than bean definitions.
-	 * <p>Bean names returned by this method should always return bean names <i>in the
+	 *
+	 *
+	 * <p>通过此方法返回的Bean名称应始终尽可能按后端配置中定义的顺序返回Bean名称.
+	 * Bean names returned by this method should always return bean names <i>in the
 	 * order of definition</i> in the backend configuration, as far as possible.
 	 * @param type the class or interface to match, or {@code null} for all bean names
 	 * @param includeNonSingletons whether to include prototype or scoped beans too

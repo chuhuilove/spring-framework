@@ -43,14 +43,14 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Parser for the @{@link ComponentScan} annotation.
+ * 解析带有@{@link ComponentScan}注解的类.
  *
  * @author Chris Beams
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 3.1
  * @see ClassPathBeanDefinitionScanner#scan(String...)
  * @see ComponentScanBeanDefinitionParser
+ * @since 3.1
  */
 class ComponentScanAnnotationParser {
 
@@ -64,7 +64,7 @@ class ComponentScanAnnotationParser {
 
 
 	public ComponentScanAnnotationParser(Environment environment, ResourceLoader resourceLoader,
-			BeanNameGenerator beanNameGenerator, BeanDefinitionRegistry registry) {
+										 BeanNameGenerator beanNameGenerator, BeanDefinitionRegistry registry) {
 
 		this.environment = environment;
 		this.resourceLoader = resourceLoader;
@@ -74,25 +74,39 @@ class ComponentScanAnnotationParser {
 
 
 	public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, final String declaringClass) {
+		/**
+		 * 1. 先获取一个包扫描器
+		 * 因为{@code @ComponentScan}里面会定义需要扫描的路径,因此需要定义一个类扫描器
+		 */
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,
 				componentScan.getBoolean("useDefaultFilters"), this.environment, this.resourceLoader);
-
+		/**
+		 * 2. 做一些扫描之前的工作,获取{@code @ComponentScan}内部数据.
+		 * 2.1 获取命名生产器
+		 */
 		Class<? extends BeanNameGenerator> generatorClass = componentScan.getClass("nameGenerator");
 		boolean useInheritedGenerator = (BeanNameGenerator.class == generatorClass);
 		scanner.setBeanNameGenerator(useInheritedGenerator ? this.beanNameGenerator :
 				BeanUtils.instantiateClass(generatorClass));
 
+		/**
+		 * 2.2 获取作用域代理模型
+		 */
 		ScopedProxyMode scopedProxyMode = componentScan.getEnum("scopedProxy");
 		if (scopedProxyMode != ScopedProxyMode.DEFAULT) {
 			scanner.setScopedProxyMode(scopedProxyMode);
-		}
-		else {
+		} else {
 			Class<? extends ScopeMetadataResolver> resolverClass = componentScan.getClass("scopeResolver");
 			scanner.setScopeMetadataResolver(BeanUtils.instantiateClass(resolverClass));
 		}
-
+		/**
+		 * 2.3 获取有资格进行参与检查的class文件
+		 */
 		scanner.setResourcePattern(componentScan.getString("resourcePattern"));
 
+		/**
+		 * 2.4 设置过滤器,因该包含哪些类,应该丢弃哪些类.
+		 */
 		for (AnnotationAttributes filter : componentScan.getAnnotationArray("includeFilters")) {
 			for (TypeFilter typeFilter : typeFiltersFor(filter)) {
 				scanner.addIncludeFilter(typeFilter);
@@ -104,11 +118,17 @@ class ComponentScanAnnotationParser {
 			}
 		}
 
+		/**
+		 * 2.5 是否懒加载
+		 */
 		boolean lazyInit = componentScan.getBoolean("lazyInit");
 		if (lazyInit) {
 			scanner.getBeanDefinitionDefaults().setLazyInit(true);
 		}
 
+		/**
+		 * 2.6 获取被扫描的包
+		 */
 		Set<String> basePackages = new LinkedHashSet<>();
 		String[] basePackagesArray = componentScan.getStringArray("basePackages");
 		for (String pkg : basePackagesArray) {
@@ -119,6 +139,9 @@ class ComponentScanAnnotationParser {
 		for (Class<?> clazz : componentScan.getClassArray("basePackageClasses")) {
 			basePackages.add(ClassUtils.getPackageName(clazz));
 		}
+		/**
+		 * 2.6.1 如果{@code @ComponentScan}中获取不到basePackages和basePackageClasses,则获取当前类所在的包,作为扫描路径
+		 */
 		if (basePackages.isEmpty()) {
 			basePackages.add(ClassUtils.getPackageName(declaringClass));
 		}
@@ -129,6 +152,10 @@ class ComponentScanAnnotationParser {
 				return declaringClass.equals(className);
 			}
 		});
+		/**
+		 * 2.7 开启正式扫描....
+		 * 扫描之后,bd直接添加到beanFactory中了.
+		 */
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 

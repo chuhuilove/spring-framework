@@ -25,24 +25,25 @@ import java.lang.annotation.Target;
 
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.filter.TypeFilter;
 
 /**
- * Configures component scanning directives for use with @{@link Configuration} classes.
- * Provides support parallel with Spring XML's {@code <context:component-scan>} element.
  *
- * <p>Either {@link #basePackageClasses} or {@link #basePackages} (or its alias
- * {@link #value}) may be specified to define specific packages to scan. If specific
- * packages are not defined, scanning will occur from the package of the
- * class that declares this annotation.
+ * 配置组件扫描指令以与@{@link Configuration}类一起使用.
+ * 提供与Spring XML的{@code <context:component-scan>}元素并行的支持.
  *
- * <p>Note that the {@code <context:component-scan>} element has an
- * {@code annotation-config} attribute; however, this annotation does not. This is because
- * in almost all cases when using {@code @ComponentScan}, default annotation config
- * processing (e.g. processing {@code @Autowired} and friends) is assumed. Furthermore,
- * when using {@link AnnotationConfigApplicationContext}, annotation config processors are
- * always registered, meaning that any attempt to disable them at the
- * {@code @ComponentScan} level would be ignored.
+ * <p>可以指定{@link #basePackageClasses}或{@link #basePackages}(或其别名{@link #value})来定义要扫描的特定程序包.
+ * 如果未定义特定的程序包,则将从声明此注解的类的程序包中进行扫描.
+ *
+ * <p>注意,{@code <context:component-scan>}元素具有注解配置属性;然而,@{@link ComponentScan}这个注解没有.
+ * 这是因为在几乎所有情况下,使用{@code @ComponentScan}时,
+ * 都假定使用默认的注解配置处理(例如,处理{@code @Autowired}和其他诸如{@code @Resource}).
+ * 此外,在使用{@link AnnotationConfigApplicationContext}时,注解配置处理器始终会被注册,
+ * 这意味着在{@code @ComponentScan}级别禁用它们的任何尝试都将被忽略.
+ * <p>
+ * 在{@link ConfigurationClassParser#doProcessConfigurationClass(ConfigurationClass, ConfigurationClassParser.SourceClass)}调用解析.
+ * 具体解析位置在{@link ComponentScanAnnotationParser#parse(AnnotationAttributes, String)}
  *
  * <p>See {@link Configuration @Configuration}'s Javadoc for usage examples.
  *
@@ -88,6 +89,7 @@ public @interface ComponentScan {
 	/**
 	 * The {@link BeanNameGenerator} class to be used for naming detected components
 	 * within the Spring container.
+	 * 设置命名生产器.这个命名生产器的作用范围只是定义的扫描包里的内容.
 	 * <p>The default value of the {@link BeanNameGenerator} interface itself indicates
 	 * that the scanner used to process this {@code @ComponentScan} annotation should
 	 * use its inherited bean name generator, e.g. the default
@@ -98,7 +100,7 @@ public @interface ComponentScan {
 	Class<? extends BeanNameGenerator> nameGenerator() default BeanNameGenerator.class;
 
 	/**
-	 * The {@link ScopeMetadataResolver} to be used for resolving the scope of detected components.
+	 *  {@link ScopeMetadataResolver}用于解析检测到的组件的范围.
 	 */
 	Class<? extends ScopeMetadataResolver> scopeResolver() default AnnotationScopeMetadataResolver.class;
 
@@ -113,9 +115,8 @@ public @interface ComponentScan {
 	ScopedProxyMode scopedProxy() default ScopedProxyMode.DEFAULT;
 
 	/**
-	 * Controls the class files eligible for component detection.
-	 * <p>Consider use of {@link #includeFilters} and {@link #excludeFilters}
-	 * for a more flexible approach.
+	 * 控制有资格进行组件检测的class文件.
+	 * <p>考虑使用{@link #includeFilters}和{@link #excludeFilters}以获得更灵活的方法
 	 */
 	String resourcePattern() default ClassPathScanningCandidateComponentProvider.DEFAULT_RESOURCE_PATTERN;
 
@@ -145,6 +146,7 @@ public @interface ComponentScan {
 
 	/**
 	 * Specify whether scanned beans should be registered for lazy initialization.
+	 * 指定被扫描的bean是否应该延迟初始化.
 	 * <p>Default is {@code false}; switch this to {@code true} when desired.
 	 * @since 4.1
 	 */

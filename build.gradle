@@ -236,15 +236,15 @@ configure(subprojects - project(":spring-build-src")) { subproject ->
 		from sourceSets.main.allSource
 		// Don't include or exclude anything explicitly by default. See SPR-12085.
 	}
-
+/*不需要编译javadoc
 	task javadocJar(type: Jar) {
 		classifier = "javadoc"
 		from javadoc
 	}
-
+*/
 	artifacts {
 		archives sourcesJar
-		archives javadocJar
+//		archives javadocJar
 	}
 }
 

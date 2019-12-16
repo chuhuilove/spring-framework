@@ -282,8 +282,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
-	 * 这里的{@link #doScan(String...)} 和{@link AnnotatedBeanDefinitionReader#doRegisterBean(Class, Supplier, String, Class[], BeanDefinitionCustomizer...)}
-	 * 完成的功能差不多啊
+	 *
+	 * 执行扫描,将给定包下的类扫描并
 	 *
 	 * Perform a scan within the specified base packages,
 	 * returning the registered bean definitions.

@@ -27,6 +27,7 @@ import org.springframework.beans.factory.support.AutowireCandidateQualifier;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.EnvironmentCapable;
 import org.springframework.core.env.StandardEnvironment;
@@ -111,6 +112,10 @@ public class AnnotatedBeanDefinitionReader {
 		 * org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
 		 * org.springframework.context.event.EventListenerMethodProcessor
 		 * org.springframework.context.event.DefaultEventListenerFactory
+		 *
+		 * 注册进的这个四个类,在{@link AbstractApplicationContext#refresh()}的第5步,调用后置处理器的时候,能用的到.
+		 * 在默认情况下,首先实例化的就是org.springframework.context.annotation.ConfigurationClassPostProcessor
+		 *
 		 */
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 	}

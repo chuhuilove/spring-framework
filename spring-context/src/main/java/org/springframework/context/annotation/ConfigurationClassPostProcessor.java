@@ -78,8 +78,9 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.CONFI
  * 或者,也可以像其他任何BeanFactoryPostProcessor一样手动声明.
  *
  * <p>
- * 这个后处理器是优先级排序的，因为在{@code @Configuration}类中声明的任何{@link Bean}方法都必须在任何其他{@link BeanFactoryPostProcessor}执行之前注册它们相应的Bean定义,
- * 这一点很重要。
+ * 这个后处理器是基于优先级排序的,因为在{@code @Configuration}类中声明的{@link Bean}方法都必须在任何其他{@link BeanFactoryPostProcessor}执行之前将它们解析成bean,
+  * 然后注册到bean工厂中.
+  * 所以,这个{@code BeanDefinitionRegistryPostProcessor}的优先级很低
  * <p>This post processor is priority-ordered as it is important that any
  * {@link Bean} methods declared in {@code @Configuration} classes have
  * their corresponding bean definitions registered before any other
@@ -222,6 +223,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 	/**
 	 * Derive further bean definitions from the configuration classes in the registry.
+	 *
+	 * 从registry中的配置类派生更多的bean定义.
+	 *
 	 */
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
@@ -264,10 +268,15 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	/**
 	 * Build and validate a configuration model based on the registry of
 	 * {@link Configuration} classes.
+	 * 基于{@link Configuration}类的注册表构建并验证配置模型.
+	 * 解析,带有{@link Configuration}注解的类
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
 
+		//从bean工厂中获取已经注册的所有beanName.
+		//此时,用户自定义的bean还没有全部被扫描进beanFactory
+		// 假如应用是以springboot启动的,现在beanFactory只有一个被加了@SpringBootApplication注解的主类添加在了beanFactory#beanDefinitionNames中
 		//
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
@@ -280,6 +289,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				}
 			}
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
+				//
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
@@ -292,6 +302,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 		// Sort by previously determined @Order value, if applicable
 		// 根据之前确定的@Order值排序(如果适用)
+		// 将找到的,带有@Configuration注解的类,进行排序
 		configCandidates.sort((bd1, bd2) -> {
 			int i1 = ConfigurationClassUtils.getOrder(bd1.getBeanDefinition());
 			int i2 = ConfigurationClassUtils.getOrder(bd2.getBeanDefinition());
@@ -299,6 +310,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		});
 
 		// Detect any custom bean name generation strategy supplied through the enclosing application context
+		// 检测通过封闭的应用程序上下文提供的任何自定义bean名称生成策略
 		SingletonBeanRegistry sbr = null;
 		if (registry instanceof SingletonBeanRegistry) {
 			sbr = (SingletonBeanRegistry) registry;
@@ -316,7 +328,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		/**
-		 * 解析被{@link Configuration}注解的类
+		 * 开始正式解析被{@link Configuration}注解的类
+		 *
 		 */
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,

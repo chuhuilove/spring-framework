@@ -594,8 +594,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			/**
 			 * 3. 准备bean工厂以供在此上下文中使用
 			 * 为bean工厂设置类加载器,添加后置处理器等等
-			 *
-			 *
 			 */
 			prepareBeanFactory(beanFactory);
 			logger.debug("refresh invoked:prepareBeanFactory");
@@ -618,6 +616,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				/**
 				 * 5.
 				 * 调用bean工厂的后置处理器
+				 *
+				 * List<BeanFactoryPostProcessor> beanFactoryPostProcessors
+				 * 处理的是{@link BeanFactoryPostProcessor}类型的后置处理器,在单例初始单例之前进行调用.
+				 * 实际处理的是{@value #beanFactoryPostProcessors}里面的内容.
+				 * 解析诸如{@code @Configuration},{@code @Import}等注解.
+				 *
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
 				logger.debug("refresh第四次调用");
@@ -625,8 +629,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				/**
 				 * 6.
 				 * 注册bean的后置处理器
-				 * 前面已经调用了后置处理器,这里为什么还要在注册后置处理器呢?
-				 * //todo
+				 * 前面已经调用了后置处理器,调用的是{@link BeanFactoryPostProcessor}类型的后置处理器
+				 * 这里处理的后置处理器,处理的是{@link org.springframework.beans.factory.config.BeanPostProcessor}类型的后置处理器,
+				 * 实例处理的是{@link org.springframework.beans.factory.support.AbstractBeanFactory#beanPostProcessors}里面的内容
+				 *
 				 */
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);

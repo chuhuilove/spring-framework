@@ -18,32 +18,18 @@ package org.springframework.core;
 
 /**
  *
- * Spring 给定的扩展点之一,控制Bean的初始化顺序
+ * Spring 给定的扩展点之一,控制Bean的初始化顺序??能吗?
  *
+ * 扩展了{@link Ordered}接口,表示<em>优先级</em>顺序:{@code PriorityOrdered}对象始终在<em>普通</em>{@link Ordered}对象之前应用,而不管其顺序值如何.
+ * <p>在对一组{@code Ordered}对象进行排序时,
+ * {@code PriorityOrdered}对象和<em>普通</em>{@code Ordered}对象实际上被视为两个独立的子集,
+ * {@code PriorityOrdered}对象集先于<em>普通</em>{@code Ordered}对象集,
+ * 并在这些子集中应用相对排序.
+ * <p>这主要是一个特殊用途的接口,在框架内部用于对象,其中首先识别<em>优先级</em>对象特别重要,甚至可能不需要获得其余对象.
+ * 一个典型的例子:在{@link org.springframework.context.ApplicationContext}中优先处理后处理器.
  *
- *
- *
- *
- * Extension of the {@link Ordered} interface, expressing a <em>priority</em>
- * ordering: {@code PriorityOrdered} objects are always applied before
- * <em>plain</em> {@link Ordered} objects regardless of their order values.
- *
- * <p>When sorting a set of {@code Ordered} objects, {@code PriorityOrdered}
- * objects and <em>plain</em> {@code Ordered} objects are effectively treated as
- * two separate subsets, with the set of {@code PriorityOrdered} objects preceding
- * the set of <em>plain</em> {@code Ordered} objects and with relative
- * ordering applied within those subsets.
- *
- * <p>This is primarily a special-purpose interface, used within the framework
- * itself for objects where it is particularly important to recognize
- * <em>prioritized</em> objects first, potentially without even obtaining the
- * remaining objects. A typical example: prioritized post-processors in a Spring
- * {@link org.springframework.context.ApplicationContext}.
- *
- * <p>Note: {@code PriorityOrdered} post-processor beans are initialized in
- * a special phase, ahead of other post-processor beans. This subtly
- * affects their autowiring behavior: they will only be autowired against
- * beans which do not require eager initialization for type matching.
+ * <p>注意:{@code PriorityOrdered}后处理器Bean在特殊阶段中比其他后处理器Bean初始化.
+ * 这巧妙地影响了它们的自动装配行为:它们将仅针对不需要为类型匹配而急切初始化的bean自动装配.
  *
  * @author Juergen Hoeller
  * @author Sam Brannen

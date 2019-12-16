@@ -152,7 +152,9 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 			// 添加一个后置处理器
 			beanFactory.addBeanPostProcessor(new ServletContextAwareProcessor(this.servletContext));
 			// 忽略掉ServletContextAware类型的自动装配.
-//			beanFactory.ignoreDependencyInterface(ServletContextAware.class);
+			// 这个自动装配类型,到底是什么意思呢?
+			// todo 2019-12-16 09:02:34
+			beanFactory.ignoreDependencyInterface(ServletContextAware.class);
 		}
 		WebApplicationContextUtils.registerWebApplicationScopes(beanFactory, this.servletContext);
 		WebApplicationContextUtils.registerEnvironmentBeans(beanFactory, this.servletContext);

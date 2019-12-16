@@ -23,6 +23,9 @@ import org.springframework.beans.BeansException;
  * Spring 的扩展点之一
  * BeanFactoryPostProcessor
  *
+ * z
+ *
+ *
  * Allows for custom modification of an application context's bean definitions,
  * adapting the bean property values of the context's underlying bean factory.
  *

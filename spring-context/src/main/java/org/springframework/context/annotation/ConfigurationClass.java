@@ -36,6 +36,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
 /**
+ * 表示用户定义的{@link Configuration @Configuration}类.
+ * 包括一组{@link Bean}方法,包括以"扁平化"方式在类祖先中定义的所有此类方法.
  * Represents a user-defined {@link Configuration @Configuration} class.
  * Includes a set of {@link Bean} methods, including all such methods
  * defined in the ancestry of the class, in a 'flattened-out' manner.
