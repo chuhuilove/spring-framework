@@ -159,12 +159,10 @@ public interface ConfigurableListableBeanFactory
 	boolean isConfigurationFrozen();
 
 	/**
-	 * Ensure that all non-lazy-init singletons are instantiated, also considering
-	 * {@link org.springframework.beans.factory.FactoryBean FactoryBeans}.
-	 * Typically invoked at the end of factory setup, if desired.
-	 * @throws BeansException if one of the singleton beans could not be created.
-	 * Note: This may have left the factory with some beans already initialized!
-	 * Call {@link #destroySingletons()} for full cleanup in this case.
+	 * 确保所有非延迟初始单例都实例化,包括{@link org.springframework.beans.factory.FactoryBean FactoryBeans}.
+	 * 如果需要,通常在工厂设置结束时调用.
+	 * @throws BeansException 如果一个单例bean不能被创建.
+	 * 注意:这可能已经离开工厂,并且已经初始化了一些bean!在这种情况下,调用{@link #destroySingletons()}进行完全清除
 	 * @see #destroySingletons()
 	 */
 	void preInstantiateSingletons() throws BeansException;

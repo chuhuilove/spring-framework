@@ -607,7 +607,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 该方法在{@link org.springframework.web.context.support.GenericWebApplicationContext}中,
 				 * 添加了一个{@link org.springframework.web.context.support.ServletContextAwareProcessor}处理器
 				 *
-				 *
 				 */
 				postProcessBeanFactory(beanFactory);
 				logger.debug("refresh第三次调用");

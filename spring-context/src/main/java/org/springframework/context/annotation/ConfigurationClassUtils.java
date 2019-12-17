@@ -74,6 +74,7 @@ abstract class ConfigurationClassUtils {
 	 * Check whether the given bean definition is a candidate for a configuration class
 	 * (or a nested component class declared within a configuration/component class,
 	 * to be auto-registered as well), and mark it accordingly.
+	 * 检查给定的bean定义是否是配置类(或在配置/组件类中声明的嵌套组件类,也可以自动注册)的候选对象,并相应地对其进行标记.
 	 * @param beanDef the bean definition to check
 	 * @param metadataReaderFactory the current factory in use by the caller
 	 * @return whether the candidate qualifies as (any kind of) configuration class
@@ -187,16 +188,16 @@ abstract class ConfigurationClassUtils {
 	}
 
 	/**
-	 * Determine whether the given bean definition indicates a full {@code @Configuration}
-	 * class, through checking {@link #checkConfigurationClassCandidate}'s metadata marker.
+	 * 通过检查{@link #checkConfigurationClassCandidate}的元数据标记,
+	 * 确定给定的bean定义是否表示full的{@code @Configuration}类.
 	 */
 	public static boolean isFullConfigurationClass(BeanDefinition beanDef) {
 		return CONFIGURATION_CLASS_FULL.equals(beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE));
 	}
 
 	/**
-	 * Determine whether the given bean definition indicates a lite {@code @Configuration}
-	 * class, through checking {@link #checkConfigurationClassCandidate}'s metadata marker.
+	 * 通过检查{@link #checkConfigurationClassCandidate}的元数据标记,
+	 * 确定给定的bean定义是否表示lite的{@code @Configuration}类.
 	 */
 	public static boolean isLiteConfigurationClass(BeanDefinition beanDef) {
 		return CONFIGURATION_CLASS_LITE.equals(beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE));

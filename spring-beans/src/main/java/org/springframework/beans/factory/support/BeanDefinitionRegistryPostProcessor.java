@@ -19,6 +19,8 @@ package org.springframework.beans.factory.support;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.core.PriorityOrdered;
 
 import java.util.List;
 
@@ -33,6 +35,30 @@ import java.util.List;
  * BeanFactoryPostProcessor detection kicks in. In particular,
  * BeanDefinitionRegistryPostProcessor may register further bean definitions
  * which in turn define BeanFactoryPostProcessor instances.
+ *
+ * <p>
+ * 解析这个接口的实现,是很早的,甚至比解析其父接口{@link BeanFactoryPostProcessor}还早
+ *
+ * <p>
+ * 1. 执行实现了{@link BeanDefinitionRegistryPostProcessor}的类,最早在{@link org.springframework.context.support.AbstractApplicationContext#refresh()}
+ * 函数中,调用{@link org.springframework.context.support.AbstractApplicationContext#invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory)}中.
+ * 先执行了已经加入到{@link org.springframework.context.support.AbstractApplicationContext#beanFactoryPostProcessors}中的类,以添加更多的定义.
+ *
+ * <p>
+ * 2. 从bean工厂中获取实现了{@code BeanDefinitionRegistryPostProcessor}又实现了{@code PriorityOrdered}接口的类.
+ * 根据{@link PriorityOrdered#getOrder()}的值进行排序.注意,默认注册进去的一个类{@link org.springframework.context.annotation.ConfigurationClassPostProcessor}的优先级最低.
+ * 自定义的实现,若{@link PriorityOrdered#getOrder()}的值和{@link org.springframework.context.annotation.ConfigurationClassPostProcessor}的值相等,则自定义的实现优先级最低.
+ *
+ * <p>
+ * 3. 从bean工厂中获取实现了{@code BeanDefinitionRegistryPostProcessor}又实现了{@code Ordered}接口的类
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  *
  * @author Juergen Hoeller
  * @since 3.0.1

@@ -57,6 +57,7 @@ final class PostProcessorRegistrationDelegate {
 
 	/**
 	 * 调用bean给定beanFactory的后置处理器
+	 *
 	 * @param beanFactory
 	 * @param beanFactoryPostProcessors
 	 */
@@ -66,23 +67,37 @@ final class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		/**
 		 * 如果有{@link BeanFactoryPostProcessor}则先处理...
-		 *
 		 */
 		Set<String> processedBeans = new HashSet<>();
 
+		/**
+		 * {@link ConfigurableListableBeanFactory}有两个子类,{@link DefaultListableBeanFactory}和{@link XmlBeanFactory}
+		 * 这两个子类都实现了BeanDefinitionRegistry接口,这里为什么还要进行判断呢?
+		 */
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
+				/**
+				 * 一. 先执行添加到{@link  AbstractApplicationContext#beanFactoryPostProcessors}中,
+				 * 并且实现了{@link BeanDefinitionRegistryPostProcessor}接口类.
+				 * 以添加更多的bean定义.
+				 * 从spring-boot的角度来看,
+				 * 先后执行了
+				 * 1. org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer$CachingMetadataReaderFactoryPostProcessor
+				 * 向工厂里面注册一个SharedMetadataReaderFactoryBean
+				 * 2. org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer$ConfigurationWarningsPostProcessor
+				 * TODO 这个里面的实现,不清楚..
+				 *
+				 */
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
-				}
-				else {
+				} else {
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -115,9 +130,15 @@ final class PostProcessorRegistrationDelegate {
 			}
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 			registryProcessors.addAll(currentRegistryProcessors);
+			/**
+			 * 二. 执行实现了BeanDefinitionRegistryPostProcessor,又实现了PriorityOrdered的类.
+			 */
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
+			/**
+			 * 三. 执行实现了BeanDefinitionRegistryPostProcessor,又实现了Ordered的类.
+			 */
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
 			// 接下来,调用实现Ordered的BeanDefinitionRegistryPostProcessors.
 			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
@@ -132,7 +153,12 @@ final class PostProcessorRegistrationDelegate {
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
-			// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
+			/**
+			 * 4. 调用只实现了BeanDefinitionRegistryPostProcessor接口的对象.
+			 * Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
+			 * 最后,调用所有其他BeanDefinitionRegistryPostProcessor，直到不再出现.
+			 */
+
 			boolean reiterate = true;
 			while (reiterate) {
 				reiterate = false;
@@ -150,11 +176,14 @@ final class PostProcessorRegistrationDelegate {
 				currentRegistryProcessors.clear();
 			}
 
-			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
+			/**
+			 * 之前一直调用的是{@link BeanDefinitionRegistryPostProcessor}自己的方法{@code postProcessBeanDefinitionRegistry(BeanDefinitionRegistry)}.
+			 * 现在,调用{@code BeanDefinitionRegistryPostProcessor}的父接口
+			 * {@link BeanFactoryPostProcessor}中的{@code postProcessBeanFactory(ConfigurableListableBeanFactory)} 方法.
+			 */
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
-		}
-		else {
+		} else {
 			// Invoke factory processors registered with the context instance.
 			invokeBeanFactoryPostProcessors(beanFactoryPostProcessors, beanFactory);
 		}
@@ -172,14 +201,11 @@ final class PostProcessorRegistrationDelegate {
 		for (String ppName : postProcessorNames) {
 			if (processedBeans.contains(ppName)) {
 				// skip - already processed in first phase above
-			}
-			else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				priorityOrderedPostProcessors.add(beanFactory.getBean(ppName, BeanFactoryPostProcessor.class));
-			}
-			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
 				orderedPostProcessorNames.add(ppName);
-			}
-			else {
+			} else {
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}
@@ -232,11 +258,9 @@ final class PostProcessorRegistrationDelegate {
 				if (pp instanceof MergedBeanDefinitionPostProcessor) {
 					internalPostProcessors.add(pp);
 				}
-			}
-			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
 				orderedPostProcessorNames.add(ppName);
-			}
-			else {
+			} else {
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}

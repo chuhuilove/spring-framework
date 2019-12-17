@@ -33,16 +33,14 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringValueResolver;
 
 /**
- * Configuration interface to be implemented by most bean factories. Provides
- * facilities to configure a bean factory, in addition to the bean factory
- * client methods in the {@link org.springframework.beans.factory.BeanFactory}
- * interface.
  *
- * <p>This bean factory interface is not meant to be used in normal application
- * code: Stick to {@link org.springframework.beans.factory.BeanFactory} or
- * {@link org.springframework.beans.factory.ListableBeanFactory} for typical
- * needs. This extended interface is just meant to allow for framework-internal
- * plug'n'play and for special access to bean factory configuration methods.
+ * 大多数bean工厂都将实现配置接口.
+ * 除了{@link org.springframework.beans.factory.BeanFactory}接口中的bean工厂客户端方法外,还提供配置bean工厂的工具.
+ *
+ * <p>这个bean工厂接口不适合在普通的应用程序代码中使用:对于特有的需求,
+ * 还是使用{@link org.springframework.beans.factory.BeanFactory}
+ * 或{@link org.springframework.beans.factory.ListableBeanFactory}.
+ * 这个扩展接口只是为了允许框架内部即插即用,以及对bean工厂配置方法的特殊访问.
  *
  * @author Juergen Hoeller
  * @see org.springframework.beans.factory.BeanFactory
@@ -239,7 +237,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * Determine whether an embedded value resolver has been registered with this
 	 * bean factory, to be applied through {@link #resolveEmbeddedValue(String)}.
-	 *
+	 * 确定是否已向此bean工厂注册了嵌入式值解析器,并通过{@link #resolveEmbeddedValue(String)}应用它.
 	 * @since 4.3
 	 */
 	boolean hasEmbeddedValueResolver();
