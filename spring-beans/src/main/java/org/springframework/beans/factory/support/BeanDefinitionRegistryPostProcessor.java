@@ -19,7 +19,6 @@ package org.springframework.beans.factory.support;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.PriorityOrdered;
 
 import java.util.List;
@@ -51,13 +50,6 @@ import java.util.List;
  *
  * <p>
  * 3. 从bean工厂中获取实现了{@code BeanDefinitionRegistryPostProcessor}又实现了{@code Ordered}接口的类
- *
- *
- *
- *
- *
- *
- *
  *
  *
  * @author Juergen Hoeller

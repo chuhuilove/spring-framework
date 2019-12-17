@@ -355,8 +355,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				checkMergedBeanDefinition(mbd, beanName, args);
 
-				// 保证当前bean所依赖的bean的初始化.
+				//
 				// 也就是那个@DependsOn中的bean被初始化
+				/**
+				 * 保证当前bean所依赖的bean的初始化.
+				 * 也就是{@link @DependsOn}注解中的bean被实例化
+				 */
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
 					for (String dep : dependsOn) {
@@ -1342,6 +1346,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					mbd.overrideFrom(bd);
 				}
 
+				// 如果之前没有配置,则默认设置为单例模式
 				// Set default singleton scope, if not configured before.
 				if (!StringUtils.hasLength(mbd.getScope())) {
 					mbd.setScope(RootBeanDefinition.SCOPE_SINGLETON);
@@ -1351,12 +1356,18 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// Let's correct this on the fly here, since this might be the result of
 				// parent-child merging for the outer bean, in which case the original inner bean
 				// definition will not have inherited the merged outer bean's singleton status.
+				// 非单例bean中包含的bean本身不能是单例的.
+				// 让我们在这里动态地修正一下,
+				// 因为这可能是外部bean的父-子合并的结果,
+				// 在这种情况下,原始的内部bean定义将不会继承合并后的外部bean的单例状态。
 				if (containingBd != null && !containingBd.isSingleton() && mbd.isSingleton()) {
 					mbd.setScope(containingBd.getScope());
 				}
 
 				// Cache the merged bean definition for the time being
 				// (it might still get re-merged later on in order to pick up metadata changes)
+				// 暂时缓存合并的bean定义(它仍然可能在以后重新合并,以获取元数据更改)
+				//
 				if (containingBd == null && isCacheBeanMetadata()) {
 					this.mergedBeanDefinitions.put(beanName, mbd);
 				}
@@ -1369,7 +1380,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/**
 	 * Check the given merged bean definition,
 	 * potentially throwing validation exceptions.
-	 *
+	 * 检查给定的合并bean定义,可能会引发验证异常.
 	 * @param mbd      the merged bean definition to check
 	 * @param beanName the name of the bean
 	 * @param args     the arguments for bean creation, if any
@@ -1410,6 +1421,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * Resolve the bean class for the specified bean definition,
 	 * resolving a bean class name into a Class reference (if necessary)
 	 * and storing the resolved Class in the bean definition for further use.
+	 *
+	 * 为指定的bean定义解析bean类,将bean类名解析为Class引用(如果需要),
+	 * 并将解析后的Class存储在bean定义中以备将来使用.
 	 *
 	 * @param mbd          the merged bean definition to determine the class for
 	 * @param beanName     the name of the bean (for error handling purposes)
@@ -1503,7 +1517,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/**
 	 * Evaluate the given String as contained in a bean definition,
 	 * potentially resolving it as an expression.
-	 *
+	 * 评估bean定义中包含的给定字符串,可能将其解析为表达式.
 	 * @param value          the value to check
 	 * @param beanDefinition the bean definition that the value comes from
 	 * @return the resolved value
