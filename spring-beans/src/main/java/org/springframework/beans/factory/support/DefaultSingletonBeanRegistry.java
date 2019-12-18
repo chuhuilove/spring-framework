@@ -254,6 +254,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+					// 获取单例对象...
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}
@@ -376,8 +377,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
-	 * Callback after singleton creation.
-	 * <p>The default implementation marks the singleton as not in creation anymore.
+	 * 创建单例之后的回调.
+	 * <p>默认实现将单例模式标记为不再创建.
 	 * @param beanName the name of the singleton that has been created
 	 * @see #isSingletonCurrentlyInCreation
 	 */

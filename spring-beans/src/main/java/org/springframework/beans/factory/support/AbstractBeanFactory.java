@@ -77,6 +77,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 /**
+ *
+ * {@link org.springframework.beans.factory.BeanFactory}实现的抽象基类,
+ * 提供{@link org.springframework.beans.factory.config.ConfigurableBeanFactory} SPI的全部功能.
+ *
  * Abstract base class for {@link org.springframework.beans.factory.BeanFactory}
  * implementations, providing the full capabilities of the
  * {@link org.springframework.beans.factory.config.ConfigurableBeanFactory} SPI.
@@ -1422,7 +1426,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * resolving a bean class name into a Class reference (if necessary)
 	 * and storing the resolved Class in the bean definition for further use.
 	 *
-	 * 为指定的bean定义解析bean类,将bean类名解析为Class引用(如果需要),
+	 * 为指定的bean definition解析bean类,将bean类名解析为Class引用(如果需要),
 	 * 并将解析后的Class存储在bean定义中以备将来使用.
 	 *
 	 * @param mbd          the merged bean definition to determine the class for
@@ -1850,10 +1854,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
 
 	/**
-	 * Create a bean instance for the given merged bean definition (and arguments).
-	 * The bean definition will already have been merged with the parent definition
-	 * in case of a child definition.
-	 * <p>All bean retrieval methods delegate to this method for actual bean creation.
+	 * 为给定的已合并bd(和参数)创建一个bean实例.对于子定义,bean定义已经与父定义合并.
+	 * <p>所有的bean检索方法都委托给这个方法来进行实际的bean创建.
 	 *
 	 * @param beanName the name of the bean
 	 * @param mbd      the merged bean definition for the bean

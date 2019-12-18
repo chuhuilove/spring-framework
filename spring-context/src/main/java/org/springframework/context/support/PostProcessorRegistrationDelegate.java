@@ -44,6 +44,9 @@ import org.springframework.lang.Nullable;
 /**
  * 后置处理器注册代理类
  * 妈的,这个类好复杂
+ * 这个类中,实现了处理BeanFactoryPostProcessor接口,
+ * 也实现了处理BeanPostProcessor接口
+ *
  * Delegate for AbstractApplicationContext's post-processor handling.
  *
  * @author Juergen Hoeller
@@ -237,6 +240,7 @@ final class PostProcessorRegistrationDelegate {
 	public static void registerBeanPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext) {
 
+		//从bean工厂中,获取所有BeanPostProcessor
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
 
 		// Register BeanPostProcessorChecker that logs an info message when

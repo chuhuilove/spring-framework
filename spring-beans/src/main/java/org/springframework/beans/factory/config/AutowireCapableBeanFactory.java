@@ -26,32 +26,22 @@ import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.lang.Nullable;
 
 /**
- * Extension of the {@link org.springframework.beans.factory.BeanFactory}
- * interface to be implemented by bean factories that are capable of
- * autowiring, provided that they want to expose this functionality for
- * existing bean instances.
+ * {@link org.springframework.beans.factory.BeanFactory}接口的扩展,
+ * 由能够自动装配的bean工厂实现,前提是它们希望为现有的bean实例公开此功能.
  *
- * <p>This subinterface of BeanFactory is not meant to be used in normal
- * application code: stick to {@link org.springframework.beans.factory.BeanFactory}
- * or {@link org.springframework.beans.factory.ListableBeanFactory} for
- * typical use cases.
+ * <p>这个子接口不推荐在普通代码中使用,若对BeanFactory有特别的需要,还是选择实现
+ * {@link org.springframework.beans.factory.BeanFactory}和{@link org.springframework.beans.factory.ListableBeanFactory}接口.
  *
- * <p>Integration code for other frameworks can leverage this interface to
- * wire and populate existing bean instances that Spring does not control
- * the lifecycle of. This is particularly useful for WebWork Actions and
- * Tapestry Page objects, for example.
+ * <p>其他框架的集成代码可以利用此接口来连接和填充Spring无法控制其生命周期的现有bean实例.例如,
+ * 这对于WebWork操作和Tapestry页面对象特别有用.
  *
- * <p>Note that this interface is not implemented by
- * {@link org.springframework.context.ApplicationContext} facades,
- * as it is hardly ever used by application code. That said, it is available
- * from an application context too, accessible through ApplicationContext's
- * {@link org.springframework.context.ApplicationContext#getAutowireCapableBeanFactory()}
- * method.
+ * <p>请注意,这个接口不是由{@link org.springframework.context.ApplicationContext}facade实现的,
+ * 因为它很少被应用程序代码使用.也就是说,它也可以从应用程序上下文中获得,
+ * 可以通过ApplicationContext的{@link org.springframework.context.ApplicationContext#getAutowireCapableBeanFactory()}方法进行访问.
  *
- * <p>You may also implement the {@link org.springframework.beans.factory.BeanFactoryAware}
- * interface, which exposes the internal BeanFactory even when running in an
- * ApplicationContext, to get access to an AutowireCapableBeanFactory:
- * simply cast the passed-in BeanFactory to AutowireCapableBeanFactory.
+ * <p>也可以实现{@link org.springframework.beans.factory.BeanFactoryAware}接口,
+ * 它甚至在应用程序上下文中运行时也公开内部的BeanFactory,
+ * 以获得对AutowireCapableBeanFactory的访问:只需将传入的BeanFactory转换为AutowireCapableBeanFactory.
  *
  * @author Juergen Hoeller
  * @since 04.12.2003
@@ -64,6 +54,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates no externally defined autowiring. Note that
 	 * BeanFactoryAware etc and annotation-driven injection will still be applied.
+	 * 指示没有外部定义的自动装配的常量.注意,仍然会应用BeanFactoryAware等和注解驱动注入.
 	 * @see #createBean
 	 * @see #autowire
 	 * @see #autowireBeanProperties
@@ -73,6 +64,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates autowiring bean properties by name
 	 * (applying to all bean property setters).
+	 * 通过名称指示自动装配Bean属性的常量(适用于所有Bean属性设置器).
 	 * @see #createBean
 	 * @see #autowire
 	 * @see #autowireBeanProperties
@@ -82,6 +74,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates autowiring bean properties by type
 	 * (applying to all bean property setters).
+	 * 指示按类型自动装配Bean属性的常量(适用于所有Bean属性设置器).
 	 * @see #createBean
 	 * @see #autowire
 	 * @see #autowireBeanProperties
@@ -91,6 +84,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates autowiring the greediest constructor that
 	 * can be satisfied (involves resolving the appropriate constructor).
+	 * 指示自动装配可以满足的最贪婪的构造函数的常数(涉及解析适当的构造函数).
 	 * @see #createBean
 	 * @see #autowire
 	 */
@@ -99,9 +93,11 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates determining an appropriate autowire strategy
 	 * through introspection of the bean class.
+	 * 指示通过内省bean类确定适当的自动装配策略的常量.
 	 * @see #createBean
 	 * @see #autowire
-	 * @deprecated as of Spring 3.0: If you are using mixed autowiring strategies,
+	 * @deprecated as of Spring 3.0:如果您正在使用混合自动装配策略,请选择基于注解的自动装配,以便更清楚地界定自动装配需求.
+	 * If you are using mixed autowiring strategies,
 	 * prefer annotation-based autowiring for clearer demarcation of autowiring needs.
 	 */
 	@Deprecated
@@ -126,13 +122,9 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * 完全创建给定类的新bean实例
-	 * Fully create a new bean instance of the given class.
-	 * <p>Performs full initialization of the bean, including all applicable
-	 * {@link BeanPostProcessor BeanPostProcessors}.
-	 * <p>Note: This is intended for creating a fresh instance, populating annotated
-	 * fields and methods as well as applying all standard bean initialization callbacks.
-	 * It does <i>not</i> imply traditional by-name or by-type autowiring of properties;
-	 * use {@link #createBean(Class, int, boolean)} for those purposes.
+	 * <p>执行Bean的完全初始化,包括所有适用的{@link BeanPostProcessor BeanPostProcessors}.
+	 * <p>注意:这用于创建一个新的实例,填充带注解的字段和方法,以及应用所有标准的bean初始化回调.
+	 * 它并<i>不</i>意味着对属性进行传统的按名称或按类型的自动装配;为这些目的使用{@link #createBean(Class, int, boolean)}.
 	 * @param beanClass the class of the bean to create
 	 * @return the new bean instance
 	 * @throws BeansException if instantiation or wiring failed
@@ -176,11 +168,9 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Fully create a new bean instance of the given class with the specified
-	 * autowire strategy. All constants defined in this interface are supported here.
-	 * <p>Performs full initialization of the bean, including all applicable
-	 * {@link BeanPostProcessor BeanPostProcessors}. This is effectively a superset
-	 * of what {@link #autowire} provides, adding {@link #initializeBean} behavior.
+	 * 使用指定的自动装配策略完全创建给定类的新bean实例.这个接口中定义的所有常量在这里都受支持.
+	 * <p>执行Bean的完全初始化,包括所有适用的{@link BeanPostProcessor BeanPostProcessors}.
+	 * 这实际上是{@link #autowire}提供的功能的超集,并添加了{@link #initializeBean}行为.
 	 * @param beanClass the class of the bean to create
 	 * @param autowireMode by name or type, using the constants in this interface
 	 * @param dependencyCheck whether to perform a dependency check for objects
