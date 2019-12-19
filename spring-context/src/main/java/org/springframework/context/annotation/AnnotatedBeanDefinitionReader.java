@@ -107,7 +107,7 @@ public class AnnotatedBeanDefinitionReader {
 		this.registry = registry;
 		this.conditionEvaluator = new ConditionEvaluator(registry, environment, null);
 		/**
-		 * 向工厂中注册进四个类
+		 * 向工厂中注册一些实际配置类.
 		 * org.springframework.context.annotation.ConfigurationClassPostProcessor
 		 * org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
 		 * org.springframework.context.event.EventListenerMethodProcessor

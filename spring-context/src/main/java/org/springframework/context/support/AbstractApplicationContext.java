@@ -40,6 +40,8 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.support.ResourceEditorRegistrar;
 import org.springframework.context.ApplicationContext;
@@ -594,6 +596,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			/**
 			 * 3. 准备bean工厂以供在此上下文中使用
 			 * 为bean工厂设置类加载器,添加后置处理器等等
+			 * 添加了
+			 * ApplicationContextAwareProcessorh和
+			 * ApplicationListenerDetector
+			 * 两个BeanPostProcessor处理器.
+			 * 现在还没有开始扫描自定义的类
+			 *
 			 */
 			prepareBeanFactory(beanFactory);
 			logger.debug("refresh invoked:prepareBeanFactory");
@@ -607,6 +615,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 该方法在{@link org.springframework.web.context.support.GenericWebApplicationContext}中,
 				 * 添加了一个{@link org.springframework.web.context.support.ServletContextAwareProcessor}处理器
 				 *
+				 * 这个方法在{@code AbstractApplicationContext}中是一个空方法.
+				 * 但是这个方法在其他子类如
+				 * 1.{@link org.springframework.web.context.support.GenericWebApplicationContext}
+				 * 2.{@link org.springframework.web.context.support.StaticWebApplicationContext}
+				 * 等有具体的实现.
+				 *
+				 * Note:以个人的见解,除非自定义Context,否则是不推荐实现这个方法的,
+				 * 这个方法虽然在执行扫描,甚至还没有执行{@link BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry}方法之前,
+				 * 就开始执行.想不出有什么场景来扩展这个方法.
+				 *
+				 *
 				 */
 				postProcessBeanFactory(beanFactory);
 				logger.debug("refresh第三次调用");
@@ -614,12 +633,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Invoke factory processors registered as beans in the context.
 				/**
 				 * 5.
-				 * 调用bean工厂的后置处理器
-				 *
+				 * 调用BeanFactoryProcessor
 				 * List<BeanFactoryPostProcessor> beanFactoryPostProcessors
 				 * 处理的是{@link BeanFactoryPostProcessor}类型的后置处理器,在单例初始单例之前进行调用.
 				 * 实际处理的是{@value #beanFactoryPostProcessors}里面的内容.
 				 * 解析诸如{@code @Configuration},{@code @Import}等注解.
+				 *
+				 * 进行扫描,解析...
 				 *
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
@@ -627,8 +647,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				getBeanFactoryContent(obtainContentFactory);
 				/**
 				 * 6.
-				 * 注册bean的后置处理器
-				 * 前面已经调用了后置处理器,调用的是{@link BeanFactoryPostProcessor}类型的后置处理器
+				 * 前面调用的是{@link BeanFactoryPostProcessor}类型的后置处理器
+				 * 这里是注册{@link org.springframework.beans.factory.config.BeanPostProcessor}类型的后置处理器,不执行.
+				 *
 				 * 这里处理的后置处理器,处理的是{@link org.springframework.beans.factory.config.BeanPostProcessor}类型的后置处理器,
 				 * 实例处理的是{@link org.springframework.beans.factory.support.AbstractBeanFactory#beanPostProcessors}里面的内容
 				 *
@@ -885,6 +906,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
+	 * Instantiate and register all BeanPostProcessor beans,
+	 * respecting explicit order if given.
+	 * <p>Must be called before any instantiation of application beans.
+	 */
+	protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+		PostProcessorRegistrationDelegate.registerBeanPostProcessors(beanFactory, this);
+	}
+
+	/**
 	 * Instantiate and invoke all registered BeanFactoryPostProcessor beans,
 	 * respecting explicit order if given.
 	 * <p>必须在单例实例化之前调用.
@@ -898,15 +928,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
 		}
-	}
-
-	/**
-	 * Instantiate and register all BeanPostProcessor beans,
-	 * respecting explicit order if given.
-	 * <p>Must be called before any instantiation of application beans.
-	 */
-	protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-		PostProcessorRegistrationDelegate.registerBeanPostProcessors(beanFactory, this);
 	}
 
 	/**

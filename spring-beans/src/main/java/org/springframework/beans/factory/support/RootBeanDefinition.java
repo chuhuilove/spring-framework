@@ -32,9 +32,11 @@ import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-
 /**
- * A root bean definition represents the merged bean definition that backs
+ * <p>{@code RootBeanDefinition}是顶级的BeanDefinition,与之对应的是{@link ChildBeanDefinition}.
+ * 若要创建一个{@link ChildBeanDefinition},则必须为其指定一个{@code parentName},这也是{@code ChildBeanDefinition}的缺点之一.
+ * 在初始化过程中的,合并的那个概念.
+ * <p>A root bean definition represents the merged bean definition that backs
  * a specific bean in a Spring BeanFactory at runtime. It might have been created
  * from multiple original bean definitions that inherit from each other,
  * typically registered as {@link GenericBeanDefinition GenericBeanDefinitions}.
@@ -45,6 +47,7 @@ import org.springframework.util.Assert;
  * bean definitions programmatically is the {@link GenericBeanDefinition} class.
  * GenericBeanDefinition has the advantage that it allows to dynamically define
  * parent dependencies, not 'hard-coding' the role as a root bean definition.
+ *
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
