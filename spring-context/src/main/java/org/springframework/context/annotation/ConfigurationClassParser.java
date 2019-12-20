@@ -278,7 +278,7 @@ class ConfigurationClassParser {
 		 */
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 			// Recursively process any member (nested) classes first
-			// 首先递归地处理任何成员(嵌套的)类
+			// 首先递归地处理所有成员(嵌套的)类
 			processMemberClasses(configClass, sourceClass);
 		}
 
@@ -322,7 +322,11 @@ class ConfigurationClassParser {
 					if (bdCand == null) {
 						bdCand = holder.getBeanDefinition();
 					}
-					// 判断是否需要进行递归
+					// 判断扫描出来的所有的类,有没有配置类(full或lite).
+					// 也就是判断这些类上有没有诸如
+					// @Configurate,@Component @ComponentScan @Import @ImportResource @Bean这几个之一注解
+					// 若是存在,则将其当作配置类,继续解析...
+					//
 					if (ConfigurationClassUtils.checkConfigurationClassCandidate(bdCand, this.metadataReaderFactory)) {
 						parse(bdCand.getBeanClassName(), holder.getBeanName());
 					}
@@ -352,7 +356,8 @@ class ConfigurationClassParser {
 		}
 
 		// Process individual @Bean methods
-		//
+		// 处理@Bean注解.
+
 		Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(sourceClass);
 		for (MethodMetadata methodMetadata : beanMethods) {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));

@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.core.AttributeAccessor;
 import org.springframework.core.Conventions;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -48,8 +49,8 @@ import org.springframework.stereotype.Component;
 abstract class ConfigurationClassUtils {
 
 	private static final String CONFIGURATION_CLASS_FULL = "full";
-
 	private static final String CONFIGURATION_CLASS_LITE = "lite";
+
 
 	private static final String CONFIGURATION_CLASS_ATTRIBUTE =
 			Conventions.getQualifiedAttributeName(ConfigurationClassPostProcessor.class, "configurationClass");
@@ -87,6 +88,10 @@ abstract class ConfigurationClassUtils {
 			return false;
 		}
 
+
+		/**
+		 * 获取bd的元注解.
+		 */
 		AnnotationMetadata metadata;
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
@@ -113,6 +118,18 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		/**
+		 * 判断给定的类是不是全注解类型的?
+		 * 什么是全注解类型的呢?
+		 * 如果给定的类上添加了@{@link Configuration}注解,就认为该类是全配置类型
+		 * 然后,给bd添加一个额外的属性:configurationClass---->full
+		 *
+		 * 如果类上,没有@{@link Configuration}注解,但是却又如下注解
+		 * {@link Component}或者{@link ComponentScan}或者{@link Import}或者{@link ImportResource}或者{@link Bean}
+		 * 之一,都认为其是一个配置类,但不认为是一个全配置类,认为是一个lite配置类.
+		 * 这时,bd的额外属性:configurationClass---->lite
+		 *
+		 */
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
@@ -124,6 +141,8 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
+		// 如果给定的bd是一个配置类,不管是full配置类还是lite配置类,都会再设置一个额外属性:
+		// 如果bd所代表的类有order值,则设置一个额外属性:order---->orderValue
 		Integer order = getOrder(metadata);
 		if (order != null) {
 			beanDef.setAttribute(ORDER_ATTRIBUTE, order);
@@ -192,6 +211,13 @@ abstract class ConfigurationClassUtils {
 	 * 确定给定的bean定义是否表示full的{@code @Configuration}类.
 	 */
 	public static boolean isFullConfigurationClass(BeanDefinition beanDef) {
+		/**
+		 * 这个里的beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE)返回的是什么东西我们先不管,先搞清楚为什么要这样调用.
+		 * 根据上下文,beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE)所返回的东西应该能表示该BeanDefinition是不是被做过标记.
+		 * 但是BeanDefinition中并没有提供这样一个接口来表示db是不是被做过标记,所以我们就想把信息额外的存储起来,
+		 * 谁能帮我们做这件事呢?那就是{@link BeanDefinition}的接口{@link AttributeAccessor}.
+		 * 所以这里返回一个bd是否被标记了,被标记成什么了呢?这个函数中有表示{@link #checkConfigurationClassCandidate}.
+		 */
 		return CONFIGURATION_CLASS_FULL.equals(beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE));
 	}
 

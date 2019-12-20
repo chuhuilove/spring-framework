@@ -16,20 +16,14 @@
 
 package org.springframework.context.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.filter.TypeFilter;
 
+import java.lang.annotation.*;
+
 /**
- *
  * 配置组件扫描指令以与@{@link Configuration}类一起使用.
  * 提供与Spring XML的{@code <context:component-scan>}元素并行的支持.
  *
@@ -50,8 +44,8 @@ import org.springframework.core.type.filter.TypeFilter;
  * @author Chris Beams
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 3.1
  * @see Configuration
+ * @since 3.1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -95,12 +89,13 @@ public @interface ComponentScan {
 	 * use its inherited bean name generator, e.g. the default
 	 * {@link AnnotationBeanNameGenerator} or any custom instance supplied to the
 	 * application context at bootstrap time.
+	 *
 	 * @see AnnotationConfigApplicationContext#setBeanNameGenerator(BeanNameGenerator)
 	 */
 	Class<? extends BeanNameGenerator> nameGenerator() default BeanNameGenerator.class;
 
 	/**
-	 *  {@link ScopeMetadataResolver}用于解析检测到的组件的范围.
+	 * {@link ScopeMetadataResolver}用于解析检测到的组件的范围.
 	 */
 	Class<? extends ScopeMetadataResolver> scopeResolver() default AnnotationScopeMetadataResolver.class;
 
@@ -110,6 +105,7 @@ public @interface ComponentScan {
 	 * <p>The default is defer to the default behavior of the component scanner used to
 	 * execute the actual scan.
 	 * <p>Note that setting this attribute overrides any value set for {@link #scopeResolver}.
+	 *
 	 * @see ClassPathBeanDefinitionScanner#setScopedProxyMode(ScopedProxyMode)
 	 */
 	ScopedProxyMode scopedProxy() default ScopedProxyMode.DEFAULT;
@@ -133,6 +129,7 @@ public @interface ComponentScan {
 	 * <p>Note that these filters will be applied in addition to the default filters, if specified.
 	 * Any type under the specified base packages which matches a given filter will be included,
 	 * even if it does not match the default filters (i.e. is not annotated with {@code @Component}).
+	 *
 	 * @see #resourcePattern()
 	 * @see #useDefaultFilters()
 	 */
@@ -140,6 +137,30 @@ public @interface ComponentScan {
 
 	/**
 	 * 指定哪些类型不适合组件扫描.
+	 * <p>
+	 * 如果过滤掉指定的类,则可以写成:excludeFilters ={ @Filter(type=FilterType.ASSIGNABLE_TYPE,classes = BootstrapApplication.class) }
+	 * 注意,过滤类,则type设置为{@link FilterType.ASSIGNABLE_TYPE};
+	 * 如果之前BootstrapApplication已经添加到beanFactory中了,则再次扫描,过滤,则不会移除已经存在beanFactory中的类的.
+	 * <p>
+	 * 若之前已经将某个类A过滤掉了,但是在第二次扫描的时候,没有将类A过滤掉,则最终beanFactory中还是会出现类A.
+	 * 最典型的例子就是:
+	 * <p>
+	 * &#064;Configuration
+	 * &#064;Order(Ordered.LOWEST_PRECEDENCE-1)
+	 * &#064;ComponentScan("com.chuhui.springbootdebug")
+	 * public class AppConfigSecond {
+	 * <p>
+	 * }
+	 * 和
+	 * &#064;Configuration
+	 * &#064;Order(Ordered.LOWEST_PRECEDENCE-2)
+	 * &#064;ComponentScan(value = "com.chuhui.springbootdebug",excludeFilters ={&#064;Filter(type=FilterType.ASSIGNABLE_TYPE,classes = BootstrapApplication.class) })
+	 * public class AppConfigMain {
+	 * }
+	 * <p>
+	 * {@code AppConfigMain}的优先级比较高,先执行,在扫描的过程中,会过滤掉BootstrapApplication类,
+	 * 但是在执行{@code AppConfigSecond}的时候,会将BootstrapApplication再重新添加进来.
+	 *
 	 * @see #resourcePattern
 	 */
 	Filter[] excludeFilters() default {};
@@ -148,6 +169,7 @@ public @interface ComponentScan {
 	 * Specify whether scanned beans should be registered for lazy initialization.
 	 * 指定被扫描的bean是否应该延迟初始化.
 	 * <p>Default is {@code false}; switch this to {@code true} when desired.
+	 *
 	 * @since 4.1
 	 */
 	boolean lazyInit() default false;
@@ -164,6 +186,7 @@ public @interface ComponentScan {
 		/**
 		 * The type of filter to use.
 		 * <p>Default is {@link FilterType#ANNOTATION}.
+		 *
 		 * @see #classes
 		 * @see #pattern
 		 */
@@ -171,6 +194,7 @@ public @interface ComponentScan {
 
 		/**
 		 * Alias for {@link #classes}.
+		 *
 		 * @see #classes
 		 */
 		@AliasFor("classes")
@@ -202,9 +226,10 @@ public @interface ComponentScan {
 		 * </ul>
 		 * <p>Specifying zero classes is permitted but will have no effect on component
 		 * scanning.
-		 * @since 4.2
+		 *
 		 * @see #value
 		 * @see #type
+		 * @since 4.2
 		 */
 		@AliasFor("value")
 		Class<?>[] classes() default {};
@@ -216,6 +241,7 @@ public @interface ComponentScan {
 		 * this is an AspectJ type pattern expression. If {@link #type} is
 		 * set to {@link FilterType#REGEX REGEX}, this is a regex pattern
 		 * for the fully-qualified class names to match.
+		 *
 		 * @see #type
 		 * @see #classes
 		 */

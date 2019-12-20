@@ -585,9 +585,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			 * 获取此上下文中的beanFactory
 			 * 返回的是一个{@link DefaultListableBeanFactory}实例
 			 * Tell the subclass to refresh the internal bean factory.
+			 *
+			 * 一般情况下,只要是从{@link  GenericApplicationContext}继承的context,
+			 * 都会在创建的时候,初始化一个bean factory({@link DefaultListableBeanFactory}).
+			 *
+			 * 所以,当我看到这里需要获取到bean工厂的时候,比较迷惑.
+			 * 为什么这里获取一个beanFactory那么麻烦,直接调用{@link #getBeanFactory()}不就行了嘛.
+			 *
+			 * 当看到以{@link ClassPathXmlApplicationContext}作为context的时候,
+			 * 其父类并不是在构造函数中初始化的bean factory,
+			 * 而是在{@link  AbstractRefreshableApplicationContext#refreshBeanFactory()}中
+			 * 初始化.
 			 */
-			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
+			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 			DefaultListableBeanFactory obtainContentFactory = (DefaultListableBeanFactory) beanFactory;
 			logger.debug("refresh invoked: get beanFactory "+this.getClass().getTypeName());
 			getBeanFactoryContent(obtainContentFactory);

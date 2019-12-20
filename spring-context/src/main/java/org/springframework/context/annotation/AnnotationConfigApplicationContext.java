@@ -63,6 +63,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	/**
 	 * 一个扫描器
 	 * 扫描ClassPath下的Bean
+	 * ,如果不手动调用{@link #scan(String...)}方法,这个属性在这个类里面是不会用到的.
 	 */
 	private final ClassPathBeanDefinitionScanner scanner;
 

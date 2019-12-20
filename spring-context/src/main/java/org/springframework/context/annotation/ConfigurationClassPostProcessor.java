@@ -143,7 +143,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 	@Override
 	public int getOrder() {
-		return Ordered.LOWEST_PRECEDENCE;  // within PriorityOrdered
+		// 最低的优先级
+		return Ordered.LOWEST_PRECEDENCE;
 	}
 
 	/**
@@ -287,19 +288,28 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		 */
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
+
+			/**
+			 * 1.1
+			 * 先判断类是否已经被解析过了,如果类已经被解析过了,
+			 * 则会在bd中添加一个额外的属性:configurationClass,
+			 * 通过bd.getAttribute("configurationClass")拿到.
+			 *
+			 */
 			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
 					ConfigurationClassUtils.isLiteConfigurationClass(beanDef)) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			} else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
-				//
+
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
 
 		// Return immediately if no @Configuration classes were found
-		//如果没有找到@Configuration类,则立即返回
+		//如果没有找到带有@Configurate,@Component @ComponentScan @Import @ImportResource @Bean这几个之一注解之一的类,
+		// 则认为该db不需要解析.
 		if (configCandidates.isEmpty()) {
 			return;
 		}
@@ -307,6 +317,11 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		// Sort by previously determined @Order value, if applicable
 		// 根据之前确定的@Order值排序(如果适用)
 		// 将找到的,带有@Configuration注解的类,进行排序
+
+		// 将找到的类行排序,排序规则如下:
+		// 如果类上有@Order注解,则根据其中的值,进行排序
+		// 入过没有找到,则认为其order值为Ordered.LOWEST_PRECEDENCE,然后提取出来进行排序.
+
 		configCandidates.sort((bd1, bd2) -> {
 			int i1 = ConfigurationClassUtils.getOrder(bd1.getBeanDefinition());
 			int i2 = ConfigurationClassUtils.getOrder(bd2.getBeanDefinition());
@@ -332,8 +347,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		/**
-		 * 开始正式解析被{@link Configuration}注解的类
-		 *
+		 * 开始正式解析配置类
 		 */
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
@@ -342,6 +356,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
+			// 注意,这里传过去的是所有要解析的类
+			// 为什么不一个一个的传过去呢?因为bean之间可能是有依赖的.
 			parser.parse(candidates);
 			parser.validate();
 

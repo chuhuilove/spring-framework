@@ -86,18 +86,33 @@ final class PostProcessorRegistrationDelegate {
 				/**
 				 * 一. 先执行添加到{@link  AbstractApplicationContext#beanFactoryPostProcessors}中,
 				 * 并且实现了{@link BeanDefinitionRegistryPostProcessor}接口类.
-				 * 以添加更多的bean定义.
-				 * 从spring-boot的角度来看,
-				 * 先后执行了
+				 * 注意:这里的{@link BeanDefinitionRegistryPostProcessor}的实现类,是程序员自己提供的,
+				 * 通过context.addBeanFactoryPostProcessor()方法添加的程序员自定义的实现类.
+				 *
+				 *
+				 * 为什么这里循环以后,下面还要通过类型来查找呢?
+				 * 本质上是beanFactoryPostProcessors的来源的问题,由于这个beanFactoryPostProcessors
+				 * 实际上是{@link  AbstractApplicationContext#beanFactoryPostProcessors}
+				 * 中的内容,而我们使用的context中,spring都提供了一个addBeanFactoryPostProcessor方法来让我们实现自己在扫描还没有开始之前的逻辑
+				 * 比如,在spring-boot中,添加了一些{@link BeanDefinitionRegistryPostProcessor}的实现,
 				 * 1. org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer$CachingMetadataReaderFactoryPostProcessor
 				 * 向工厂里面注册一个SharedMetadataReaderFactoryBean
 				 * 2. org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer$ConfigurationWarningsPostProcessor
-				 * TODO 这个里面的实现,不清楚..
+				 *
+				 *
+				 * 换句话说,在beanFactory已经创建了,但是还没有开始扫描类的时候,想对bean Factory进行操作.
+				 * 只有一个办法
+				 * 实现{@link BeanDefinitionRegistryPostProcessor}接口,并且手动通过context.addBeanFactoryPostProcessor方法将其添加进去.
+				 * 比如:context.addBeanFactoryPostProcessor(new CustomBeanFactoryPostProcessor()).
+				 *
+				 * 这里,可能会有人问了,我直接在自定义的{@code BeanDefinitionRegistryPostProcessor}上添加一个注解不行嘛?
+				 * 不行,因为添加了注解,是需要进行扫描的,而扫描是在执行完程序员最定义的{@code BeanDefinitionRegistryPostProcessor}之后执行的.
 				 *
 				 */
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
+					// 直接执行程序员自己定义的BeanDefinitionRegistryPostProcessor类.
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
 				} else {
@@ -122,6 +137,11 @@ final class PostProcessorRegistrationDelegate {
 			 * 第一个注册的,就是{@link ConfigurationClassPostProcessor},默认
 			 * 首先,调用实现PriorityOrdered的BeanDefinitionRegistryPostProcessors.
 			 * org.springframework.context.annotation.ConfigurationClassPostProcessor
+			 *
+			 * 可以自己实现一个既实现了{@ink BeanDefinitionRegistryPostProcessor}又实现了{@link PriorityOrdered}接口的类,
+			 * 由于已经添加了的{@link ConfigurationClassPostProcessor}优先级最低,所以我们自己的实现类,其优先级
+			 *
+			 *
 			 */
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
@@ -131,10 +151,16 @@ final class PostProcessorRegistrationDelegate {
 					processedBeans.add(ppName);
 				}
 			}
+			// 按照优先级排序,谁的优先级小,谁在前面
+			// ConfigurationClassPostProcessor的值最大,也就是优先级最低.
+			// 优先级最高的排在前面,优先级相等的根据插入顺序排序(这是基于默认的排序规则)
+
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 			registryProcessors.addAll(currentRegistryProcessors);
 			/**
-			 * 二. 执行实现了BeanDefinitionRegistryPostProcessor,又实现了PriorityOrdered的类.
+			 * 二. 执行实现了BeanDefinitionRegistryPostProcessor,又实现了PriorityOrdered的类,
+			 * 除了自定义的类之外,
+			 * 最重要的一个类是{@link ConfigurationClassPostProcessor}
 			 */
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
@@ -304,6 +330,7 @@ final class PostProcessorRegistrationDelegate {
 		// moving it to the end of the processor chain (for picking up proxies etc).
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(applicationContext));
 	}
+
 
 	private static void sortPostProcessors(List<?> postProcessors, ConfigurableListableBeanFactory beanFactory) {
 		Comparator<Object> comparatorToUse = null;
