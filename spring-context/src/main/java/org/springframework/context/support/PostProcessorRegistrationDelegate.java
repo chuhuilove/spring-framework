@@ -185,7 +185,9 @@ final class PostProcessorRegistrationDelegate {
 			/**
 			 * 4. 调用只实现了BeanDefinitionRegistryPostProcessor接口的对象.
 			 * Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
-			 * 最后,调用所有其他BeanDefinitionRegistryPostProcessor，直到不再出现.
+			 * 最后,调用所有其他BeanDefinitionRegistryPostProcessor,直到不再出现.
+			 * 每调用一次invokeBeanDefinitionRegistryPostProcessors方法,其实现都有可能注册新的{@link BeanDefinitionRegistryPostProcessor}
+			 * 类,所以这里需要有一个相当于死循环的东西.
 			 */
 
 			boolean reiterate = true;

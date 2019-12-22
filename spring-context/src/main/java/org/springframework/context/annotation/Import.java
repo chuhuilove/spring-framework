@@ -21,9 +21,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Collection;
 
 /**
  * 表示要导入一个或多个{@link Configuration @Configuration}类.
+ * 导入的类有三种:
+ * 1. 添加了类似于@Configuration,@Component 等注解的类
+ * 2. 实现了{@link ImportBeanDefinitionRegistrar}接口的类
+ * 3. 实现了{@link ImportSelector}接口的类
+ * 在{@link ConfigurationClassParser#processImports(ConfigurationClass, ConfigurationClassParser.SourceClass, Collection, boolean)}函数中进行解析
  *
  * <p>Provides functionality equivalent to the {@code <import/>} element in Spring XML.
  * Allows for importing {@code @Configuration} classes, {@link ImportSelector} and
@@ -43,10 +49,10 @@ import java.lang.annotation.Target;
  *
  * @author Chris Beams
  * @author Juergen Hoeller
- * @since 3.0
  * @see Configuration
  * @see ImportSelector
  * @see ImportResource
+ * @since 3.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

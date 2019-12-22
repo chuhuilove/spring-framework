@@ -196,9 +196,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * BeanFactoryPostProcessors to apply on refresh.
-	 *
+	 * <p>
 	 * beanFactory的后置处理器
-	 *
 	 */
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
@@ -293,7 +292,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Set the unique id of this application context.
-	 *
+	 * <p>
 	 * 设置这个应用上下文的唯一id
 	 * <p>Default is the object id of the context instance, or the name
 	 * of the context bean if the context is itself defined as a bean.
@@ -600,7 +599,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 			DefaultListableBeanFactory obtainContentFactory = (DefaultListableBeanFactory) beanFactory;
-			logger.debug("refresh invoked: get beanFactory "+this.getClass().getTypeName());
+			logger.debug("refresh invoked: get beanFactory " + this.getClass().getTypeName());
 			getBeanFactoryContent(obtainContentFactory);
 
 			// Prepare the bean factory for use in this context.
@@ -1279,10 +1278,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 *
 	 * 用于销毁此上下文管理的所有bean的模板方法.
 	 * 默认实现是释放所有在这个上下文中被缓存的单例,
-	 *
+	 * <p>
 	 * Template method for destroying all beans that this context manages.
 	 * The default implementation destroy all cached singletons in this context,
 	 * invoking {@code DisposableBean.destroy()} and/or the specified
@@ -1610,20 +1608,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Subclasses must implement this method to perform the actual configuration load.
-	 *
+	 * <p>
 	 * 子类必须实现这个方法来执行实际的配置加载.
 	 * 在进行任何其他初始化工作之前，{@link #refresh()}将调用该方法.
-	 *
+	 * <p>
 	 * The method is invoked by {@link #refresh()} before any other initialization work.
-	 *
+	 * <p>
 	 * 子类要么将创建一个新的bean工厂并保存对其的引用,
 	 * 要么返回它持有的单个BeanFactory实例.
 	 * 如果是后者,则在多次刷新上下文的情况下,通常会抛出IllegalStateException.
-	 *
+	 * <p>
 	 * 这个方法有两个实现
 	 * {@link AbstractRefreshableApplicationContext#refreshBeanFactory()}
 	 * 和{@link GenericApplicationContext#refreshBeanFactory()}
-	 *
+	 * <p>
 	 * 由于{@code GenericApplicationContext#refreshBeanFactory()}中只设置了上下文的id,
 	 * 所以,研究一下{@link AbstractRefreshableApplicationContext#refreshBeanFactory()}中的实现
 	 *
@@ -1647,7 +1645,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * 子类必须返回它们自己的bean工厂.
-	 *
+	 * <p>
 	 * Subclasses must return their internal bean factory here. They should implement the
 	 * lookup efficiently, so that it can be called repeatedly without a performance penalty.
 	 * <p>Note: Subclasses should check whether the context is still active before

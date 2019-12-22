@@ -395,6 +395,10 @@ import org.springframework.stereotype.Component;
  * (any such instances will be treated as regular beans, with their configuration
  * annotations remaining undetected).
  * </ul>
+ * <p>
+ * 原则上,只要是添加了@Component注解的类,都会被spring-framework进行解析.
+ * 但是为什么还要添加@Configuration注解呢?
+ * 只有添加了@Configuration注解的类,才能保证其内部的@Bean注解修饰的函数返回唯一对象,否则,会打破单例的原则
  *
  * @author Rod Johnson
  * @author Chris Beams
