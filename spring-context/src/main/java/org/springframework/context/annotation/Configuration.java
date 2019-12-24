@@ -372,16 +372,14 @@ import org.springframework.stereotype.Component;
  *
  * <h2>使用{@code @Enable}注解启用内置的Spring特性</h2>
  *
- * <p>Spring features such as asynchronous method execution, scheduled task execution,
- * annotation driven transaction management, and even Spring MVC can be enabled and
- * configured from {@code @Configuration} classes using their respective "{@code @Enable}"
- * annotations. See
+ * <p>诸如异步方法执行,计划任务执行,注解驱动的事务管理、
+ * 甚至Spring MVC等Spring特性都可以使用各自的"{@code @Enable}"注解从{@code @Configuration}类中启用和配置.
+ * 查看
  * {@link org.springframework.scheduling.annotation.EnableAsync @EnableAsync},
  * {@link org.springframework.scheduling.annotation.EnableScheduling @EnableScheduling},
  * {@link org.springframework.transaction.annotation.EnableTransactionManagement @EnableTransactionManagement},
  * {@link org.springframework.context.annotation.EnableAspectJAutoProxy @EnableAspectJAutoProxy},
- * and {@link org.springframework.web.servlet.config.annotation.EnableWebMvc @EnableWebMvc}
- * for details.
+ * 和{@link org.springframework.web.servlet.config.annotation.EnableWebMvc @EnableWebMvc}来获取个更多信息
  *
  * <h2>编写{@code @Configuration}类时的约束</h2>
  *
@@ -397,8 +395,8 @@ import org.springframework.stereotype.Component;
  * </ul>
  * <p>
  * 原则上,只要是添加了@Component注解的类,都会被spring-framework进行解析.
- * 但是为什么还要添加@Configuration注解呢?
- * 只有添加了@Configuration注解的类,才能保证其内部的@Bean注解修饰的函数返回唯一对象,否则,会打破单例的原则
+ * 但是为什么还要添加{@code @Configuration}注解呢?
+ * 只有添加了{@code @Configuration}注解的类,才能保证其内部的{@code @Bean}注解修饰的函数返回唯一对象,否则,会打破单例的原则
  *
  * @author Rod Johnson
  * @author Chris Beams

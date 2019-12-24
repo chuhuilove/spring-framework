@@ -75,18 +75,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 /**
- * Bean post-processor that registers methods annotated with @{@link Scheduled}
- * to be invoked by a {@link org.springframework.scheduling.TaskScheduler} according
- * to the "fixedRate", "fixedDelay", or "cron" expression provided via the annotation.
  *
- * <p>This post-processor is automatically registered by Spring's
- * {@code <task:annotation-driven>} XML element, and also by the
- * {@link EnableScheduling @EnableScheduling} annotation.
+ * 一个bean后置处理器,它注册带有@{@link Scheduled}注解的方法,
+ * 并根据注解提供的"fixedRate","fixedDelay"或"cron"表达式由{@link org.springframework.scheduling.TaskScheduler}调用.
  *
- * <p>Autodetects any {@link SchedulingConfigurer} instances in the container,
- * allowing for customization of the scheduler to be used or for fine-grained
- * control over task registration (e.g. registration of {@link Trigger} tasks.
- * See the @{@link EnableScheduling} javadocs for complete usage details.
+ *
+ * <p>Spring的{@code <task:annotation-driven>}XML元素以及
+ * {@link EnableScheduling @EnableScheduling}注解会自动注册该后处理器.
+ *
+ * <p>自动检测容器中的任何{@link SchedulingConfigurer}实例,
+ * 允许定制要使用的调度器或对任务注册进行细粒度控制(例如,注册{@link Trigger}任务).
  *
  * @author Mark Fisher
  * @author Juergen Hoeller
