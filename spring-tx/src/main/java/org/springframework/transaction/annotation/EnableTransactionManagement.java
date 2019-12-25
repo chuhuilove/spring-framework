@@ -29,7 +29,7 @@ import org.springframework.core.Ordered;
 /**
  *
  * 启用Spring基于注解的事务管理功能,类似于在xml启用{@code <tx:*>}名称空间.
- * 在被{@link org.springframework.context.annotation.Configuration @Configuration}注解的类上使用:
+ * 要在被{@link org.springframework.context.annotation.Configuration @Configuration}注解的类上使用,如下所示：
  *
  * <pre class="code">
  * &#064;Configuration
@@ -44,7 +44,7 @@ import org.springframework.core.Ordered;
  *
  *     &#064;Bean
  *     public DataSource dataSource() {
- *         // configure and return the necessary JDBC DataSource
+ *         // 配置并且返回必要的JDBC数据源
  *     }
  *
  *     &#064;Bean
@@ -53,8 +53,7 @@ import org.springframework.core.Ordered;
  *     }
  * }</pre>
  *
- * <p>For reference, the example above can be compared to the following Spring XML
- * configuration:
+ * <p>作为参考,可以将上面的示例与以下Spring XML配置进行比较:
  *
  * <pre class="code">
  * &lt;beans&gt;
@@ -74,12 +73,17 @@ import org.springframework.core.Ordered;
  * &lt;/beans&gt;
  * </pre>
  *
+ * 在上面的场景中,{@code @EnableTransactionManagement}和{@code <tx:annotation-driven/>}都负责注册必要的Spring组件,
+ * 这些组件为基于注解的事务管理提供了支持.
+ * 如TransactionInterceptor和proxy-,或者基于AspectJ的通知,
+ * 织入拦截到{@code JdbcFooRepository}的{@code @Transactional}方法被调用时调用堆栈.
  * In both of the scenarios above, {@code @EnableTransactionManagement} and {@code
  * <tx:annotation-driven/>} are responsible for registering the necessary Spring
  * components that power annotation-driven transaction management, such as the
  * TransactionInterceptor and the proxy- or AspectJ-based advice that weave the
  * interceptor into the call stack when {@code JdbcFooRepository}'s {@code @Transactional}
  * methods are invoked.
+ *
  *
  * <p>A minor difference between the two examples lies in the naming of the {@code
  * PlatformTransactionManager} bean: In the {@code @Bean} case, the name is
