@@ -973,8 +973,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Initialize the ApplicationEventMulticaster.
-	 * Uses SimpleApplicationEventMulticaster if none defined in the context.
+	 * 初始化ApplicationEventMulticaster.
+	 * 如果在容器中不存在,则使用SimpleApplicationEventMulticaster.
 	 *
 	 * @see org.springframework.context.event.SimpleApplicationEventMulticaster
 	 */
@@ -997,7 +997,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Initialize the LifecycleProcessor.
+	 * 初始化LifecycleProcessor.
+	 * 如果在上下文中没有定义,则使用DefaultLifecycleProcessor.
 	 * Uses DefaultLifecycleProcessor if none defined in the context.
 	 *
 	 * @see org.springframework.context.support.DefaultLifecycleProcessor
@@ -1124,7 +1125,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Propagate refresh to lifecycle processor first.
 		getLifecycleProcessor().onRefresh();
 
-		// Publish the final event.
+		// 发布最终的消息.
 		publishEvent(new ContextRefreshedEvent(this));
 
 		// Participate in LiveBeansView MBean, if active.
