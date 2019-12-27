@@ -859,6 +859,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		 * 有没有考虑过,参数中的ApplicationContext是从哪里来的?就是在这个类中实现的
 		 */
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);

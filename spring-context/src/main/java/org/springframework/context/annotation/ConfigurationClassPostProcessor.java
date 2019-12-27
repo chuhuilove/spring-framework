@@ -79,7 +79,7 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.CONFI
  * 这个后处理器是基于优先级排序的,因为在{@code @Configuration}类中声明的{@link Bean}方法都必须在任何其他{@link BeanFactoryPostProcessor}执行之前将它们解析成bean,
  * 然后注册到bean工厂中.
  * 所以,这个{@code BeanDefinitionRegistryPostProcessor}的优先级很低.
- * 关于优先级的问题,看{@link BeanDefinitionRegistryPostProcessor}的注释.
+ * 关于优先级的问题,看{@link BeanDefinitionRegistryPostProcessor}的注解.
  *
  *
  *
