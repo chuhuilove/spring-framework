@@ -91,15 +91,10 @@ import org.springframework.web.util.WebUtils;
  * +       View        +
  * +-------------------+
  * <p>
- * <p>
- * <p>
  * 所有的请求都要经过这个类.
  * 无论是将这个类配置在web.xml中,还是在java config中配置,都要初始化一整套流程
  * <p>
  * 先从{@code DispatcherServlet}中的静态代码块开始,加载默认的实现
- * <p>
- * <p>
- * <p>
  * <p>
  * <p>
  * Central dispatcher for HTTP request handlers/controllers, e.g. for web UI controllers

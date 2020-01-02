@@ -70,24 +70,26 @@ import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
 
 /**
- * Base servlet for Spring's web framework. Provides integration with
- * a Spring application context, in a JavaBean-based overall solution.
+ * Spring Web框架的基础servlet.在基于JavaBean的整体解决方案中提供与Spring应用程序上下文的集成.
  *
- * <p>This class offers the following functionality:
+ * <p>这个类提供了下下面的功能:
  * <ul>
- * <li>Manages a {@link org.springframework.web.context.WebApplicationContext
- * WebApplicationContext} instance per servlet. The servlet's configuration is determined
- * by beans in the servlet's namespace.
- * <li>Publishes events on request processing, whether or not a request is
- * successfully handled.
+ * <li>每个servlet管理一个{@link org.springframework.web.context.WebApplicationContext WebApplicationContext}实例.
+ * servlet的配置由servlet名称空间中的bean决定.
+ *
+ * <li>在请求处理时发布事件,不管请求是否成功处理.
  * </ul>
  *
- * <p>Subclasses must implement {@link #doService} to handle requests. Because this extends
- * {@link HttpServletBean} rather than HttpServlet directly, bean properties are
- * automatically mapped onto it. Subclasses can override {@link #initFrameworkServlet()}
- * for custom initialization.
+ * <p>子类必须实现{@link #doService}来处理请求.
+ * 因为这扩展了{@link HttpServletBean}而不是直接扩展HttpServlet,所以bean属性会自动映射到它.
+ * 子类可以重写{@link #initFrameworkServlet()}来定制初始化.
  *
- * <p>Detects a "contextClass" parameter at the servlet init-param level,
+ * <p>在servlet init-param level检测"contextClass"参数,
+ * 如果未找到,则使用默认上下文类{@link org.springframework.web.context.support.XmlWebApplicationContext
+ * XmlWebApplicationContext}.
+ * 注意,使用默认的{@code FrameworkServlet},自定义上下文类需要实现ConfigurableWebApplicationContext SPI。
+ *
+ * Detects a "contextClass" parameter at the servlet init-param level,
  * falling back to the default context class,
  * {@link org.springframework.web.context.support.XmlWebApplicationContext
  * XmlWebApplicationContext}, if not found. Note that, with the default

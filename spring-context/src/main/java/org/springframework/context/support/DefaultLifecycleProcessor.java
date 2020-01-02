@@ -47,14 +47,6 @@ import org.springframework.util.Assert;
  *
  *
  *
- *F:\apache-tomcat-8.5.41\bin\catalina.bat run
- * [2019-12-30 04:27:21,657] Artifact mdb-web:war exploded: Waiting for server connection to start artifact deployment...
- * Console output is saving to: F:\chunyangzi-program\mdbLog\javaAgent.log
- * Using CATALINA_BASE:   "C:\Users\Administrator\.IntelliJIdea2019.1\system\tomcat\Unnamed_mdbweb_3"
- * Using CATALINA_HOME:   "F:\apache-tomcat-8.5.41"
- * Using CATALINA_TMPDIR: "F:\apache-tomcat-8.5.41\temp"
- * Using JRE_HOME:        "C:\Program Files\Java\jdk1.8.0_162"
- * Using CLASSPATH:       "F:\apache-tomcat-8.5.41\bin\bootstrap.jar;F:\apache-tomcat-8.5.41\bin\tomcat-juli.jar"
  * Connected to the target VM, address: '127.0.0.1:49887', transport: 'socket'
  * 30-Dec-2019 16:27:23.607 淇℃伅 [main] org.apache.catalina.startup.VersionLoggerListener.log Server version:        Apache Tomcat/8.5.41
  * 30-Dec-2019 16:27:23.616 淇℃伅 [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          May 4 2019 09:17:16 UTC
