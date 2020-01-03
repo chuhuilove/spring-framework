@@ -207,7 +207,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 		// Register resolved handler
 		this.handlerMap.put(pattern, resolvedHandler);
 		if (logger.isTraceEnabled()) {
-			logger.trace("Mapped [" + urlPath + "] onto " + getHandlerDescription(handler));
+			logger.info("Mapped [" + urlPath + "] onto " + getHandlerDescription(handler));
 		}
 	}
 

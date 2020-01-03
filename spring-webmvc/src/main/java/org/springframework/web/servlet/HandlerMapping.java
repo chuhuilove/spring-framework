@@ -42,10 +42,7 @@ import org.springframework.lang.Nullable;
  *
  * 还可以设置拦截器.....
  *
- *
  * 这个接口存在的意义,到底是什么????
- *
- *
  *
  * <p>This class can be implemented by application developers, although this is not
  * necessary, as {@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}

@@ -17,41 +17,28 @@
 package org.springframework.context;
 
 /**
- * An extension of the {@link Lifecycle} interface for those objects that require to
- * be started upon ApplicationContext refresh and/or shutdown in a particular order.
- * The {@link #isAutoStartup()} return value indicates whether this object should
- * be started at the time of a context refresh. The callback-accepting
- * {@link #stop(Runnable)} method is useful for objects that have an asynchronous
- * shutdown process. Any implementation of this interface <i>must</i> invoke the
- * callback's {@code run()} method upon shutdown completion to avoid unnecessary
- * delays in the overall ApplicationContext shutdown.
  *
- * <p>This interface extends {@link Phased}, and the {@link #getPhase()} method's
- * return value indicates the phase within which this Lifecycle component should
- * be started and stopped. The startup process begins with the <i>lowest</i> phase
- * value and ends with the <i>highest</i> phase value ({@code Integer.MIN_VALUE}
- * is the lowest possible, and {@code Integer.MAX_VALUE} is the highest possible).
- * The shutdown process will apply the reverse order. Any components with the
- * same value will be arbitrarily ordered within the same phase.
+ * {@link Lifecycle}接口的扩展,用于那些需要在ApplicationContext刷新和/或按特定顺序关闭时启动的对象.
+ * {@link #isAutoStartup()}返回值指示是否应在刷新上下文时启动此对象.
+ * 接受回调的{@link #stop(Runnable)}方法对于具有异步关闭过程的对象很有用.
+ * 此接口的任何实现都必须在关闭完成时调用回调的{@code run()}方法,以避免在整个ApplicationContext关闭中不必要的延迟。
  *
- * <p>Example: if component B depends on component A having already started,
- * then component A should have a lower phase value than component B. During
- * the shutdown process, component B would be stopped before component A.
  *
- * <p>Any explicit "depends-on" relationship will take precedence over the phase
- * order such that the dependent bean always starts after its dependency and
- * always stops before its dependency.
+ * <p>该接口扩展了{@link Phased},{@link #getPhase()}方法的返回值指示了启动和停止该生命周期组件的阶段.
+ * 启动过程以<i>最低</i>的phase值开始,以<i>最高</i>的phase值结束({@code Integer.MIN_VALUE}是最低的,{@code Integer.MAX_VALUE}是最高的).
+ * 关闭过程将应用相反的顺序.具有相同值的任何组件将在同一phase中任意排序.
  *
- * <p>Any {@code Lifecycle} components within the context that do not also
- * implement {@code SmartLifecycle} will be treated as if they have a phase
- * value of 0. That way a {@code SmartLifecycle} implementation may start
- * before those {@code Lifecycle} components if it has a negative phase value,
- * or it may start after those components if it has a positive phase value.
+ * <p>示例:如果组件B依赖于已经启动的组件A,那么组件A的phase值应该低于组件B.
+ * 在关闭过程中,组件B将在组件A之前停止.
  *
- * <p>Note that, due to the auto-startup support in {@code SmartLifecycle}, a
- * {@code SmartLifecycle} bean instance will usually get initialized on startup
- * of the application context in any case. As a consequence, the bean definition
- * lazy-init flag has very limited actual effect on {@code SmartLifecycle} beans.
+ * <p>任何显式的"depends-on"关系都优先于phase顺序,这样依赖项bean总是在依赖项之后开始,总是在依赖项之前停止.
+ *
+ * <p>上下文中的任何没有实现{@code SmartLifecycle}的{@code Lifecycle}组件都将被视为阶段值为0.
+ * 这样,如果{@code SmartLifecycle}的phase值为负,那么它可以在这些{@code Lifecycle}组件之前开始,
+ * 如果阶段值为正,则可以在这些组件之后开始.
+ *
+ * <p>注意,由于{@code SmartLifecycle}支持自动启动,所以在任何情况下,{@code SmartLifecycle} bean实例通常在应用程序上下文启动时初始化.
+ * 因此,bean定义的lazy-init标志对{@code SmartLifecycle} bean的实际影响非常有限.
  *
  * @author Mark Fisher
  * @author Juergen Hoeller

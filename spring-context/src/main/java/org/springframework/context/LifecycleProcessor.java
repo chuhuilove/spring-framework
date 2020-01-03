@@ -18,6 +18,10 @@ package org.springframework.context;
 
 /**
  * Strategy interface for processing Lifecycle beans within the ApplicationContext.
+ * 在Spring-Framework中,只有{@link org.springframework.context.support.DefaultLifecycleProcessor}实现了这个接口,
+ * 在整个Spring-Boot中,没有实现这个接口的类.,
+ * 这个接口,是整个Spring Factory生命周期中的最后一个处理器,在所有的bean都已经实例化完成以后才会调用.
+ * 即,在第12步才会调用.
  *
  * @author Mark Fisher
  * @author Juergen Hoeller

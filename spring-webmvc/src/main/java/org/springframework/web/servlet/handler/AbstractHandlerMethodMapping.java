@@ -606,6 +606,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				List<String> directUrls = getDirectUrls(mapping);
 				for (String url : directUrls) {
 					this.urlLookup.add(url, mapping);
+					logger.info("cyzi--->"+getClass().getName()+": register request url:"+url+" mapping:"+mapping);
 				}
 
 				String name = null;

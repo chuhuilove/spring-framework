@@ -67,11 +67,6 @@ import org.springframework.web.server.ServerWebExchange;
  * 这些子类定义了映射类型{@code <T>}的详细信息.
  *
  *
- *
- *
- *
- *
- *
  * <p>For each registered handler method, a unique mapping is maintained with
  * subclasses defining the details of the mapping type {@code <T>}.
  *

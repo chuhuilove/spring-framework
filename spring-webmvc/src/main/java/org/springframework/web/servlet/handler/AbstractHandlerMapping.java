@@ -49,11 +49,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import org.springframework.web.util.UrlPathHelper;
 
 /**
- * Abstract base class for {@link org.springframework.web.servlet.HandlerMapping}
- * implementations. Supports ordering, a default handler, handler interceptors,
- * including handler interceptors mapped by path patterns.
  *
- * <p>Note: This base class does <i>not</i> support exposure of the
+ * 实现{@link org.springframework.web.servlet.HandlerMapping}接口的抽象基类.
+ * 支持排序,缺省处理器,处理器拦截器,包括由路径模式映射的处理器拦截器.
+ *
+ * Note: This base class does <i>not</i> support exposure of the
  * {@link #PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE}. Support for this attribute
  * is up to concrete subclasses, typically based on request URL mappings.
  *
