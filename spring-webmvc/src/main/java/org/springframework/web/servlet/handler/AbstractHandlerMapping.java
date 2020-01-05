@@ -49,10 +49,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import org.springframework.web.util.UrlPathHelper;
 
 /**
- *
  * 实现{@link org.springframework.web.servlet.HandlerMapping}接口的抽象基类.
  * 支持排序,缺省处理器,处理器拦截器,包括由路径模式映射的处理器拦截器.
- *
+ * <p>
  * Note: This base class does <i>not</i> support exposure of the
  * {@link #PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE}. Support for this attribute
  * is up to concrete subclasses, typically based on request URL mappings.
@@ -404,9 +403,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 
 	/**
-	 * 从{@code HttpRequest}中提取出要请求的东西
-	 * Look up a handler for the given request, falling back to the default
-	 * handler if no specific one is found.
+	 * 为给定的{@code request}查找一个合适的处理器.
 	 *
 	 * @param request current HTTP request
 	 * @return the corresponding handler instance, or the default handler
@@ -420,6 +417,18 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 		 * 如果{@link #getHandlerInternal(HttpServletRequest)}是由{@link AbstractUrlHandlerMapping#getHandlerInternal(HttpServletRequest)}
 		 * 实现的,则返回的是一个HandlerExecutionChain对象,其内部已经添加了最少一个interceptor实例了.
 		 * 该实例是一个{@link AbstractUrlHandlerMapping.PathExposingHandlerInterceptor}对象.
+		 *
+		 *
+		 * 1.{@link AbstractHandlerMethodMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)}
+		 *
+		 *
+		 *
+		 *
+		 *
+		 * 2.{@link AbstractUrlHandlerMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)}
+		 * 返回的是一个HandlerExecutionChain对象,其内部已经添加了最少一个interceptor实例了.
+		 * 该实例是一个{@link AbstractUrlHandlerMapping.PathExposingHandlerInterceptor}对象.
+		 *
 		 */
 
 		Object handler = getHandlerInternal(request);
@@ -455,17 +464,20 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	}
 
 	/**
-	 * Look up a handler for the given request, returning {@code null} if no
-	 * specific one is found. This method is called by {@link #getHandler};
-	 * a {@code null} return value will lead to the default handler, if one is set.
+	 * 查找给定request的handler,如果没有找到特定的handler,则返回{@code null}.
+	 * 该方法由{@link #getHandler}调用;如果将返回值设置为{@code null},
+	 * 则会触发默认的调用逻辑,即调用{@link #getDefaultHandler}的返回值.
+	 *
 	 * <p>On CORS pre-flight requests this method should return a match not for
 	 * the pre-flight request but for the expected actual request based on the URL
 	 * path, the HTTP methods from the "Access-Control-Request-Method" header, and
 	 * the headers from the "Access-Control-Request-Headers" header thus allowing
 	 * the CORS configuration to be obtained via {@link #getCorsConfiguration(Object, HttpServletRequest)},
-	 * <p>Note: This method may also return a pre-built {@link HandlerExecutionChain},
-	 * combining a handler object with dynamically determined interceptors.
-	 * Statically specified interceptors will get merged into such an existing chain.
+	 * <p>注意:这个方法也可能返回一个预构建的{@link HandlerExecutionChain},它将处理程序对象与动态确定的拦截器组合在一起.
+	 * 静态指定的拦截器将被合并到这样一个现有的链中.
+	 * <p>在Spring-framework中,有两个类实现了此方法
+	 * 1. {@link AbstractHandlerMethodMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)}
+	 * 2. {@link AbstractUrlHandlerMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)}
 	 *
 	 * @param request current HTTP request
 	 * @return the corresponding handler instance, or {@code null} if none found
@@ -477,7 +489,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	/**
 	 * Build a {@link HandlerExecutionChain} for the given handler, including
 	 * applicable interceptors.
-	 *
+	 * <p>
 	 * 为给定的handler(包括合适的拦截器)构建一个{@link HandlerExecutionChain}对象.
 	 *
 	 * <p>The default implementation builds a standard {@link HandlerExecutionChain}

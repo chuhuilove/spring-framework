@@ -61,6 +61,9 @@ import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
 
@@ -95,6 +98,7 @@ import org.springframework.web.util.WebUtils;
  * 无论是将这个类配置在web.xml中,还是在java config中配置,都要初始化一整套流程
  * <p>
  * 先从{@code DispatcherServlet}中的静态代码块开始,加载默认的实现
+ * {@link org.springframework.web.servlet.config.annotation.EnableWebMvc},这个注解,是开始.
  * <p>
  * <p>
  * Central dispatcher for HTTP request handlers/controllers, e.g. for web UI controllers
@@ -162,9 +166,9 @@ import org.springframework.web.util.WebUtils;
  * The ThemeResolver bean name is "themeResolver"; default is
  * {@link org.springframework.web.servlet.theme.FixedThemeResolver}.
  * </ul>
- *
- *
- *
+ * <p>
+ * <p>
+ * <p>
  * 只有在调度程序中存在相应的 {@code HandlerMapping}(用于class级别的注解)
  * 和/或{@code HandlerAdapter}(用于方法级的注解)时,才会处理{@code @RequestMapping}注解.
  *
@@ -172,8 +176,8 @@ import org.springframework.web.util.WebUtils;
  * <p><b>NOTE: The {@code @RequestMapping} annotation will only be processed if a
  * corresponding {@code HandlerMapping} (for type-level annotations) and/or
  * {@code HandlerAdapter} (for method-level annotations) is present in the dispatcher.</b>
- *
- *
+ * <p>
+ * <p>
  * This is the case by default. However, if you are defining custom {@code HandlerMappings}
  * or {@code HandlerAdapters}, then you need to make sure that a corresponding custom
  * {@code RequestMappingHandlerMapping} and/or {@code RequestMappingHandlerAdapter}
@@ -367,6 +371,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Detect all HandlerMappings or just expect "handlerMapping" bean?.
+	 * 参看{@link #setDetectAllHandlerMappings(boolean)}
 	 */
 	private boolean detectAllHandlerMappings = true;
 
@@ -520,10 +525,12 @@ public class DispatcherServlet extends FrameworkServlet {
 
 
 	/**
-	 * Set whether to detect all HandlerMapping beans in this servlet's context. Otherwise,
-	 * just a single bean with name "handlerMapping" will be expected.
-	 * <p>Default is "true". Turn this off if you want this servlet to use a single
-	 * HandlerMapping, despite multiple HandlerMapping beans being defined in the context.
+	 * 设置是否在servlet上下文中检测所有的{@link HandlerMapping} bean.
+	 * 否则,将只需要一个名称为"handlerMapping"的bean.
+	 * <p>默认为{@code true}.只要你不想使用容器中的其他{@code HandlerMapping} bean,就关闭此选项.
+	 * 其他的{@code HandlerMapping} bean,如{@link RequestMappingHandlerMapping}和{@link SimpleUrlHandlerMapping}等.
+	 * 如果此选项设置为{@code false},则启用{@link BeanNameUrlHandlerMapping}.
+	 * 初始化{@code HandlerMapping}的代码,详见{@link #initHandlerMappings(ApplicationContext)}
 	 */
 	public void setDetectAllHandlerMappings(boolean detectAllHandlerMappings) {
 		this.detectAllHandlerMappings = detectAllHandlerMappings;
@@ -739,15 +746,17 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Initialize the HandlerMappings used by this class.
-	 * <p>If no HandlerMapping beans are defined in the BeanFactory for this namespace,
-	 * we default to BeanNameUrlHandlerMapping.
+	 * 初始化被用于这个类的{@link HandlerMapping}
+	 * <p>如果在BeanFactory中没有{@code HandlerMapping} bean,则默认使用{@code BeanNameUrlHandlerMapping}
 	 */
 	private void initHandlerMappings(ApplicationContext context) {
 		this.handlerMappings = null;
 
 		if (this.detectAllHandlerMappings) {
 			// Find all HandlerMappings in the ApplicationContext, including ancestor contexts.
+			/**
+			 * 在ApplicationContext中查找所有HandlerMappings的子类,包括当前bean工厂的父工厂.
+			 */
 			Map<String, HandlerMapping> matchingBeans =
 					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false);
 			if (!matchingBeans.isEmpty()) {
@@ -760,16 +769,22 @@ public class DispatcherServlet extends FrameworkServlet {
 				HandlerMapping hm = context.getBean(HANDLER_MAPPING_BEAN_NAME, HandlerMapping.class);
 				this.handlerMappings = Collections.singletonList(hm);
 			} catch (NoSuchBeanDefinitionException ex) {
-				// Ignore, we'll add a default HandlerMapping later.
+				/**
+				 * 如果没有找到名为{@link #HANDLER_MAPPING_BEAN_NAME},类型为{@link HandlerMapping}的bean,
+				 * 则忽略掉这个异常,下面还要进一步的处理
+				 */
 			}
 		}
 
 		/**
-		 * 默认的handlerMapping
+		 *
+		 * 如果上一步没有添加到{@link HandlerMapping}
+		 * 这一步则从{@code DispatcherServlet.properties}获取{@link HandlerMapping}的实例,
+		 * 在{@code DispatcherServlet.properties}中,默认定义如下两个{@link HandlerMapping}类:
+		 *
 		 * {@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
 		 * {@link org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping}
 		 */
-
 
 		// Ensure we have at least one HandlerMapping, by registering
 		// a default HandlerMapping if no other mappings are found.
@@ -1000,10 +1015,10 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
+	 * 为给定的策略接口创建默认策略对象列表.
 	 * Create a List of default strategy objects for the given strategy interface.
-	 * <p>The default implementation uses the "DispatcherServlet.properties" file (in the same
-	 * package as the DispatcherServlet class) to determine the class names. It instantiates
-	 * the strategy objects through the context's BeanFactory.
+	 * <p>默认实现使用"DispatcherServlet.properties"(与DispatcherServlet类在同一个包中)文件来确定类名.
+	 * 它通过上下文的BeanFactory实例化策略对象.
 	 *
 	 * @param context           the current WebApplicationContext
 	 * @param strategyInterface the strategy interface

@@ -39,8 +39,6 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
  * 当在一个配置类上使用{@link EnableWebMvc @EnableWebMvc}注解时,实际上导入的是这个类.
  *
  *
- *
- *
  * A subclass of {@code WebMvcConfigurationSupport} that detects and delegates
  * to all beans of type {@link WebMvcConfigurer} allowing them to customize the
  * configuration provided by {@code WebMvcConfigurationSupport}. This is the
@@ -58,6 +56,13 @@ public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {
 	private final WebMvcConfigurerComposite configurers = new WebMvcConfigurerComposite();
 
 
+	/**
+	 * 在{@link EnableWebMvc}的注释中,明确指出了:
+	 * 只能有一个{@code @Configuration}类可以添加{@code @EnableWebMvc}注解,以用于导入Spring Web MVC配置.
+	 * 但是可以有多个{@code @Configuration}类实现{@code WebMvcConfigurer}来定制配置.
+	 * 所以,这里的{@link Autowired}是用来注入容器中多个{@link WebMvcConfigurer}类,由于
+	 * @param configurers
+	 */
 	@Autowired(required = false)
 	public void setConfigurers(List<WebMvcConfigurer> configurers) {
 		if (!CollectionUtils.isEmpty(configurers)) {

@@ -22,26 +22,25 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.lang.Nullable;
 
 /**
- *
  * spring mvc的组件之一.
- *
+ * <p>
  * 由定义请求和处理程序对象之间的映射关系的对象实现的接口.
- *
+ * <p>
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
- *
- *
+ * <p>
+ * <p>
  * 开发者可以定义自定义这个类,但是通常没有啥必要,因为spring通常已经提供了实现.比如:
- *
+ * <p>
  * {@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
  * 和
  * {@link org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping}
- *
+ * <p>
  * 当在应用程序中没有指定{@code HandlerMapping}时,默认启用{@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
  * 可以在{@link DispatcherServlet#initHandlerMappings(ApplicationContext)}中验证.
- *
+ * <p>
  * 还可以设置拦截器.....
- *
+ * <p>
  * 这个接口存在的意义,到底是什么????
  *
  * <p>This class can be implemented by application developers, although this is not
@@ -78,6 +77,9 @@ public interface HandlerMapping {
 	/**
 	 * Name of the {@link HttpServletRequest} attribute that contains the mapped
 	 * handler for the best matching pattern.
+	 * <p>
+	 * org.springframework.web.servlet.HandlerMapping.bestMatchingHandler
+	 *
 	 * @since 4.3.21
 	 */
 	String BEST_MATCHING_HANDLER_ATTRIBUTE = HandlerMapping.class.getName() + ".bestMatchingHandler";
@@ -90,6 +92,8 @@ public interface HandlerMapping {
 	 * HandlerMapping implementations. URL-based HandlerMappings will
 	 * typically support it, but handlers should not necessarily expect
 	 * this request attribute to be present in all scenarios.
+	 * <p>
+	 * org.springframework.web.servlet.HandlerMapping.pathWithinHandlerMapping
 	 */
 	String PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE = HandlerMapping.class.getName() + ".pathWithinHandlerMapping";
 
@@ -100,6 +104,8 @@ public interface HandlerMapping {
 	 * HandlerMapping implementations. URL-based HandlerMappings will
 	 * typically support it, but handlers should not necessarily expect
 	 * this request attribute to be present in all scenarios.
+	 * <p>
+	 * org.springframework.web.servlet.HandlerMapping.bestMatchingPattern
 	 */
 	String BEST_MATCHING_PATTERN_ATTRIBUTE = HandlerMapping.class.getName() + ".bestMatchingPattern";
 
@@ -108,6 +114,8 @@ public interface HandlerMapping {
 	 * whether type-level mappings should be inspected.
 	 * <p>Note: This attribute is not required to be supported by all
 	 * HandlerMapping implementations.
+	 * <p>
+	 * org.springframework.web.servlet.HandlerMapping.introspectTypeLevelMapping
 	 */
 	String INTROSPECT_TYPE_LEVEL_MAPPING = HandlerMapping.class.getName() + ".introspectTypeLevelMapping";
 
@@ -118,6 +126,8 @@ public interface HandlerMapping {
 	 * HandlerMapping implementations. URL-based HandlerMappings will
 	 * typically support it, but handlers should not necessarily expect
 	 * this request attribute to be present in all scenarios.
+	 * <p>
+	 * org.springframework.web.servlet.HandlerMapping.uriTemplateVariables
 	 */
 	String URI_TEMPLATE_VARIABLES_ATTRIBUTE = HandlerMapping.class.getName() + ".uriTemplateVariables";
 
@@ -128,6 +138,8 @@ public interface HandlerMapping {
 	 * <p>Note: This attribute is not required to be supported by all
 	 * HandlerMapping implementations and may also not be present depending on
 	 * whether the HandlerMapping is configured to keep matrix variable content
+	 * <p>
+	 * org.springframework.web.servlet.HandlerMapping.matrixVariables
 	 */
 	String MATRIX_VARIABLES_ATTRIBUTE = HandlerMapping.class.getName() + ".matrixVariables";
 
@@ -137,22 +149,22 @@ public interface HandlerMapping {
 	 * <p>Note: This attribute is not required to be supported by all
 	 * HandlerMapping implementations. Handlers should not necessarily expect
 	 * this request attribute to be present in all scenarios.
+	 * <p>
+	 * org.springframework.web.servlet.HandlerMapping.producibleMediaTypes
 	 */
 	String PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE = HandlerMapping.class.getName() + ".producibleMediaTypes";
 
 	/**
-	 * Return a handler and any interceptors for this request. The choice may be made
-	 * on request URL, session state, or any factor the implementing class chooses.
-	 * <p>The returned HandlerExecutionChain contains a handler Object, rather than
-	 * even a tag interface, so that handlers are not constrained in any way.
-	 * For example, a HandlerAdapter could be written to allow another framework's
-	 * handler objects to be used.
-	 * <p>Returns {@code null} if no match was found. This is not an error.
-	 * The DispatcherServlet will query all registered HandlerMapping beans to find
-	 * a match, and only decide there is an error if none can find a handler.
-	 * @param request current HTTP request
-	 * @return a HandlerExecutionChain instance containing handler object and
-	 * any interceptors, or {@code null} if no mapping found
+	 * 返回此请求的处理程序和所有拦截器.可以根据请求URL、会话状态或实现类等任何因素进行选择.
+	 * <p>返回的HandlerExecutionChain包含一个处理程序对象,而不是标记接口,因此处理程序不受任何约束.
+	 * 例如,可以编写HandlerAdapter来允许使用另一个框架的处理程序对象.
+	 * <p>如果未找到匹配项,则返回{@code null}.这不是错误.
+	 * DispatcherServlet将查询所有已注册的HandlerMapping Bean以查找匹配项,
+	 * 并且仅在没有查找到匹配项的情况下才确定存在错误.
+	 * <p>目前为止,在Spring-framework中,所发现的实现只有{@link org.springframework.web.servlet.handler.AbstractHandlerMapping#getHandler(HttpServletRequest)}
+	 *
+	 * @param request 当前HTTP请求
+	 * @return 一个HandlerExecutionChain实例, 该实例包含处理器对象和其他拦截器, 如果没有匹配到, 则返回{@code null}.
 	 * @throws Exception if there is an internal error
 	 */
 	@Nullable
