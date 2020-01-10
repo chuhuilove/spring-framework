@@ -20,17 +20,13 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 /**
- * A single {@code condition} that must be {@linkplain #matches matched} in order
- * for a component to be registered.
  *
- * <p>Conditions are checked immediately before the bean-definition is due to be
- * registered and are free to veto registration based on any criteria that can
- * be determined at that point.
+ * 为注册组件必须{@linkplain #matches 匹配}的单个{@code condition}.
  *
- * <p>Conditions must follow the same restrictions as {@link BeanFactoryPostProcessor}
- * and take care to never interact with bean instances. For more fine-grained control
- * of conditions that interact with {@code @Configuration} beans consider the
- * {@link ConfigurationCondition} interface.
+ * <p>在bean定义即将注册之前,会立即检查条件,并且可以根据当时确定的任何标准来否决注册.
+ *
+ * <p>条件必须遵循与{@link BeanFactoryPostProcessor}相同的限制,并且注意永远不要与bean实例交互.
+ * 对于与{@code @Configuration} bean交互的条件的更细粒度控制,请考虑{@link ConfigurationCondition}接口.
  *
  * @author Phillip Webb
  * @since 4.0

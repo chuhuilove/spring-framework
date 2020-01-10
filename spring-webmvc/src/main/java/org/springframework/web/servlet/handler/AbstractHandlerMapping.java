@@ -42,6 +42,7 @@ import org.springframework.web.cors.CorsProcessor;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
@@ -414,15 +415,10 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	public final HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
 
 		/**
-		 * 如果{@link #getHandlerInternal(HttpServletRequest)}是由{@link AbstractUrlHandlerMapping#getHandlerInternal(HttpServletRequest)}
-		 * 实现的,则返回的是一个HandlerExecutionChain对象,其内部已经添加了最少一个interceptor实例了.
-		 * 该实例是一个{@link AbstractUrlHandlerMapping.PathExposingHandlerInterceptor}对象.
-		 *
 		 *
 		 * 1.{@link AbstractHandlerMethodMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)}
-		 *
-		 *
-		 *
+		 * 内部维护的是带有{@link org.springframework.web.bind.annotation.RequestMapping}注解的请求方法.
+		 * 返回的一个{@link HandlerMethod}对象
 		 *
 		 *
 		 * 2.{@link AbstractUrlHandlerMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)}

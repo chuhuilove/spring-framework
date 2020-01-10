@@ -196,7 +196,9 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	}
 
 	/**
-	 * Provide a custom method-level request condition.
+	 *
+	 * 提供自定义方法级别的请求条件.
+	 * 自定义{@link RequestCondition}可以是任何类型,只要从对该方法的所有调用返回相同的条件类型即可,以确保可以组合和比较自定义请求条件.
 	 * The custom {@link RequestCondition} can be of any type so long as the
 	 * same condition type is returned from all calls to this method in order
 	 * to ensure custom request conditions can be combined and compared.

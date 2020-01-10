@@ -125,7 +125,8 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 	@Override
 	@Nullable
 	protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
-		// 提取出请求的url
+		// 从request中提取出 url
+
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 
 		Object handler = lookupHandler(lookupPath, request);

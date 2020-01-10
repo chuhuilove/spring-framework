@@ -24,16 +24,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Holder for both Model and View in the web MVC framework.
- * Note that these are entirely distinct. This class merely holds
- * both to make it possible for a controller to return both model
- * and view in a single return value.
+ * Web MVC框架中的Model和View的持有者.
+ * 注意,它们是完全不同的.这个类只是同时持有模型和视图,使控制器能够在一个返回值中同时返回模型和视图.
  *
- * <p>Represents a model and view returned by a handler, to be resolved
- * by a DispatcherServlet. The view can take the form of a String
- * view name which will need to be resolved by a ViewResolver object;
- * alternatively a View object can be specified directly. The model
- * is a Map, allowing the use of multiple objects keyed by name.
+ * <p>表示处理程序返回的模型和视图，由DispatcherServlet解析.
+ * View可以采用String视图名称的形式,需要通过ViewResolver对象解析;或者,可以直接指View对象.
+ * Model是一个map,允许使用多个按名称作为key的对象.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

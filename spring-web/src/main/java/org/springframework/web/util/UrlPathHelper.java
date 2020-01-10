@@ -43,9 +43,9 @@ import org.springframework.util.StringUtils;
  * <p>
  * 最典型的,是在{@link org.springframework.web.servlet.handler.AbstractUrlHandlerMapping}中的
  * {@link org.springframework.web.servlet.handler.AbstractUrlHandlerMapping#getHandlerInternal(HttpServletRequest)}
- * 方法中,从{@code HttpRequest}中提取出请求路径
- *
- *
+ * 方法中,从{@code HttpRequest}中提取出请求路径,
+ * 在{@link org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)}
+ * 函数中,也用此来获取{@code HttpRequest}中的请求路径.
  *
  * <p>Used by {@link org.springframework.web.servlet.handler.AbstractUrlHandlerMapping}
  * and {@link org.springframework.web.servlet.support.RequestContext} for path matching

@@ -175,9 +175,6 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @param method  the method
 	 */
 	public void registerMapping(T mapping, Object handler, Method method) {
-//		if (logger.isTraceEnabled()) {
-		logger.info("cyzi--->Register \"" + mapping + "\" to " + method.toGenericString());
-//		}
 		this.mappingRegistry.register(mapping, handler, method);
 	}
 

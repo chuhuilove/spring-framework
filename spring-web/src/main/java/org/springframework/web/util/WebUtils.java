@@ -179,8 +179,7 @@ public abstract class WebUtils {
 	public static final String CONTENT_TYPE_CHARSET_PREFIX = ";charset=";
 
 	/**
-	 * Default character encoding to use when {@code request.getCharacterEncoding}
-	 * returns {@code null}, according to the Servlet spec.
+	 * 根据Servlet规范,当{@code request.getCharacterEncoding}返回{@code null}时使用的默认字符编码.
 	 * @see ServletRequest#getCharacterEncoding
 	 */
 	public static final String DEFAULT_CHARACTER_ENCODING = "ISO-8859-1";

@@ -20,9 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.lang.Nullable;
+import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
+import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
+import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
+import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
 
 /**
- * MVC framework SPI, allowing parameterization of the core MVC workflow.
+ *
+ * MVC框架SPI,允许参数化的核心MVC工作流.
  *
  * <p>Interface that must be implemented for each handler type to handle a request.
  * This interface is used to allow the {@link DispatcherServlet} to be indefinitely
@@ -57,6 +62,12 @@ public interface HandlerAdapter {
 	 * <p>{@code
 	 * return (handler instanceof MyHandler);
 	 * }
+	 *
+	 * {@link SimpleServletHandlerAdapter#supports(java.lang.Object)}
+	 * {@link SimpleControllerHandlerAdapter#supports(java.lang.Object)}
+	 * {@link HttpRequestHandlerAdapter#supports(java.lang.Object)}
+	 * {@link AbstractHandlerMethodAdapter#supports(java.lang.Object)}
+	 *
 	 * @param handler handler object to check
 	 * @return whether or not this object can use the given handler
 	 */
