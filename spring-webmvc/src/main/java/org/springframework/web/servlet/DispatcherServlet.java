@@ -171,8 +171,6 @@ import org.springframework.web.util.WebUtils;
  * <p>
  * 只有在调度程序中存在相应的 {@code HandlerMapping}(用于class级别的注解)
  * 和/或{@code HandlerAdapter}(用于方法级的注解)时,才会处理{@code @RequestMapping}注解.
- *
- *
  * <p><b>NOTE: The {@code @RequestMapping} annotation will only be processed if a
  * corresponding {@code HandlerMapping} (for type-level annotations) and/or
  * {@code HandlerAdapter} (for method-level annotations) is present in the dispatcher.</b>

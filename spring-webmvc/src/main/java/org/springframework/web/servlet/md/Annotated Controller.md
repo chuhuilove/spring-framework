@@ -297,16 +297,15 @@ public class MyConfig {
 |`@PathVariable`|用于访问URI模板变量.请参阅[URI Patterns]("#mvc-ann-requestmapping-uri-templates").|
 |`@MatrixVariable`|用于访问URI路径段中的name-value.请参阅[Matrix Variables]().|
 |`@RequestParam`|用于访问Servlet请求参数,包括multipart文件.参数值将转换为声明的方法参数类型.参见[`@RequestParam`]()以及[Multipart]().
-请注意,对于简单参数值,`@RequestParam`的使用是可选的.请参阅此表末尾的"Any other argument".
-|
+请注意,对于简单参数值,`@RequestParam`的使用是可选的.请参阅此表末尾的"Any other argument".|
 |`@RequestHeader`|用于访问请求头.请求头值将转换为声明的方法参数类型.参见[`@RequestHeader`]().|
 |`@CookieValue`|访问cookie,cookie值将转换为声明的方法参数类型.参见[`@CookieValue`]()|
 |`@RequestBody`|访问Http请求体正文.正文内容通过使用`HttpMessageConverter`实现转换为声明的方法参数类型.参见[`@RequestBody`]()|
-|`HttpEntity<B>`|用于访问请求体和请求体.请求体使用`HttpMessageConverter`进行转换.|
-|`@RequestPart`||
-|`java.util.Map,org.springframework.ui.Model,org.springframework.ui.ModelMap`||
-|`RedirectAttributes`||
-|`@ModelAttribute`||
+|`HttpEntity<B>`|用于访问请求体和请求体.请求体使用`HttpMessageConverter`进行转换.参见[HttpEntity]()|
+|`@RequestPart`|在multipart/from-data请求中访问part,请求体使用`HttpMessageConverter`进行转换.参见[Multipart]()|
+|`java.util.Map,org.springframework.ui.Model,org.springframework.ui.ModelMap`|用于访问HTML控制器中使用的模型,并作为视图渲染的一部分公开给模板.|
+|`RedirectAttributes`|指定在重定向的情况下使用的属性(即追加到查询字符串中),并指定要临时存储的属性,直到重定向后的请求为止.参见[Redirect Attributes]()和 [Flash Attributes]().|
+|`@ModelAttribute`|用于访问模型中的现有属性(如果不存在,则进行实例化),并应用数据绑定和验证.参见[`@ModelAttribute`]()以及[Model]()和[`DataBinder`]().|
 |`Errors, BindingResult`||
 |`SessionStatus`+类级别`@SessionAttributes`||
 |`UriComponentsBuilder`||
@@ -320,11 +319,161 @@ public class MyConfig {
 
 
 #### <span id="mvc-ann-return-types"> Return Values</span>
+
+下表描述了受支持的控制器方法返回值.所有返回值都支持反应性类型.
+
+|Controller method return value|描述|
+|:---|:---|
+|`@ResponseBody`|返回值通过`HttpMessageConverter`实现转换并写入响应.See [`@ResponseBody`]("#mvc-ann-responsebody").|
+|`HttpEntity<B>, ResponseEntity<B>`||
+|`HttpHeaders`||
+|`String`||
+|`View`||
+|`java.util.Map, org.springframework.ui.Model`||
+|`@ModelAttribute`||
+|`ModelAndView`  object||
+|`void`||
+|`DeferredResult<V>`||
+|`Callable<V>`||
+|`ListenableFuture<V>, java.util.concurrent.CompletionStage<V>, java.util.concurrent.CompletableFuture<V>`||
+|`ResponseBodyEmitter, SseEmitter`||
+|`StreamingResponseBody`||
+|Reactive types — Reactor, RxJava, or others through `ReactiveAdapterRegistry`||
+|Any other return value||
+
+
+
+
+
+
+
 #### <span id="mvc-ann-typeconversion">Type Conversion</span>
+
+如果参数声明不是`String`类型,则某些表示基于`String`的请求输入的带注解的控制器方法参数(例如`@RequestParam`,`@RequestHeader`,`@PathVariable`,`@ MatrixVariable`和`@CookieValue`)可能需要类型转换.
+
+在这种情况下,将根据配置的转换器自动应用类型转换.默认情况下,支持简单类型(`int`,`long`,`Date`和其他）.你可以通过`WebDataBinder`(请参见[`DataBinder`]()))或通过在`FormattingConversionService`中注册`Formatter`来自定义类型转换.参阅[Spring Field Formatting]().
+
+
 #### <span id="mvc-ann-matrix-variables"> Matrix Variables</span>
+
+[RFC 3986](https://tools.ietf.org/html/rfc3986#section-3.3) 讨论 name-value pairs in path segments.在Spring MVC中,基于Tim Berners-Lee的"old post",我们将其称为"矩阵变量",但它们也可以称为URI路径参数.
+
+矩阵变量可以出现在任何路径段中,每个变量用分号分隔,多个值用逗号分隔(例如,`/cars;color=red,green;year=2012`).也可以通过重复的变量名称指定多个值(例如,`color=red;color=green;color=blue`).
+
+如果期望URL包含矩阵变量,则控制器方法的请求映射必须使用URI变量来屏蔽该变量内容,并确保能够成功地匹配请求,而不依赖于矩阵变量的顺序和存在性.
+
+下面的示例是使用矩阵变量:
+
+```java
+// GET /pets/42;q=11;r=22
+
+@GetMapping("/pets/{petId}")
+public void findPet(@PathVariable String petId, @MatrixVariable int q) {
+
+    // petId == 42
+    // q == 11
+}
+/**
+ * 根据上面的实例,我们的请求的url是 GET /pets/42;q=11;r=22
+ * 则在调用方法的时候,方法中的参数值分别是:
+ * petId的值为42,q的值为11
+ */
+```
+
+考虑到所有的路径段可能包含矩阵变量,你有时可能需要消除矩阵变量所在路径变量的歧义.以下示例显示了如何执行此操作:
+
+```java
+// GET /owners/42;q=11/pets/21;q=22
+
+@GetMapping("/owners/{ownerId}/pets/{petId}")
+public void findPet(
+        @MatrixVariable(name="q", pathVar="ownerId") int q1,
+        @MatrixVariable(name="q", pathVar="petId") int q2) {
+
+    // q1 == 11
+    // q2 == 22
+}
+/**
+ * 根据上面的实例,请求URL路径为 GET /owners/42;q=11/pets/21;q=22,在ownerId路径段中,出现了矩阵变量q,在petId请求段中,也出现了矩阵变量q.
+ * 则,在实际获取的时候,需要区分具体路径段中的变量,以消除歧义.
+ * 方法中的参数值分别是:
+ * q1的值为11,
+ * q2的值为12.
+ */
+```
+可以将矩阵变量定义为可选变量,并指定默认值,如以下示例所示:
+
+```java
+// GET /pets/42
+
+@GetMapping("/pets/{petId}")
+public void findPet(@MatrixVariable(required=false, defaultValue="1") int q) {
+
+    // q == 1
+}
+/**
+ * 在上面的请求URL是 GET /pets/42
+ * 并没有设置矩阵变量,但是我们的请求方法要求的矩阵变量性质是可选的,
+ * 这里,q参数的值为1
+ */
+```
+
+要获取所有矩阵变量,可以使用`MultiValueMap`,如以下示例所示:
+
+```java
+// GET /owners/42;q=11;r=12/pets/21;q=22;s=23
+
+@GetMapping("/owners/{ownerId}/pets/{petId}")
+public void findPet(
+        @MatrixVariable MultiValueMap<String, String> matrixVars,
+        @MatrixVariable(pathVar="petId") MultiValueMap<String, String> petMatrixVars) {
+
+    // matrixVars: ["q" : [11,22], "r" : 12, "s" : 23]
+    // petMatrixVars: ["q" : 22, "s" : 23]
+}
+```
+
+请注意,如果你需要启用矩阵变量的使用.在MVC Java配置中,就需要通过[Path Matching]()设置带有`removeSemicolonContent = false`的`UrlPathHelper`.在基于XML的配置中,你可以设置`<mvc:annotation-driven enable-matrix-variables="true"/>`.
+
+
 #### <span id="mvc-ann-requestparam">`@RequestParam`</span>
+
+你可以使用`@RequestParam`注解将Servlet请求参数(即查询参数或表单数据)绑定到控制器中的方法参数.
+
+下面的实例显示了如何做:
+
+```java
+
+@Controller
+@RequestMapping("/pets")
+public class EditPetForm {
+
+    // ...
+
+    @GetMapping
+    public String setupForm(@RequestParam("petId") int petId, Model model) {  // 使用@RequestParam来绑定petId.
+        Pet pet = this.clinic.loadPet(petId);
+        model.addAttribute("pet", pet);
+        return "petForm";
+    }
+
+    // ...
+
+}
+```
+
 #### <span id="mvc-ann-requestheader"> `@RequestHeader`</span>
 #### <span id="mvc-ann-modelattrib-method-args"> `@ModelAttribute`</span>
+
+您可以在方法参数上使用`@ModelAttribute`注解,以从模型访问属性,或者将其实例化(如果不存在).model属性还覆盖了名称与字段名称匹配的HTTP Servlet请求参数中的值.这称为数据绑定,它使你不必处理解析和转换单个查询参数和表单字段的工作.下面的实例显示了如何这样做:
+```java
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+public String processSubmit(@ModelAttribute Pet pet) { } //绑定一个Pet实例.
+```
+
+上面的Pet实例解析如下:
+
+
 #### <span id="mvc-ann-sessionattributes"> `@SessionAttributes`</span>
 #### <span id="mvc-ann-sessionattribute"> `@SessionAttribute`</span>
 #### <span id="mvc-ann-requestattrib"> `@RequestAttribute`</span>
@@ -340,6 +489,9 @@ public class MyConfig {
 
 ### <span id="mvc-ann-modelattrib-methods">1.3.4. Model</span>
 
+你可以使用`@ModelAttribute`注解:
+
+- 
 
 ### <span id="mvc-ann-initbinder">1.3.5. DataBinder</span>
 
