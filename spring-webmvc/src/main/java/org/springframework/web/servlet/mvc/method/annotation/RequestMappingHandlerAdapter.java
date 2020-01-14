@@ -98,13 +98,14 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.WebUtils;
 
 /**
- * Extension of {@link AbstractHandlerMethodAdapter} that supports
- * {@link RequestMapping @RequestMapping} annotated {@link HandlerMethod HandlerMethods}.
  *
- * <p>Support for custom argument and return value types can be added via
- * {@link #setCustomArgumentResolvers} and {@link #setCustomReturnValueHandlers},
- * or alternatively, to re-configure all argument and return value types,
- * use {@link #setArgumentResolvers} and {@link #setReturnValueHandlers}.
+ *
+ * 支持{@link RequestMapping @RequestMapping}注解的
+ * {@link HandlerMethod HandlerMethods}的{@link AbstractHandlerMethodAdapter}的扩展.
+ *
+ * <p>可以通过{@link #setCustomArgumentResolvers}和{@link #setCustomReturnValueHandlers}添加对自定义参数和返回值类型的支持,
+ * 或者,要重新配置所有参数和返回值类型,请使用{@link #setArgumentResolvers}和{@link #setReturnValueHandlers}.
+ *
  *
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
@@ -117,6 +118,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	/**
 	 * MethodFilter that matches {@link InitBinder @InitBinder} methods.
+	 * 匹配带有{@link InitBinder @InitBinder}注解的方法.
 	 */
 	public static final MethodFilter INIT_BINDER_METHODS = method ->
 			AnnotatedElementUtils.hasAnnotation(method, InitBinder.class);
@@ -778,7 +780,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		ModelAndView mav;
 		checkRequest(request);
 
-		// Execute invokeHandlerMethod in synchronized block if required.
+		// 如果需要,在同步块中执行invokeHandlerMethod
 		if (this.synchronizeOnSession) {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
@@ -840,8 +842,9 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	}
 
 	/**
-	 * Invoke the {@link RequestMapping} handler method preparing a {@link ModelAndView}
-	 * if view resolution is required.
+	 *
+	 * 如果需要视图解析,则调用{@link RequestMapping}处理程序方法来准备{@link ModelAndView}.
+	 * 这个方法来调用执行具体的函数.
 	 * @since 4.2
 	 * @see #createInvocableHandlerMethod(HandlerMethod)
 	 */
@@ -851,6 +854,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 		ServletWebRequest webRequest = new ServletWebRequest(request, response);
 		try {
+			// 1. 创建一个数据绑定工厂
 			WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);
 			ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);
 
@@ -981,9 +985,10 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	}
 
 	/**
-	 * Template method to create a new InitBinderDataBinderFactory instance.
-	 * <p>The default implementation creates a ServletRequestDataBinderFactory.
-	 * This can be overridden for custom ServletRequestDataBinder subclasses.
+	 *
+	 * 创建一个新InitBinderDataBinderFactory实例的模板方法.
+	 * <p>默认实现创建了一个ServletRequestDataBinderFactory.
+	 * 对于自定义ServletRequestDataBinder子类,可以重写此方法.
 	 * @param binderMethods {@code @InitBinder} methods
 	 * @return the InitBinderDataBinderFactory instance to use
 	 * @throws Exception in case of invalid state or arguments

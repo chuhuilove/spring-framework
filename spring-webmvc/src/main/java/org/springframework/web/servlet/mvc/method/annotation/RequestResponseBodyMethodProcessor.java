@@ -24,9 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.Conventions;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.*;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.lang.Nullable;
@@ -45,14 +44,13 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 /**
- * Resolves method arguments annotated with {@code @RequestBody} and handles return
- * values from methods annotated with {@code @ResponseBody} by reading and writing
- * to the body of the request or response with an {@link HttpMessageConverter}.
+ * 解析使用{@code @RequestBody}注解的方法参数,
+ * 并通过使用{@link HttpMessageConverter}
+ * 读写请求或响应的主体来处理来自使用{@code @ResponseBody}注解的方法的返回值.
  *
- * <p>An {@code @RequestBody} method argument is also validated if it is annotated
- * with {@code @javax.validation.Valid}. In case of validation failure,
- * {@link MethodArgumentNotValidException} is raised and results in an HTTP 400
- * response status code if {@link DefaultHandlerExceptionResolver} is configured.
+ * <p>如果{@code @RequestBody}方法参数被{@code @javax.validation.Valid}注解,那么它也会被验证.
+ * 在验证失败的情况下,如果配置了{@link DefaultHandlerExceptionResolver},
+ * 就会引发{@link MethodArgumentNotValidException}并产生一个HTTP 400响应状态代码.
  *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
@@ -65,6 +63,19 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	 * Basic constructor with converters only. Suitable for resolving
 	 * {@code @RequestBody}. For handling {@code @ResponseBody} consider also
 	 * providing a {@code ContentNegotiationManager}.
+	 * <p>
+	 * <p>
+	 * {@link HttpMessageConverter},从spring boot那边调试,默认有9个
+	 * <p>
+	 * 1. {@link ByteArrayHttpMessageConverter} 支持的媒体类型为{@link MediaType.APPLICATION_OCTET_STREAM} 和 {@link MediaType.ALL}
+	 * 2. {@link StringHttpMessageConverter} 支持的媒体类型为 {@link MediaType.TEXT_PLAIN}和{@link MediaType.ALL}
+	 * 3. {@link StringHttpMessageConverter} 支持的媒体类型为 {@link MediaType.TEXT_PLAIN}和{@link MediaType.ALL}
+	 * 4. {@link org.springframework.http.converter.ResourceHttpMessageConverter}支持的媒体类型为 {@link MediaType.ALL}
+	 * 5. {@link org.springframework.http.converter.ResourceRegionHttpMessageConverter}支持的媒体类型为{@link MediaType.ALL}
+	 * 6. {@link org.springframework.http.converter.xml.SourceHttpMessageConverter}支持的媒体类型为 {@link MediaType.APPLICATION_XML}, {@link MediaType.TEXT_XML}还有非常量类型 application/*+xml
+	 * 7. {@link org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter}支持的媒体类型为 {@link MediaType.APPLICATION_FORM_URLENCODED} {@link MediaType.MULTIPART_FORM_DATA}
+	 * 8. {@link org.springframework.http.converter.json.MappingJackson2HttpMessageConverter}支持的媒体类型为 {@link MediaType.APPLICATION_JSON}和非常量类型 application/*+json
+	 * 9. {@link org.springframework.http.converter.json.MappingJackson2HttpMessageConverter}支持的媒体类型为 {@link MediaType.APPLICATION_JSON}和非常量类型 application/*+json
 	 */
 	public RequestResponseBodyMethodProcessor(List<HttpMessageConverter<?>> converters) {
 		super(converters);
@@ -77,8 +88,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	 * {@code ResponseBodyAdvice}.
 	 */
 	public RequestResponseBodyMethodProcessor(List<HttpMessageConverter<?>> converters,
-			@Nullable ContentNegotiationManager manager) {
-
+											  @Nullable ContentNegotiationManager manager) {
 		super(converters, manager);
 	}
 
@@ -86,10 +96,11 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	 * Complete constructor for resolving {@code @RequestBody} method arguments.
 	 * For handling {@code @ResponseBody} consider also providing a
 	 * {@code ContentNegotiationManager}.
+	 *
 	 * @since 4.2
 	 */
 	public RequestResponseBodyMethodProcessor(List<HttpMessageConverter<?>> converters,
-			@Nullable List<Object> requestResponseBodyAdvice) {
+											  @Nullable List<Object> requestResponseBodyAdvice) {
 
 		super(converters, null, requestResponseBodyAdvice);
 	}
@@ -99,7 +110,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	 * {@code @ResponseBody}.
 	 */
 	public RequestResponseBodyMethodProcessor(List<HttpMessageConverter<?>> converters,
-			@Nullable ContentNegotiationManager manager, @Nullable List<Object> requestResponseBodyAdvice) {
+											  @Nullable ContentNegotiationManager manager, @Nullable List<Object> requestResponseBodyAdvice) {
 
 		super(converters, manager, requestResponseBodyAdvice);
 	}
@@ -107,6 +118,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
+		// 如果参数添加了RequestBody注解
 		return parameter.hasParameterAnnotation(RequestBody.class);
 	}
 
@@ -117,14 +129,15 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	}
 
 	/**
-	 * Throws MethodArgumentNotValidException if validation fails.
+	 * 如果验证失败,则抛出MethodArgumentNotValidException
+	 *
 	 * @throws HttpMessageNotReadableException if {@link RequestBody#required()}
-	 * is {@code true} and there is no body content or if there is no suitable
-	 * converter to read the content with.
+	 *                                         is {@code true} and there is no body content or if there is no suitable
+	 *                                         converter to read the content with.
 	 */
 	@Override
 	public Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
-			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
+								  NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
 		parameter = parameter.nestedIfOptional();
 		Object arg = readWithMessageConverters(webRequest, parameter, parameter.getNestedGenericParameterType());
@@ -148,7 +161,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 
 	@Override
 	protected <T> Object readWithMessageConverters(NativeWebRequest webRequest, MethodParameter parameter,
-			Type paramType) throws IOException, HttpMediaTypeNotSupportedException, HttpMessageNotReadableException {
+												   Type paramType) throws IOException, HttpMediaTypeNotSupportedException, HttpMessageNotReadableException {
 
 		HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
 		Assert.state(servletRequest != null, "No HttpServletRequest");
@@ -169,7 +182,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 
 	@Override
 	public void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType,
-			ModelAndViewContainer mavContainer, NativeWebRequest webRequest)
+								  ModelAndViewContainer mavContainer, NativeWebRequest webRequest)
 			throws IOException, HttpMediaTypeNotAcceptableException, HttpMessageNotWritableException {
 
 		mavContainer.setRequestHandled(true);

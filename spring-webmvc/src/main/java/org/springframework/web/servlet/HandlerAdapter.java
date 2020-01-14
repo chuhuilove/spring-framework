@@ -47,6 +47,15 @@ import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
  * order (and thus a priority) for getting applied by the {@code DispatcherServlet}.
  * Non-Ordered instances get treated as lowest priority.
  *
+ * <p>{@code HandlerAdapter}一共也没有几个类,我还是比较想知道,
+ * 这玩意是怎么和{@link HandlerMapping}进行适配的
+ *
+ * 这个类的子类有如下几个
+ * 1.{@link HttpRequestHandlerAdapter}直接子类,
+ *
+ *
+ *
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter

@@ -29,7 +29,8 @@ import org.springframework.web.servlet.ModelAndView;
  * interface with the generic {@link org.springframework.web.servlet.DispatcherServlet}.
  * Supports handlers that implement the {@link LastModified} interface.
  *
- * <p>This is an SPI class, not used directly by application code.
+ * <p>这是一个SPI类,不能通过应用代码直接使用.
+ * 一般情况下,请求xx.html,或者xxx.css,会使用到这个适配器.
  *
  * @author Juergen Hoeller
  * @since 2.0

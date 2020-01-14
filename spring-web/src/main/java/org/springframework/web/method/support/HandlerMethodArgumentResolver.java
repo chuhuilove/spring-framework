@@ -23,18 +23,18 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 
 /**
- * Strategy interface for resolving method parameters into argument values in
- * the context of a given request.
+ * 策略接口,用于在给定请求的上下文中将方法参数解析为参数值.
  *
  * @author Arjen Poutsma
- * @since 3.1
  * @see HandlerMethodReturnValueHandler
+ * @since 3.1
  */
 public interface HandlerMethodArgumentResolver {
 
 	/**
 	 * Whether the given {@linkplain MethodParameter method parameter} is
 	 * supported by this resolver.
+	 *
 	 * @param parameter the method parameter to check
 	 * @return {@code true} if this resolver supports the supplied parameter;
 	 * {@code false} otherwise
@@ -42,22 +42,19 @@ public interface HandlerMethodArgumentResolver {
 	boolean supportsParameter(MethodParameter parameter);
 
 	/**
-	 * Resolves a method parameter into an argument value from a given request.
-	 * A {@link ModelAndViewContainer} provides access to the model for the
-	 * request. A {@link WebDataBinderFactory} provides a way to create
-	 * a {@link WebDataBinder} instance when needed for data binding and
-	 * type conversion purposes.
-	 * @param parameter the method parameter to resolve. This parameter must
-	 * have previously been passed to {@link #supportsParameter} which must
-	 * have returned {@code true}.
-	 * @param mavContainer the ModelAndViewContainer for the current request
-	 * @param webRequest the current request
-	 * @param binderFactory a factory for creating {@link WebDataBinder} instances
-	 * @return the resolved argument value, or {@code null} if not resolvable
+	 * 从给定的请求中将方法参数解析为参数值.{@link ModelAndViewContainer}为请求提供对模型的访问.
+	 * {@link WebDataBinderFactory}提供了在数据绑定和类型转换需要时创建WebDataBinder实例的方法.
+	 *
+	 * @param parameter     要解析的方法参数.这个参数必须之前已经传递给{@link #supportsParameter},并且其验证结果{@code true}.
+	 *
+	 * @param mavContainer  当前请求的ModelAndViewContainer
+	 * @param webRequest    当前请求
+	 * @param binderFactory 创建{@link WebDataBinder}实例的工厂
+	 * @return 解析过的参数值,如果没有解析,返回{@code null}
 	 * @throws Exception in case of errors with the preparation of argument values
 	 */
 	@Nullable
 	Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
-			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception;
+						   NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception;
 
 }

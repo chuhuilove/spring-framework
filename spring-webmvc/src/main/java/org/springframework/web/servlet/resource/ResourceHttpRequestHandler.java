@@ -65,8 +65,7 @@ import org.springframework.web.servlet.support.WebContentGenerator;
 import org.springframework.web.util.UrlPathHelper;
 
 /**
- * {@code HttpRequestHandler} that serves static resources in an optimized way
- * according to the guidelines of Page Speed, YSlow, etc.
+ * {@code HttpRequestHandler}根据Page Speed,YSlow等的准则以优化的方式为静态资源提供服务.
  *
  * <p>The {@linkplain #setLocations "locations"} property takes a list of Spring
  * {@link Resource} locations from which static resources are allowed to be served
@@ -432,16 +431,12 @@ public class ResourceHttpRequestHandler extends WebContentGenerator
 
 
 	/**
-	 * Processes a resource request.
-	 * <p>Checks for the existence of the requested resource in the configured list of locations.
-	 * If the resource does not exist, a {@code 404} response will be returned to the client.
-	 * If the resource exists, the request will be checked for the presence of the
-	 * {@code Last-Modified} header, and its value will be compared against the last-modified
-	 * timestamp of the given resource, returning a {@code 304} status code if the
-	 * {@code Last-Modified} value  is greater. If the resource is newer than the
-	 * {@code Last-Modified} value, or the header is not present, the content resource
-	 * of the resource will be written to the response with caching headers
-	 * set to expire one year in the future.
+	 * 处理资源请求.
+	 * <p>检查在已配置的位置列表中是否存在所请求的资源.
+	 * 如果资源不存在,将向客户端返回一个{@code 404}响应.
+	 * 如果资源存在,将检查请求是否存在{@code Last-Modified}请求头,
+	 * 并将其值与给定资源的Last-Modified时间戳进行比较,如果{@code Last-Modified}值较大,则返回{@code 304}状态码.
+	 * 如果资源比{@code Last-Modified}值更新,或者标头不存在,那么资源的内容资源将被写入响应,而缓存标头将在一年后过期.
 	 */
 	@Override
 	public void handleRequest(HttpServletRequest request, HttpServletResponse response)

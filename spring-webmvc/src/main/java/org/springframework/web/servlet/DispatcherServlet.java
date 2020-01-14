@@ -385,7 +385,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	private boolean detectAllHandlerExceptionResolvers = true;
 
 	/**
-	 * Detect all ViewResolvers or just expect "viewResolver" bean?.
+	 * 是否允许查找所有视图解析器
+	 * @see #setDetectAllViewResolvers(boolean)
 	 */
 	private boolean detectAllViewResolvers = true;
 
@@ -556,6 +557,11 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
+	 *
+	 *
+	 * 设置是否检测所有ViewResolver bean?
+	 *
+	 *
 	 * Set whether to detect all ViewResolver beans in this servlet's context. Otherwise,
 	 * just a single bean with name "viewResolver" will be expected.
 	 * <p>Default is "true". Turn this off if you want this servlet to use a single
@@ -646,6 +652,9 @@ public class DispatcherServlet extends FrameworkServlet {
 		initHandlerExceptionResolvers(context);
 
 		initRequestToViewNameTranslator(context);
+		/**
+		 * 视图解析器
+		 */
 		initViewResolvers(context);
 		initFlashMapManager(context);
 	}
@@ -895,15 +904,16 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Initialize the ViewResolvers used by this class.
-	 * <p>If no ViewResolver beans are defined in the BeanFactory for this
-	 * namespace, we default to InternalResourceViewResolver.
+	 *
+	 * 初始化视图解析器.
+	 * <p>如果在BeanFactory中没有定义ViewResolver,则默认使用InternalResourceViewResolver.
 	 */
 	private void initViewResolvers(ApplicationContext context) {
 		this.viewResolvers = null;
 
 		if (this.detectAllViewResolvers) {
 			// Find all ViewResolvers in the ApplicationContext, including ancestor contexts.
+			// 查找所有
 			Map<String, ViewResolver> matchingBeans =
 					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, ViewResolver.class, true, false);
 			if (!matchingBeans.isEmpty()) {
@@ -1256,8 +1266,9 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Handle the result of handler selection and handler invocation, which is
-	 * either a ModelAndView or an Exception to be resolved to a ModelAndView.
+	 *
+	 * 处理handler选择和handler调用的结果,该结果要么是ModelAndView,要么是要解析为ModelAndView的异常.
+	 *
 	 */
 	private void processDispatchResult(HttpServletRequest request, HttpServletResponse response,
 									   @Nullable HandlerExecutionChain mappedHandler, @Nullable ModelAndView mv,

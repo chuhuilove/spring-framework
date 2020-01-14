@@ -29,19 +29,14 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.support.SimpleSessionStatus;
 
 /**
- * Records model and view related decisions made by
- * {@link HandlerMethodArgumentResolver HandlerMethodArgumentResolvers} and
- * {@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers} during the course of invocation of
- * a controller method.
+ * 记录模型并查看在调用Controller方法的过程中{@link HandlerMethodArgumentResolver HandlerMethodArgumentResolvers}
+ * 和{@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers}做出的相关决策.
  *
- * <p>The {@link #setRequestHandled} flag can be used to indicate the request
- * has been handled directly and view resolution is not required.
+ * <p>{@link #setRequestHandled}标志可用于指示已直接处理请求,且不需要视图解析.
  *
- * <p>A default {@link Model} is automatically created at instantiation.
- * An alternate model instance may be provided via {@link #setRedirectModel}
- * for use in a redirect scenario. When {@link #setRedirectModelScenario} is set
- * to {@code true} signalling a redirect scenario, the {@link #getModel()}
- * returns the redirect model instead of the default model.
+ * <p>默认{@link Model}在实例化时自动创建.可以通过{@link #setRedirectModel}提供另一个模型实例,用于重定向场景.
+ * 当{@link #setRedirectModelScenario}设置为{@code true}表示重定向方案时,
+ * {@link #getModel()}返回重定向模型,而不是默认模型.
  *
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
@@ -140,8 +135,7 @@ public class ModelAndViewContainer {
 	public ModelMap getModel() {
 		if (useDefaultModel()) {
 			return this.defaultModel;
-		}
-		else {
+		} else {
 			if (this.redirectModel == null) {
 				this.redirectModel = new ModelMap();
 			}
@@ -163,6 +157,7 @@ public class ModelAndViewContainer {
 	 * model (redirect URL preparation). Use of this method may be needed for
 	 * advanced cases when access to the "default" model is needed regardless,
 	 * e.g. to save model attributes specified via {@code @SessionAttributes}.
+	 *
 	 * @return the default model (never {@code null})
 	 * @since 4.1.4
 	 */
@@ -191,6 +186,7 @@ public class ModelAndViewContainer {
 	/**
 	 * Provide an HTTP status that will be passed on to with the
 	 * {@code ModelAndView} used for view rendering purposes.
+	 *
 	 * @since 4.3
 	 */
 	public void setStatus(@Nullable HttpStatus status) {
@@ -199,6 +195,7 @@ public class ModelAndViewContainer {
 
 	/**
 	 * Return the configured HTTP status, if any.
+	 *
 	 * @since 4.3
 	 */
 	@Nullable
@@ -209,6 +206,7 @@ public class ModelAndViewContainer {
 	/**
 	 * Programmatically register an attribute for which data binding should not occur,
 	 * not even for a subsequent {@code @ModelAttribute} declaration.
+	 *
 	 * @param attributeName the name of the attribute
 	 * @since 4.3
 	 */
@@ -218,6 +216,7 @@ public class ModelAndViewContainer {
 
 	/**
 	 * Whether binding is disabled for the given model attribute.
+	 *
 	 * @since 4.3
 	 */
 	public boolean isBindingDisabled(String name) {
@@ -229,14 +228,14 @@ public class ModelAndViewContainer {
 	 * corresponding to an {@code @ModelAttribute(binding=true/false)} declaration.
 	 * <p>Note: While this flag will be taken into account by {@link #isBindingDisabled},
 	 * a hard {@link #setBindingDisabled} declaration will always override it.
+	 *
 	 * @param attributeName the name of the attribute
 	 * @since 4.3.13
 	 */
 	public void setBinding(String attributeName, boolean enabled) {
 		if (!enabled) {
 			this.noBinding.add(attributeName);
-		}
-		else {
+		} else {
 			this.noBinding.remove(attributeName);
 		}
 	}
@@ -334,19 +333,16 @@ public class ModelAndViewContainer {
 		if (!isRequestHandled()) {
 			if (isViewReference()) {
 				sb.append("reference to view with name '").append(this.view).append("'");
-			}
-			else {
+			} else {
 				sb.append("View is [").append(this.view).append(']');
 			}
 			if (useDefaultModel()) {
 				sb.append("; default model ");
-			}
-			else {
+			} else {
 				sb.append("; redirect model ");
 			}
 			sb.append(getModel());
-		}
-		else {
+		} else {
 			sb.append("Request handled directly");
 		}
 		return sb.toString();
