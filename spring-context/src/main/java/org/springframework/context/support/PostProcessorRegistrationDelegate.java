@@ -59,7 +59,7 @@ final class PostProcessorRegistrationDelegate {
 
 
 	/**
-	 * 调用bean给定beanFactory的后置处理器
+	 * 调用BeanFactoryPostProcessor,即调用Bean工厂的后置处理器
 	 *
 	 * @param beanFactory
 	 * @param beanFactoryPostProcessors

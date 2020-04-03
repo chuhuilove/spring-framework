@@ -110,6 +110,8 @@ class ConfigurationClassBeanDefinitionReader {
 	/**
 	 * Read {@code configurationModel}, registering bean definitions
 	 * with the registry based on its contents.
+	 * 读取{@code configurationModel},根据其内容在注册表中注册Bean定义.
+	 * ,在{@link  ConfigurationClassPostProcessor#processConfigBeanDefinitions}中调用.
 	 */
 	public void loadBeanDefinitions(Set<ConfigurationClass> configurationModel) {
 		TrackedConditionEvaluator trackedConditionEvaluator = new TrackedConditionEvaluator();
@@ -119,8 +121,8 @@ class ConfigurationClassBeanDefinitionReader {
 	}
 
 	/**
-	 * Read a particular {@link ConfigurationClass}, registering bean definitions
-	 * for the class itself and all of its {@link Bean} methods.
+	 * 读取特定{@link ConfigurationClass},为类本身及其所有{@link Bean}方法注册Bean定义.
+	 * 还是不明白,这个函数是做什么的...//TODO 待定
 	 */
 	private void loadBeanDefinitionsForConfigurationClass(
 			ConfigurationClass configClass, TrackedConditionEvaluator trackedConditionEvaluator) {

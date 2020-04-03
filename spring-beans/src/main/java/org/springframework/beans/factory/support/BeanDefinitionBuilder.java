@@ -24,6 +24,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * 构建BeanDefinition实例对象的工具类.
+ * 在spring-cloud-openFeign中,为添加了@EnableFeignClients和@FeignClient的类生成FeignClientSpecification配置类,
+ * 就大量使用了BeanDefinitionBuilder类.
+ * 而且,由于@FeignClient注解上没有和spring相关的注解,则将@FeignClient注解的类生成BeanDefinition,
+ * 使用的也是BeanDefinitionBuilder类.2020年4月3日15:56:11,阅openfeign源码.
+ *
  * Programmatic means of constructing
  * {@link org.springframework.beans.factory.config.BeanDefinition BeanDefinitions}
  * using the builder pattern. Intended primarily for use when implementing Spring 2.0

@@ -26,10 +26,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**
- * A simple filter which matches classes with a given annotation,
- * checking inherited annotations as well.
- *
- * <p>The matching logic mirrors that of {@link java.lang.Class#isAnnotationPresent(Class)}.
+ * 一个简单的过滤器,用于将类与给定注解匹配,并检查继承的注解.
+ * <p>匹配逻辑与 {@link java.lang.Class#isAnnotationPresent(Class)}的逻辑相同.
  *
  * @author Mark Fisher
  * @author Ramnivas Laddad
@@ -44,11 +42,14 @@ public class AnnotationTypeFilter extends AbstractTypeHierarchyTraversingFilter 
 
 
 	/**
-	 * Create a new AnnotationTypeFilter for the given annotation type.
-	 * This filter will also match meta-annotations. To disable the
-	 * meta-annotation matching, use the constructor that accepts a
-	 * '{@code considerMetaAnnotations}' argument. The filter will
-	 * not match interfaces.
+	 * 为给定的注解创建一个新的AnnotationTypeFilter.
+	 * 这个过滤器也将匹配元注解.
+	 * 要禁用元注解匹配这个功能,
+	 * 使用接受'{@code considerMetaAnnotations}'参数的构造函数就行.
+	 * 也就是{@link #AnnotationTypeFilter(Class, boolean)}
+	 * 或者{@link #AnnotationTypeFilter(Class, boolean, boolean)}这两个构造函数.
+	 * 这个过滤器不匹配接口.
+	 *
 	 * @param annotationType the annotation type to match
 	 */
 	public AnnotationTypeFilter(Class<? extends Annotation> annotationType) {
@@ -58,7 +59,8 @@ public class AnnotationTypeFilter extends AbstractTypeHierarchyTraversingFilter 
 	/**
 	 * Create a new AnnotationTypeFilter for the given annotation type.
 	 * The filter will not match interfaces.
-	 * @param annotationType the annotation type to match
+	 *
+	 * @param annotationType          the annotation type to match
 	 * @param considerMetaAnnotations whether to also match on meta-annotations
 	 */
 	public AnnotationTypeFilter(Class<? extends Annotation> annotationType, boolean considerMetaAnnotations) {
@@ -67,9 +69,10 @@ public class AnnotationTypeFilter extends AbstractTypeHierarchyTraversingFilter 
 
 	/**
 	 * Create a new {@link AnnotationTypeFilter} for the given annotation type.
-	 * @param annotationType the annotation type to match
+	 *
+	 * @param annotationType          the annotation type to match
 	 * @param considerMetaAnnotations whether to also match on meta-annotations
-	 * @param considerInterfaces whether to also match interfaces
+	 * @param considerInterfaces      whether to also match interfaces
 	 */
 	public AnnotationTypeFilter(
 			Class<? extends Annotation> annotationType, boolean considerMetaAnnotations, boolean considerInterfaces) {
@@ -82,6 +85,7 @@ public class AnnotationTypeFilter extends AbstractTypeHierarchyTraversingFilter 
 	/**
 	 * Return the {@link Annotation} that this instance is using to filter
 	 * candidates.
+	 *
 	 * @since 5.0
 	 */
 	public final Class<? extends Annotation> getAnnotationType() {
@@ -111,8 +115,7 @@ public class AnnotationTypeFilter extends AbstractTypeHierarchyTraversingFilter 
 	protected Boolean hasAnnotation(String typeName) {
 		if (Object.class.getName().equals(typeName)) {
 			return false;
-		}
-		else if (typeName.startsWith("java")) {
+		} else if (typeName.startsWith("java")) {
 			if (!this.annotationType.getName().startsWith("java")) {
 				// Standard Java types do not have non-standard annotations on them ->
 				// skip any load attempt, in particular for Java language interfaces.
@@ -122,8 +125,7 @@ public class AnnotationTypeFilter extends AbstractTypeHierarchyTraversingFilter 
 				Class<?> clazz = ClassUtils.forName(typeName, getClass().getClassLoader());
 				return ((this.considerMetaAnnotations ? AnnotationUtils.getAnnotation(clazz, this.annotationType) :
 						clazz.getAnnotation(this.annotationType)) != null);
-			}
-			catch (Throwable ex) {
+			} catch (Throwable ex) {
 				// Class not regularly loadable - can't determine a match that way.
 			}
 		}

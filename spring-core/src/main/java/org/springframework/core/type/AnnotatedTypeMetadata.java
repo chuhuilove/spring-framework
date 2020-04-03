@@ -67,9 +67,10 @@ public interface AnnotatedTypeMetadata {
 	Map<String, Object> getAnnotationAttributes(String annotationName);
 
 	/**
-	 * Retrieve the attributes of the annotation of the given type, if any (i.e. if
-	 * defined on the underlying element, as direct annotation or meta-annotation),
-	 * also taking attribute overrides on composed annotations into account.
+	 *
+	 * 检索给定类型的注解的属性(如果有的话)(即,如果在基础元素上定义为直接注解或元注解),
+	 * 也要考虑组合注释上的属性覆盖.
+	 * 例如,如果在底层元素上定义了属性,则为直接注解或元注解
 	 * @param annotationName the fully qualified class name of the annotation
 	 * type to look for
 	 * @param classValuesAsString whether to convert class references to String

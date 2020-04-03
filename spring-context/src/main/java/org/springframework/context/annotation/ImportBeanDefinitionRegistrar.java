@@ -41,6 +41,9 @@ import org.springframework.core.type.AnnotationMetadata;
  *
  * <p>See implementations and associated unit tests for usage examples.
  *
+ * 问题1：在spring-framework初始化的整个流程中,这个接口在什么地方被调用
+ *
+ *
  * @author Chris Beams
  * @since 3.1
  * @see Import

@@ -76,17 +76,21 @@ public interface ClassMetadata {
 	boolean isIndependent();
 
 	/**
-	 * Return whether the underlying class is declared within an enclosing
-	 * class (i.e. the underlying class is an inner/nested class or a
-	 * local class within a method).
-	 * <p>If this method returns {@code false}, then the underlying
-	 * class is a top-level class.
+	 * 返回基础类是否是一个嵌套类类(即,底层类是一个内部或者嵌套类,还是某个方法中的局部类).
+	 * <p>如果这个方法返回{@code false},这意味着底层类是一个共有的顶级类.
+	 * <p>
+	 * 通常,用来判断添加了注解A的类是否是一个public class 修饰的.
+	 * 如果添加了注解A的类是一个内部类,嵌套类,或者是在方法内部定义的匿名内部类,则,此方法返回{@code false}.
 	 */
 	boolean hasEnclosingClass();
 
 	/**
-	 * Return the name of the enclosing class of the underlying class,
-	 * or {@code null} if the underlying class is a top-level class.
+	 * {@link #hasEnclosingClass()}的返回值代表添加了注解A的类是否是一个顶级类,
+	 * 如果不是顶级类,则{@link #hasEnclosingClass()}返回{@code false},
+	 * 那么返回{@code false}以后,后面可能还需要那个类的全类名啊.
+	 * 所以,这个方法就是提供返回全类名的.不过,{@link #hasEnclosingClass()}
+	 * 返回的是{@code true},那么调用该函数则返回{@code null},
+	 * 否则,返回该内部类,嵌套类或者方法内部定义的类的全类名
 	 */
 	@Nullable
 	String getEnclosingClassName();

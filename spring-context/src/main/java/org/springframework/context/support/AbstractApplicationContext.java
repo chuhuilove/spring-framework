@@ -198,6 +198,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * BeanFactoryPostProcessors to apply on refresh.
 	 * <p>
 	 * beanFactory的后置处理器
+	 * 当前ApplicationContext中的BeanFactoryPostProcessor类
 	 */
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
@@ -928,6 +929,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Instantiate and invoke all registered BeanFactoryPostProcessor beans,
 	 * respecting explicit order if given.
+	 * <p>
+	 * 实例化并且调用所有已经注册的 BeanFactoryPostProcessor bean,如果给定了顺序,则遵循给定的顺序.
 	 * <p>必须在单例实例化之前调用.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
