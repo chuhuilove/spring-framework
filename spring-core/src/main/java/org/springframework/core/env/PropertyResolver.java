@@ -91,7 +91,7 @@ public interface PropertyResolver {
 	<T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException;
 
 	/**
-	 * 解决${...}占位符,将它们替换为相应的属性值,由{@link #getProperty}解析.
+	 * 解析${...}占位符,将它们替换为相应的属性值,由{@link #getProperty}解析.
 	 * 没有默认值的不可解析占位符将被忽略,并按原样传递.
 	 * 比如,当初设置数据库链接属性的时候,设置读取配置文件的那个属性${fileName}
 	 * @param text the String to resolve
