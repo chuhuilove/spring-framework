@@ -23,6 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 将构造函数,字段,setter方法或配置方法标记为由Spring的依赖项注入工具自动生成.
  * Marks a constructor, field, setter method, or config method as to be autowired by
  * Spring's dependency injection facilities. This is an alternative to the JSR-330
  * {@link javax.inject.Inject} annotation, adding required-vs-optional semantics.
@@ -73,10 +74,10 @@ import java.lang.annotation.Target;
  *
  * @author Juergen Hoeller
  * @author Mark Fisher
- * @since 2.5
  * @see AutowiredAnnotationBeanPostProcessor
  * @see Qualifier
  * @see Value
+ * @since 2.5
  */
 @Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -85,7 +86,28 @@ public @interface Autowired {
 
 	/**
 	 * Declares whether the annotated dependency is required.
-	 * <p>Defaults to {@code true}.
+	 * 这个属性什么意思呢?
+	 * 当把@Autowired写到Bean内部的属性上时,默认情况下,如果找不到与之相匹配的Bean时,
+	 * 则在spring容器启动时就会报错.
+	 * 比如下面的示例:
+	 * <pre class="code">
+	 * &#064;Service
+	 * public class TestClass{
+	 * 		&#064;Autowird
+	 * 		private OtherService otherService;
+	 * }
+	 * </pre>
+	 * 如果容器中,并不存在 {@code OtherService} Bean,则启动容器时就会报错.
+	 * 但是,如果将示例改成下面这样:
+	 * <pre class="code">
+	 * &#064;Service
+	 * public class TestClass{
+	 * 		&#064;Autowird(required=false)
+	 * 		private OtherService otherService;
+	 * }</pre>
+	 * 则就不会出现报错的问题.
+	 * 但是在后面的使用中,需要注意空指针的问题.
+	 * <p>默认值为{@code true}.
 	 */
 	boolean required() default true;
 
