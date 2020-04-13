@@ -67,14 +67,15 @@ import org.springframework.util.StringUtils;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor}实现,这个类可自动注入:
- * 1. 带注解的字段
+ * 1. 带@Autowired注解的字段
  * 2. setter方法
  * 3. 任意配置方法.
  * <p>
- * 通过Java 5注解检测要注入的此类成员:默认情况下,注入的是被Spring的{@link Autowired @Autowired}和{@link Value @Value}注解的字段.
- *
- * <p>还支持JSR-330的{@link javax.inject.Inject @Inject}注解(如果可用),以替代Spring自己的{@code @Autowired}.
+ * 通过Java 5注解技术来检测要注入的此类成员:默认情况下,注入的是被Spring的{@link Autowired @Autowired}和{@link Value @Value}注解的字段.
+ * <p>还支持JSR-330的{@link javax.inject.Inject @Inject}注解(如果可用,某些jdk版本不支持此注解),以替代Spring自己的{@code @Autowired}.
  * <p>
+ * 任何给定Bean类的构造器(最多)只能在"required"参数设置为true的情况下声明此注解,表示在用作Spring bean时要自动装配的构造器.
+ *
  * 任何给定bean类的构造器（最大）只能使用“ required”参数设置为true来声明此批注，指示在用作Spring bean时要自动装配的构造器。
  * 对于任何给定的bean类,只有一个构造函数(最多一个)可以将"required"参数设置为true来声明这个注解,以指示作为Spring bean使用时的构造函数自动装配(autowire).
  * 如果多个非必需的构造函数声明注解,它们将被视为自动装配的候选对象.将选择通过匹配Spring容器中的bean来满足最多依赖项的构造函数.
