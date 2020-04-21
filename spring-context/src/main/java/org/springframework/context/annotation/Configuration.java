@@ -28,9 +28,8 @@ import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
 /**
- * 指示一个类声明一个或多个{@link Bean @Bean}方法,
- * 并且可以由Spring容器进行处理,以在运行时为这些bean生成bean定义和服务请求,例如:
- *
+ * 表示一个类声明了一个或多个{@link Bean @Bean}方法,
+ * 并且可能被Spring容器处理,以在运行时为这些bean生成bean定义和服务请求,例如:
  * <pre class="code">
  * &#064;Configuration
  * public class AppConfig {
@@ -41,13 +40,14 @@ import org.springframework.stereotype.Component;
  *     }
  * }</pre>
  *
- * <h2>{@code @Configuration}引导类</h2>
+ * <h2>引导{@code @Configuration}类</h2>
  *
- * <h3>Via {@code AnnotationConfigApplicationContext}</h3>
+ * <h3>访问{@code AnnotationConfigApplicationContext}</h3>
  *
  * <p>{@code @Configuration}类通常是使用{@link AnnotationConfigApplicationContext}或其支持web的变体,
- * {@link org.springframework.web.context.support.AnnotationConfigWebApplicationContextAnnotationConfigWebApplicationContext}引导的.
- * 简单的模板示例如下:
+ * {@link org.springframework.web.context.support.AnnotationConfigWebApplicationContext AnnotationConfigWebApplicationContext}
+ * 来进行引导的.简单的模板示例如下:
+ *
  * <pre class="code">
  * AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
  * ctx.register(AppConfig.class);
@@ -61,7 +61,6 @@ import org.springframework.stereotype.Component;
  * AnnotationConfigWebApplicationContext}了解{@code Servlet}容器中的web配置说明.
  *
  * <h3>基于XML{@code <beans>}配置</h3>
- *
  * <p>
  * 作为直接针对{@code AnnotationConfigApplicationContext}注册{@code @Configuration}类的替代方法,
  * 可以将{@code @Configuration}类声明为Spring XML文件中的常规{@code <bean>} 定义：
@@ -75,16 +74,15 @@ import org.springframework.stereotype.Component;
  *
  * <p>
  * 在上面的例子中,{@code <context:annotation-config/>}是必需的,
- * 以便启用{@link ConfigurationClassPostProcessor}和其他与注解相关的后置处理程序,以便处理{@code @Configuration}类.
+ * 以便启用{@link ConfigurationClassPostProcessor}和其他与注解相关的后置处理器,
+ * 从而方便处理添加了{@code @Configuration}注解的类.
  *
- * <h3>Via component scanning</h3>
+ * <h3>组件扫描</h3>
  *
- * <p>{@code @Configuration} is meta-annotated with {@link Component @Component}, therefore
- * {@code @Configuration} classes are candidates for component scanning (typically using
- * Spring XML's {@code <context:component-scan/>} element) and therefore may also take
- * advantage of {@link Autowired @Autowired}/{@link javax.inject.Inject @Inject}
- * like any regular {@code @Component}. In particular, if a single constructor is present
- * autowiring semantics will be applied transparently for that constructor:
+ * <p>{@code @Configuration}使用{@link Component @Component}作为元注解之一,
+ * 因此{@code @Configuration}类是组件扫描的候选类(通常使用Spring XML的 {@code <context:component-scan/>}元素),
+ * 从而也因此可以像使用任何常规的{@code @Component}一样利用{@link Autowired @Autowired}/{@link javax.inject.Inject @Inject}.
+ * 特别是,如果存在单个构造函数,则自动装配语义将透明地应用该构造函数以完成自动注入:
  *
  * <pre class="code">
  * &#064;Configuration
@@ -278,8 +276,8 @@ import org.springframework.stereotype.Component;
  *     public DataSource productionDatabase() { ... }
  * }</pre>
  *
- * <p>查看{@link Profile @Profile}和{@link org.springframework.core.env.Environment}
- * javadocs来查看更多信息.
+ * <p>查看{@link Profile @Profile}和
+ * {@link org.springframework.core.env.Environment}javadocs来查看更多信息.
  *
  * <h3>With Spring XML using the {@code @ImportResource} annotation</h3>
  *

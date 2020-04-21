@@ -128,10 +128,9 @@ public abstract class StringUtils {
 	}
 
 	/**
-	 * Check whether the given {@code CharSequence} contains actual <em>text</em>.
-	 * <p>More specifically, this method returns {@code true} if the
-	 * {@code CharSequence} is not {@code null}, its length is greater than
-	 * 0, and it contains at least one non-whitespace character.
+	 * 检查给定的{@code CharSequence}是否包含真实的<em>text</em>.
+	 * <p> 更具体的说,如果{@code CharSequence}不是{@code null},它的长度大于0，
+	 * 并且它包含至少一个非空白字符,则返回{@code true}.
 	 * <p><pre class="code">
 	 * StringUtils.hasText(null) = false
 	 * StringUtils.hasText("") = false
