@@ -54,6 +54,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
+ *
+ * 配置类Bean定义读取器.
  * Reads a given fully-populated set of ConfigurationClass instances, registering bean
  * definitions with the given {@link BeanDefinitionRegistry} based on its contents.
  *
@@ -90,8 +92,8 @@ class ConfigurationClassBeanDefinitionReader {
 
 
 	/**
-	 * Create a new {@link ConfigurationClassBeanDefinitionReader} instance
-	 * that will be used to populate the given {@link BeanDefinitionRegistry}.
+	 * 创建新的{@link ConfigurationClassBeanDefinitionReader}实例,
+	 * 它将被用来填充给定的{@link BeanDefinitionRegistry}.
 	 */
 	ConfigurationClassBeanDefinitionReader(BeanDefinitionRegistry registry, SourceExtractor sourceExtractor,
 			ResourceLoader resourceLoader, Environment environment, BeanNameGenerator importBeanNameGenerator,
@@ -139,6 +141,7 @@ class ConfigurationClassBeanDefinitionReader {
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
+
 		for (BeanMethod beanMethod : configClass.getBeanMethods()) {
 			loadBeanDefinitionsForBeanMethod(beanMethod);
 		}
@@ -170,11 +173,12 @@ class ConfigurationClassBeanDefinitionReader {
 	}
 
 	/**
-	 * Read the given {@link BeanMethod}, registering bean definitions
-	 * with the BeanDefinitionRegistry based on its contents.
+	 * 读取给定的 {@link BeanMethod},根据其内容向BeanDefinitionRegistry注册Bean定义.
+	 * {@code BeanMethod}这玩意,应该是封装好的带有{@code @Bean}注解的方法.
 	 */
 	@SuppressWarnings("deprecation")  // for RequiredAnnotationBeanPostProcessor.SKIP_REQUIRED_CHECK_ATTRIBUTE
 	private void loadBeanDefinitionsForBeanMethod(BeanMethod beanMethod) {
+		// 获取BeanMethod 所在的配置类
 		ConfigurationClass configClass = beanMethod.getConfigurationClass();
 		MethodMetadata metadata = beanMethod.getMetadata();
 		String methodName = metadata.getMethodName();
@@ -424,12 +428,18 @@ class ConfigurationClassBeanDefinitionReader {
 	/**
 	 * Evaluate {@code @Conditional} annotations, tracking results and taking into
 	 * account 'imported by'.
+	 * 评估{@code @Conditional}注解,
 	 */
 	private class TrackedConditionEvaluator {
 
+		// 存储是否应该跳过评估的{@code ConfigurationClass}对象
 		private final Map<ConfigurationClass, Boolean> skipped = new HashMap<>();
 
 		public boolean shouldSkip(ConfigurationClass configClass) {
+			/**
+			 * 判断给定的{@code configClass}是否需要跳过解析
+			 *
+			 */
 			Boolean skip = this.skipped.get(configClass);
 			if (skip == null) {
 				if (configClass.isImported()) {

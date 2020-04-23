@@ -854,7 +854,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Configure the bean factory with context callbacks.
 		/**
-		 * 这是第一次Tina及内置的后置处理器
+		 * 这是第一次添加及内置的后置处理器
 		 * 为Bean工厂添加后置处理器ApplicationContextAwareProcessor
 		 * 最典型的一个例子,我们的bean实现{@link ApplicationContextAware}后,需要实现一个{@link ApplicationContextAware#setApplicationContext(ApplicationContext)}方法
 		 * 有没有考虑过,参数中的ApplicationContext是从哪里来的?就是在这个类中实现的

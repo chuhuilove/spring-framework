@@ -76,7 +76,7 @@ abstract class ConfigurationClassUtils {
 	 * (or a nested component class declared within a configuration/component class,
 	 * to be auto-registered as well), and mark it accordingly.
 	 * 检查给定的bean定义是否是配置类(或在配置/组件类中声明的嵌套组件类,也可以自动注册)的候选对象,并相应地对其进行标记.
-	 * @param beanDef the bean definition to check
+	 * @param beanDef 要检查的Bean定义
 	 * @param metadataReaderFactory the current factory in use by the caller
 	 * @return whether the candidate qualifies as (any kind of) configuration class
 	 */
@@ -87,7 +87,6 @@ abstract class ConfigurationClassUtils {
 		if (className == null || beanDef.getFactoryMethodName() != null) {
 			return false;
 		}
-
 
 		/**
 		 * 获取bd的元注解.
@@ -152,6 +151,7 @@ abstract class ConfigurationClassUtils {
 	}
 
 	/**
+	 * 检查给定的metedata是否是一个配置类.
 	 * Check the given metadata for a configuration class candidate
 	 * (or nested component class declared within a configuration/component class).
 	 * @param metadata the metadata of the annotated class
@@ -174,9 +174,10 @@ abstract class ConfigurationClassUtils {
 	}
 
 	/**
-	 * Check the given metadata for a lite configuration class candidate
-	 * (e.g. a class annotated with {@code @Component} or just having
-	 * {@code @Import} declarations or {@code @Bean methods}).
+	 * 检查给定的metadata是否为非全配置类.
+	 * 如果给定的medadata上有{@code @Component},{@code @ComponentScan},
+	 * {@code @Import},{@code @ImportResource},{@code @Bean}这五个之一的注解,
+	 * 即可认为此metadata是非全配置类.
 	 * @param metadata the metadata of the annotated class
 	 * @return {@code true} if the given class is to be processed as a lite
 	 * configuration class, just registering it and scanning it for {@code @Bean} methods

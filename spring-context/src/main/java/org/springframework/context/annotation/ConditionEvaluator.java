@@ -51,7 +51,7 @@ class ConditionEvaluator {
 
 
 	/**
-	 * Create a new {@link ConditionEvaluator} instance.
+	 * 创建新的{@link ConditionEvaluator}实例.
 	 */
 	public ConditionEvaluator(@Nullable BeanDefinitionRegistry registry,
 			@Nullable Environment environment, @Nullable ResourceLoader resourceLoader) {
@@ -74,12 +74,13 @@ class ConditionEvaluator {
 
 	/**
 	 * Determine if an item should be skipped based on {@code @Conditional} annotations.
+	 * 根据{@code @Conditional}注解判断{@code metadata}是否应该被跳过解析.
 	 * @param metadata the meta data
 	 * @param phase the phase of the call
 	 * @return if the item should be skipped
 	 */
 	public boolean shouldSkip(@Nullable AnnotatedTypeMetadata metadata, @Nullable ConfigurationPhase phase) {
-		//1. 如果metadata没有被Conditional进行注解则跳过
+		//1. 如果metadata没有被Conditional注解则跳过
 		//
 		if (metadata == null || !metadata.isAnnotated(Conditional.class.getName())) {
 			return false;
@@ -157,6 +158,11 @@ class ConditionEvaluator {
 			this.classLoader = deduceClassLoader(resourceLoader, this.beanFactory);
 		}
 
+		/**
+		 * 推断出BeanFactory
+		 * @param source
+		 * @return
+		 */
 		@Nullable
 		private ConfigurableListableBeanFactory deduceBeanFactory(@Nullable BeanDefinitionRegistry source) {
 			if (source instanceof ConfigurableListableBeanFactory) {
