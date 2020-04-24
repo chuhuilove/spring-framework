@@ -65,25 +65,25 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	public static final String SCOPE_DEFAULT = "";
 
 	/**
-	 * Constant that indicates no external autowiring at all.
+	 * 常量,表示根本没有外部自动装配.
 	 * @see #setAutowireMode
 	 */
 	public static final int AUTOWIRE_NO = AutowireCapableBeanFactory.AUTOWIRE_NO;
 
 	/**
-	 * Constant that indicates autowiring bean properties by name.
+	 * 表示通过name自动装配bean的属性
 	 * @see #setAutowireMode
 	 */
 	public static final int AUTOWIRE_BY_NAME = AutowireCapableBeanFactory.AUTOWIRE_BY_NAME;
 
 	/**
-	 * Constant that indicates autowiring bean properties by type.
+	 * 表示通过type来自动装配bean的属性
 	 * @see #setAutowireMode
 	 */
 	public static final int AUTOWIRE_BY_TYPE = AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE;
 
 	/**
-	 * Constant that indicates autowiring a constructor.
+	 * 表示自动装配构造函数
 	 * @see #setAutowireMode
 	 */
 	public static final int AUTOWIRE_CONSTRUCTOR = AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR;
@@ -147,15 +147,23 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private volatile Object beanClass;
 
+	/**
+	 * bean的作用域
+	 */
 	@Nullable
 	private String scope = SCOPE_DEFAULT;
 
 	private boolean abstractFlag = false;
 
 	private boolean lazyInit = false;
-
+	/**
+	 * 自动装配模式
+	 */
 	private int autowireMode = AUTOWIRE_NO;
 
+	/**
+	 * 依赖检查
+	 */
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
 
 	@Nullable
@@ -204,6 +212,9 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private boolean synthetic = false;
 
+	/**
+	 * bd的角色
+	 */
 	private int role = BeanDefinition.ROLE_APPLICATION;
 
 	@Nullable
@@ -214,7 +225,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 
 	/**
-	 * Create a new AbstractBeanDefinition with default settings.
+	 * 使用默认设置,来构造{@code AbstractBeanDefinition}实例
 	 */
 	protected AbstractBeanDefinition() {
 		this(null, null);
@@ -288,8 +299,9 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * Override settings in this bean definition (presumably a copied parent
 	 * from a parent-child inheritance relationship) from the given bean
 	 * definition (presumably the child).
+	 * 用给定的BeanDefintion来覆盖当前BeanDefintion.
 	 * <ul>
-	 * <li>Will override beanClass if specified in the given bean definition.
+	 * <li>如果在给定的bd中提供了beanClass,则将覆盖此bd中的beanClass.
 	 * <li>Will always take {@code abstract}, {@code scope},
 	 * {@code lazyInit}, {@code autowireMode}, {@code dependencyCheck},
 	 * and {@code dependsOn} from the given bean definition.

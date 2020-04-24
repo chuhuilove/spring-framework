@@ -25,10 +25,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * Support class for {@link AttributeAccessor AttributeAccessors}, providing
- * a base implementation of all methods. To be extended by subclasses.
- *
- * <p>{@link Serializable} if subclasses and all attribute values are {@link Serializable}.
+ * {@link AttributeAccessor AttributeAccessors}的支持类,提供所有方法的基本实现.
+ * 由子类扩展.
+ * <p>{@link Serializable}如果子类和所有属性值都是{@link Serializable}.
+ * 这里维护了一个{@code Map},这个{@code Map}的作用就是保存某些对象的属性
  *
  * @author Rob Harrop
  * @author Juergen Hoeller
@@ -79,7 +79,8 @@ public abstract class AttributeAccessorSupport implements AttributeAccessor, Ser
 
 
 	/**
-	 * Copy the attributes from the supplied AttributeAccessor to this accessor.
+	 * 定义方法,从另外一个{@code AttributeAccessor}对象中复制属性到当前{@linkplain #attributes}中.
+	 * 相当于,当前对象和另外一个{@code AttributeAccessor}对象进行组合.
 	 * @param source the AttributeAccessor to copy from
 	 */
 	protected void copyAttributesFrom(AttributeAccessor source) {

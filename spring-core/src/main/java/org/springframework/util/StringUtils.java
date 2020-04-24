@@ -888,8 +888,8 @@ public abstract class StringUtils {
 	//---------------------------------------------------------------------
 
 	/**
-	 * Copy the given {@link Collection} into a {@code String} array.
-	 * <p>The {@code Collection} must contain {@code String} elements only.
+	 * 复制给定的{@link Collection}到一个{@code String}数组.
+	 * <p>{@code Collection}必须只能包含{@code String}元素.
 	 * @param collection the {@code Collection} to copy
 	 * (potentially {@code null} or empty)
 	 * @return the resulting {@code String} array

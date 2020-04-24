@@ -31,7 +31,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Default implementation of the {@link ResourceLoader} interface.
+ * {@link ResourceLoader}接口的默认实现.
  * Used by {@link ResourceEditor}, and serves as base class for
  * {@link org.springframework.context.support.AbstractApplicationContext}.
  * Can also be used standalone.

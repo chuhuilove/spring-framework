@@ -129,10 +129,11 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	int ROLE_INFRASTRUCTURE = 2;
 
 
-	// Modifiable attributes
+	// 可以修改的属性
 
 	/**
 	 * Set the name of the parent definition of this bean definition, if any.
+	 * 如果这个bd有父bd,则调用此接口来给当前bd设置父bd,
 	 */
 	void setParentName(@Nullable String parentName);
 
@@ -250,7 +251,8 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	void setFactoryBeanName(@Nullable String factoryBeanName);
 
 	/**
-	 * Return the factory bean name, if any.
+	 * 返回{@code FactoryBean}的bean name,
+	 * 如果当前Bean是从{@code FactoryBean}产生的
 	 */
 	@Nullable
 	String getFactoryBeanName();
@@ -382,7 +384,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	String getDescription();
 
 
-	// Read-only attributes
+	// 只读属性
 
 	/**
 	 * Return whether this a <b>Singleton</b>, with a single, shared instance
