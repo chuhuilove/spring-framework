@@ -124,18 +124,16 @@ public @interface Transactional {
 	 * 定义零(0)个或多个异常{@link Class classes},这些异常必须是{@link Throwable}的子类,指示哪些异常类型必须导致事务回滚.
 	 * <p>默认情况下,事务将在{@link RuntimeException}和{@link Error}上回滚,但在受控异常(业务异常)上不回滚.
 	 * 参见{@link org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)}获得详细解释.
-	 * <p>This is the preferred way to construct a rollback rule (in contrast to
-	 * {@link #rollbackForClassName}), matching the exception class and its subclasses.
-	 * <p>Similar to {@link org.springframework.transaction.interceptor.RollbackRuleAttribute#RollbackRuleAttribute(Class clazz)}.
+	 * <p>这是构造回滚规则(与{@link #rollbackForClassName}相比)的首选方法,该规则匹配异常类及其子类.
+	 * <p>类似于{@link org.springframework.transaction.interceptor.RollbackRuleAttribute#RollbackRuleAttribute(Class clazz)}.
 	 * @see #rollbackForClassName
 	 * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)
 	 */
 	Class<? extends Throwable>[] rollbackFor() default {};
 
 	/**
-	 * Defines zero (0) or more exception names (for exceptions which must be a
-	 * subclass of {@link Throwable}), indicating which exception types must cause
-	 * a transaction rollback.
+	 * 定义零(0)个或多个异常名称(对于必须是{@link Throwable}的子类的异常),指示必须导致事务回滚的异常类型.
+	 * 一半情况下,还是使用{@linkplain #rollbackFor()}.
 	 * <p>This can be a substring of a fully qualified class name, with no wildcard
 	 * support at present. For example, a value of {@code "ServletException"} would
 	 * match {@code javax.servlet.ServletException} and its subclasses.
@@ -153,13 +151,11 @@ public @interface Transactional {
 	String[] rollbackForClassName() default {};
 
 	/**
-	 * Defines zero (0) or more exception {@link Class Classes}, which must be
-	 * subclasses of {@link Throwable}, indicating which exception types must
-	 * <b>not</b> cause a transaction rollback.
-	 * <p>This is the preferred way to construct a rollback rule (in contrast
-	 * to {@link #noRollbackForClassName}), matching the exception class and
-	 * its subclasses.
-	 * <p>Similar to {@link org.springframework.transaction.interceptor.NoRollbackRuleAttribute#NoRollbackRuleAttribute(Class clazz)}.
+	 *
+	 * 定义零(0)个或更多的异常{@link Class Classs},
+	 * 它们必须是{@link Throwable}的子类,指示哪些异常类型必须<b>不</ b>引起事务回滚.
+	 * <p>这是构造回滚规则(与{@link #noRollbackForClassName}相比)的首选方法,该规则与异常类及其子类匹配.
+	 * <p>类似于{@link org.springframework.transaction.interceptor.NoRollbackRuleAttribute#NoRollbackRuleAttribute(Class clazz)}.
 	 * @see #noRollbackForClassName
 	 * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)
 	 */
