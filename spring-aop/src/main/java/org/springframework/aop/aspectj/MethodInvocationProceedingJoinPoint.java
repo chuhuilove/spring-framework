@@ -33,15 +33,16 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * An implementation of the AspectJ {@link ProceedingJoinPoint} interface
- * wrapping an AOP Alliance {@link org.aopalliance.intercept.MethodInvocation}.
+ * AspectJ {@link ProceedingJoinPoint}接口的实现,
+ * 包装AOP联盟{@link org.aopalliance.intercept.MethodInvocation}.
  *
- * <p><b>Note</b>: The {@code getThis()} method returns the current Spring AOP proxy.
- * The {@code getTarget()} method returns the current Spring AOP target (which may be
- * {@code null} if there is no target instance) as a plain POJO without any advice.
- * <b>If you want to call the object and have the advice take effect, use {@code getThis()}.</b>
- * A common example is casting the object to an introduced interface in the implementation of
- * an introduction. There is no such distinction between target and proxy in AspectJ itself.
+ *
+ * <p><b>注意</b>: {@code getThis()}方法返回当前Spring AOP代理.
+ * {@code getTarget()}方法以纯POJO的形式返回当前Spring AOP target(如果没有目标实例,则可能为{@code null}),而没有任何通知.
+ *
+ * <b>如果您想调用该对象并使通知生效,请使用{@code getThis()}.</b>
+ * 一个常见的例子是在介绍的实现中将对象转换为已引入的接口.
+ * 在AspectJ本身中,目标和代理之间没有这样的区别.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

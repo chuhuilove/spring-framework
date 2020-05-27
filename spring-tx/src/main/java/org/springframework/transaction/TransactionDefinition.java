@@ -21,7 +21,7 @@ import java.sql.Connection;
 import org.springframework.lang.Nullable;
 
 /**
- * Interface that defines Spring-compliant transaction properties.
+ * 定义与Spring兼容的事务属性的接口.
  * Based on the propagation behavior definitions analogous to EJB CMT attributes.
  *
  * <p>Note that isolation level and timeout settings will not get applied unless

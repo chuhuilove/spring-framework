@@ -726,8 +726,9 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 	}
 
 	/**
-	 * Return a {@link PropertyHandler} for the specified local {@code propertyName}.
-	 * Only used to reach a property available in the current context.
+	 * 为指定的本地{@code propertyName}返回{@link PropertyHandler}.
+	 * 仅用于访问当前上下文中可用的属性.
+	 *
 	 * @param propertyName the name of a local property
 	 * @return the handler for that property, or {@code null} if it has not been found
 	 */
@@ -974,6 +975,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	/**
 	 * A handler for a specific property.
+	 * 指定属性处理器
 	 */
 	protected abstract static class PropertyHandler {
 

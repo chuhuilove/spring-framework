@@ -30,9 +30,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.context.ConfigurableWebEnvironment;
 
 /**
- * {@link Environment} implementation to be used by {@code Servlet}-based web
- * applications. All web-related (servlet-based) {@code ApplicationContext} classes
- * initialize an instance by default.
+ *
+ * 由基于{@code Servlet}的web应用程序使用的{@link Environment}实现.
+ * 默认情况下,所有与Web相关的(基于Servlet的){@code ApplicationContext}类都将初始化一个实例.
  *
  * <p>Contributes {@code ServletConfig}, {@code ServletContext}, and JNDI-based
  * {@link PropertySource} instances. See {@link #customizePropertySources} method

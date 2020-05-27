@@ -70,10 +70,10 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 
 
 	/**
-	 * We consider something to be an AspectJ aspect suitable for use by the Spring AOP system
-	 * if it has the @Aspect annotation, and was not compiled by ajc. The reason for this latter test
-	 * is that aspects written in the code-style (AspectJ language) also have the annotation present
-	 * when compiled by ajc with the -1.5 flag, yet they cannot be consumed by Spring AOP.
+	 * 如果某个东西有@Aspect注解,而且不是由ajc编译的,
+	 * 我们认为它是适合Spring AOP系统使用的AspectJ切面.
+	 * 后一种测试的原因是,用代码风格(AspectJ语言)编写的切面在ajc编译时使用-1.5标志也有注解,
+	 * 但是它们不能被Spring AOP使用.
 	 */
 	@Override
 	public boolean isAspect(Class<?> clazz) {

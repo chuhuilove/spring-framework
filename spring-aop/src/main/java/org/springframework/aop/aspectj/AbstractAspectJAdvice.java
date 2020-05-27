@@ -53,6 +53,8 @@ import org.springframework.util.StringUtils;
  * Base class for AOP Alliance {@link org.aopalliance.aop.Advice} classes
  * wrapping an AspectJ aspect or an AspectJ-annotated advice method.
  *
+ * AOP联盟的基础类{@link org.aopalliance.aop.Advice}类包装了AspectJ切面或带有AspectJ注解的通知方法.
+ *
  * @author Rod Johnson
  * @author Adrian Colyer
  * @author Juergen Hoeller

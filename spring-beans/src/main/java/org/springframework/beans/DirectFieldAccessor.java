@@ -26,6 +26,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 /**
+ * 直接访问实例字段的{@link ConfigurablePropertyAccessor}实现.
+ * 允许直接绑定到字段,而不是通过JavaBean setter.
  * {@link ConfigurablePropertyAccessor} implementation that directly accesses
  * instance fields. Allows for direct binding to fields instead of going through
  * JavaBean setters.
@@ -73,6 +75,7 @@ public class DirectFieldAccessor extends AbstractNestablePropertyAccessor {
 	@Override
 	@Nullable
 	protected FieldPropertyHandler getLocalPropertyHandler(String propertyName) {
+
 		FieldPropertyHandler propertyHandler = this.fieldMap.get(propertyName);
 		if (propertyHandler == null) {
 			Field field = ReflectionUtils.findField(getWrappedClass(), propertyName);

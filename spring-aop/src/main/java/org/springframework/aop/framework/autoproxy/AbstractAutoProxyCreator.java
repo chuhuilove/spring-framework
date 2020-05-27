@@ -51,9 +51,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link org.springframework.beans.factory.config.BeanPostProcessor} implementation
- * that wraps each eligible bean with an AOP proxy, delegating to specified interceptors
- * before invoking the bean itself.
+ * 代理创建器
+ * {@link org.springframework.beans.factory.config.BeanPostProcessor}实现,
+ * 它用AOP代理包装每个合格的bean,在调用bean本身之前委托给指定的拦截器.
  *
  * <p>This class distinguishes between "common" interceptors: shared for all proxies it
  * creates, and "specific" interceptors: unique per bean instance. There need not be any

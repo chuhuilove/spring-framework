@@ -31,8 +31,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Helper for retrieving standard Spring Advisors from a BeanFactory,
- * for use with auto-proxying.
+ * 用于从BeanFactory检索标准Spring 通知者的帮助程序,用于自动代理.
  *
  * @author Juergen Hoeller
  * @since 2.0.2
@@ -44,6 +43,9 @@ public class BeanFactoryAdvisorRetrievalHelper {
 
 	private final ConfigurableListableBeanFactory beanFactory;
 
+	/**
+	 * 缓存通知者BeanName
+	 */
 	@Nullable
 	private volatile String[] cachedAdvisorBeanNames;
 
@@ -61,15 +63,19 @@ public class BeanFactoryAdvisorRetrievalHelper {
 	/**
 	 * Find all eligible Advisor beans in the current bean factory,
 	 * ignoring FactoryBeans and excluding beans that are currently in creation.
+	 * 在当前bean工厂中查找所有合格的Advisor bean,
+	 * 忽略FactoryBeans并排除当前正在创建的bean.
 	 * @return the list of {@link org.springframework.aop.Advisor} beans
 	 * @see #isEligibleBean
 	 */
 	public List<Advisor> findAdvisorBeans() {
-		// Determine list of advisor bean names, if not cached already.
+		// 确定advisor bean名称列表(如果没有缓存).
 		String[] advisorNames = this.cachedAdvisorBeanNames;
 		if (advisorNames == null) {
 			// Do not initialize FactoryBeans here: We need to leave all regular beans
 			// uninitialized to let the auto-proxy creator apply to them!
+			// 不要在这里初始化FactoryBeans:我们需要保留所有未初始化的常规bean,
+			// 以使自动代理创建者对其应用!
 			advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 					this.beanFactory, Advisor.class, true, false);
 			this.cachedAdvisorBeanNames = advisorNames;

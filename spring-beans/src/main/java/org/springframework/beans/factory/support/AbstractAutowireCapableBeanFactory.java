@@ -84,10 +84,11 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Abstract bean factory superclass that implements default bean creation,
- * with the full capabilities specified by the {@link RootBeanDefinition} class.
- * Implements the {@link org.springframework.beans.factory.config.AutowireCapableBeanFactory}
- * interface in addition to AbstractBeanFactory's {@link #createBean} method.
+ * 顾名思义,具有Autowire功能的抽象Bean工厂
+ * <p>
+ * 实现默认bean创建的抽象bean工厂超类,并具有{@link RootBeanDefinition}类指定的全部功能.
+ * 除了AbstractBeanFactory的{@link #createBean}方法外,
+ * 还实现了{@link org.springframework.beans.factory.config.AutowireCapableBeanFactory}接口.
  *
  * <p>Provides bean creation (with constructor resolution), property population,
  * wiring (including autowiring), and initialization. Handles runtime bean
@@ -295,7 +296,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 
 	//-------------------------------------------------------------------------
-	// Typical methods for creating and populating external bean instances
+	// 创建和填充外部Bean实例的典型方法
 	//-------------------------------------------------------------------------
 
 	@Override
@@ -445,7 +446,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 
 	//-------------------------------------------------------------------------
-	// Delegate methods for resolving injection points
+	// 解决注入点的委托方法
 	//-------------------------------------------------------------------------
 
 	@Override
@@ -467,7 +468,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 
 	//---------------------------------------------------------------------
-	// Implementation of relevant AbstractBeanFactory template methods
+	// 相关AbstractBeanFactory模板方法的实现
 	//---------------------------------------------------------------------
 
 	/**
@@ -504,6 +505,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
+			// 让BeanPostProcessors有机会返回代理而不是目标bean实例.
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -1661,9 +1663,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
-	 * Apply the given property values, resolving any runtime references
-	 * to other beans in this bean factory. Must use deep copy, so we
-	 * don't permanently modify this property.
+	 * 应用给定的属性值,从而解决对该bean工厂中其他bean的任何运行时引用.
+	 * 必须使用深拷贝,因此我们不会永久修改此属性.
 	 * @param beanName the bean name passed for better exception information
 	 * @param mbd the merged bean definition
 	 * @param bw the BeanWrapper wrapping the target object

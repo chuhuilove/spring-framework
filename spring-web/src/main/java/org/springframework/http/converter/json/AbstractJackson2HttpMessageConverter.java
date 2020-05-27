@@ -54,10 +54,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.TypeUtils;
 
 /**
- * Abstract base class for Jackson based and content type independent
- * {@link HttpMessageConverter} implementations.
+ * 基于Jackson和内容类型独立{@link HttpMessageConverter}实现的抽象基类.
  *
- * <p>Compatible with Jackson 2.9 and higher, as of Spring 5.0.
+ * <p>从Spring 5.0开始,兼容Jackson 2.9或更高版本.
  *
  * @author Arjen Poutsma
  * @author Keith Donald
