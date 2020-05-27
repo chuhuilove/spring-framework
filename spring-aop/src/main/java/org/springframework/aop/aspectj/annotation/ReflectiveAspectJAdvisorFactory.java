@@ -59,6 +59,10 @@ import org.springframework.util.comparator.InstanceComparator;
  * classes honoring the AspectJ 5 annotation syntax, using reflection to
  * invoke the corresponding advice methods.
  *
+ * 通过使用反射来调用相应的通知方法,
+ * 可以创建Spring AOP advisor的工厂.
+ *
+ *
  * @author Rod Johnson
  * @author Adrian Colyer
  * @author Juergen Hoeller
@@ -110,6 +114,12 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 	}
 
 
+	/**
+	 * 解析带有{@link Pointcut}注解的方法
+	 * @param aspectInstanceFactory the aspect instance factory
+	 * (not the aspect instance itself in order to avoid eager instantiation)
+	 * @return
+	 */
 	@Override
 	public List<Advisor> getAdvisors(MetadataAwareAspectInstanceFactory aspectInstanceFactory) {
 		Class<?> aspectClass = aspectInstanceFactory.getAspectMetadata().getAspectClass();

@@ -36,7 +36,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Abstract base class for most {@link HttpMessageConverter} implementations.
+ *
+ * 大多数{@link HttpMessageConverter}实现的抽象基类.
  *
  * <p>This base class adds support for setting supported {@code MediaTypes}, through the
  * {@link #setSupportedMediaTypes(List) supportedMediaTypes} bean property. It also adds

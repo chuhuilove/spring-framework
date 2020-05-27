@@ -23,9 +23,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Enables support for handling components marked with AspectJ's {@code @Aspect} annotation,
- * similar to functionality found in Spring's {@code <aop:aspectj-autoproxy>} XML element.
- * To be used on @{@link Configuration} classes as follows:
+ * 支持处理标记为AspectJ的{@code @Aspect}注解的组件,
+ * 类似于Spring的{@code <aop:aspectj-autoproxy>} XML元素中的功能.
+ *
+ * 要在@{@link Configuration}类上使用,如下所示:
  *
  * <pre class="code">
  * &#064;Configuration
@@ -44,12 +45,14 @@ import java.lang.annotation.Target;
  * }</pre>
  *
  * Where {@code FooService} is a typical POJO component and {@code MyAspect} is an
- * {@code @Aspect}-style aspect:
+ * {@code @Aspect}-style aspect
+ * 其中{@code FooService}是典型的POJO组件,
+ * 而{@code MyAspect}是{@code @Aspect}风格的切面:
  *
  * <pre class="code">
  * public class FooService {
  *
- *     // various methods
+ *     // 各种方法
  * }</pre>
  *
  * <pre class="code">

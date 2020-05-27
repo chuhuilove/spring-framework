@@ -28,18 +28,17 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * {@link AspectJAwareAdvisorAutoProxyCreator} subclass that processes all AspectJ
- * annotation aspects in the current application context, as well as Spring Advisors.
+ * {@link AspectJAwareAdvisorAutoProxyCreator}子类,
+ * 用于处理当前应用程序上下文以及Spring Advisor中的所有AspectJ注解切面.
  *
- * <p>Any AspectJ annotated classes will automatically be recognized, and their
- * advice applied if Spring AOP's proxy-based model is capable of applying it.
- * This covers method execution joinpoints.
  *
- * <p>If the &lt;aop:include&gt; element is used, only @AspectJ beans with names matched by
- * an include pattern will be considered as defining aspects to use for Spring auto-proxying.
+ * <p>如果Spring AOP的基于代理的模型能够应用AspectJ注解的类,
+ * 那么任何AspectJ注解的类都会自动被识别,它们的通知也会被应用.
+ * 这包括方法执行连接点.
+ * <p>如果使用&lt;aop:include&gt;元素,
+ * 那么只有名字与include模式匹配的@AspectJ bean才会被认为定义了用于Spring自动代理的切面.
  *
- * <p>Processing of Spring Advisors follows the rules established in
- * {@link org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator}.
+ * <p>Spring advisor的处理遵循{@link org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator}中建立的规则.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -60,8 +59,8 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 
 
 	/**
-	 * Set a list of regex patterns, matching eligible @AspectJ bean names.
-	 * <p>Default is to consider all @AspectJ beans as eligible.
+	 * 设置regex模式列表,匹配符合条件的@AspectJ bean名称.
+	 * <p>默认情况下,将所有@AspectJ bean都视为合格的.
 	 */
 	public void setIncludePatterns(List<String> patterns) {
 		this.includePatterns = new ArrayList<>(patterns.size());
@@ -86,6 +85,10 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	}
 
 
+	/**
+	 * 找到候选通知者
+	 * @return
+	 */
 	@Override
 	protected List<Advisor> findCandidateAdvisors() {
 		// Add all the Spring advisors found according to superclass rules.
