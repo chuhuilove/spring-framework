@@ -259,9 +259,29 @@ DispatcherServlet处理请求的方式如下:
 
 
 
+### <span id="mvc-handlermapping-interceptor">1.1.6. Interception</span>
+
+All HandlerMapping implementations support handler interceptors that are useful when you want to apply specific functionality to certain requests — for example, checking for a principal.
+HandlerMapping 
+
+所有`HandlerMapping`实现都支持handler interceptors,当你想将特定的功能应用于某些请求时,这些Interceptors非常有用--例如,checking for a principal.
+Interceptors必须实现来自`org.springframework.web.servlet`包下
+
+ 
+ Interceptors must implement HandlerInterceptor from the org.springframework.web.servlet package with three methods that should provide enough flexibility to do all kinds of pre-processing and post-processing:
+
+- preHandle(..): Before the actual handler is executed
+
+- postHandle(..): After the handler is executed
+
+- afterCompletion(..): After the complete request has finished
+
+
+
+
 ### <span id="viewResolution">1.1.8. View Resolution</span>
 
-Spring MVC定义了`ViewResolver`和`View`接口,它们允许你在浏览器中呈现模型,而不必绑定到特定的视图技术.`ViewResolver`提供了视图名称和实际视图之间的映射.在转移到特定的视图技术之前,`View`解决了数据准备问题.
+Spring MVC定义了`ViewResolver`和`View`接口,它们允许你在浏览器中呈现模型,而不必绑定到特定的view技术.`ViewResolver`提供了视图名称和实际视图之间的映射.在转移到特定的视图技术之前,`View`解决了数据准备问题.
 
 下表提供了更多关于`ViewResolver`层次结构的细节:
 
@@ -283,6 +303,8 @@ Spring MVC定义了`ViewResolver`和`View`接口,它们允许你在浏览器中�
 #### Content Negotiation
 
 
+1.1.9. Locale
+mvc-localeresolver
 
 
 
