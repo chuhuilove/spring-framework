@@ -42,6 +42,7 @@ import org.springframework.core.log.LogFormatUtils;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
@@ -151,6 +152,9 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	private ContentNegotiationManager contentNegotiationManager = new ContentNegotiationManager();
 
+	/**
+	 * 消息转换器
+	 */
 	private List<HttpMessageConverter<?>> messageConverters;
 
 	private List<Object> requestResponseBodyAdvice = new ArrayList<>();
@@ -195,6 +199,17 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 
 	public RequestMappingHandlerAdapter() {
+		/**
+		 * 默认构造参数,创建消息转换器,
+		 * 默认的消息转换器有四个:
+		 * 1. {@linkplain ByteArrayHttpMessageConverter ByteArrayHttpMessageConverter}
+		 * 2. {@linkplain StringHttpMessageConverter StringHttpMessageConverter}
+		 * 3. {@linkplain SourceHttpMessageConverter SourceHttpMessageConverter}
+		 * 4. {@linkplain AllEncompassingFormHttpMessageConverter AllEncompassingFormHttpMessageConverter}
+		 * 在 {@linkplain AllEncompassingFormHttpMessageConverter AllEncompassingFormHttpMessageConverter}中,
+		 * 其父类 {@linkplain FormHttpMessageConverter FormHttpMessageConverter}内部也维护了一个
+		 * {@linkplain List<HttpMessageConverter<?>> partConverters},
+		 */
 		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
 		stringHttpMessageConverter.setWriteAcceptCharset(false);  // see SPR-7316
 
@@ -367,6 +382,8 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	 * Add one or more {@code RequestBodyAdvice} instances to intercept the
 	 * request before it is read and converted for {@code @RequestBody} and
 	 * {@code HttpEntity} method arguments.
+	 * 添加一个或多个{@code RequestBodyAdvice}实例以拦截request,
+	 * 然后再将其读取并转换为被{@code @RequestBody}和{@code HttpEntity}注解的方法参数.
 	 */
 	public void setRequestBodyAdvice(@Nullable List<RequestBodyAdvice> requestBodyAdvice) {
 		if (requestBodyAdvice != null) {

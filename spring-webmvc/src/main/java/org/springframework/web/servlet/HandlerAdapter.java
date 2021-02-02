@@ -24,6 +24,7 @@ import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 /**
  *
@@ -52,6 +53,9 @@ import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
  *
  * 这个类的子类有如下几个
  * 1.{@link HttpRequestHandlerAdapter}直接子类,
+ * 2.{@link RequestMappingHandlerAdapter}最常用的适配器
+ * 3.{@link SimpleControllerHandlerAdapter}
+ * 4.{@link SimpleServletHandlerAdapter}
  *
  *
  *

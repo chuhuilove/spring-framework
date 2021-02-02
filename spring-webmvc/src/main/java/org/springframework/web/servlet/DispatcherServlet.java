@@ -1277,6 +1277,9 @@ public class DispatcherServlet extends FrameworkServlet {
 		boolean errorView = false;
 
 		if (exception != null) {
+			/**
+			 * 处理异常
+			 */
 			if (exception instanceof ModelAndViewDefiningException) {
 				logger.debug("ModelAndViewDefiningException encountered", exception);
 				mv = ((ModelAndViewDefiningException) exception).getModelAndView();

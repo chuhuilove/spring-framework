@@ -33,6 +33,11 @@ import org.springframework.lang.Nullable;
  * or more likely annotated with {@code @ControllerAdvice} in which case they
  * will be auto-detected by both.
  *
+ * 这个接口有两个直接实现子类
+ *
+ * 1. {@linkplain JsonViewResponseBodyAdvice JsonViewResponseBodyAdvice}
+ * 2. {@linkplain RequestResponseBodyAdviceChain RequestResponseBodyAdviceChain}
+ *
  * @author Rossen Stoyanchev
  * @since 4.1
  * @param <T> the body type
