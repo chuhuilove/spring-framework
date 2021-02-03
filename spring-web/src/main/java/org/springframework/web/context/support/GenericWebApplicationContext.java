@@ -37,7 +37,8 @@ import org.springframework.web.context.ConfigurableWebEnvironment;
 import org.springframework.web.context.ServletContextAware;
 
 /**
- * Subclass of {@link GenericApplicationContext}, suitable for web environments.
+ *
+ * {@link GenericApplicationContext}的子类,适配web环境
  *
  * <p>Implements {@link org.springframework.web.context.ConfigurableWebApplicationContext},
  * but is not intended for declarative setup in {@code web.xml}. Instead, it is designed

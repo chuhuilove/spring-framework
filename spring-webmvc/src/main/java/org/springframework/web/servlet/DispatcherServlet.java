@@ -1191,7 +1191,12 @@ public class DispatcherServlet extends FrameworkServlet {
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
-				// 确定当前请求的handler
+				// 确定当前请求的handler,
+				//
+				/**
+				 * 获取当前请求的handler,
+				 * 助于这个handler是{@linkplain HandlerMapping  HandlerMapping的子类}
+				 */
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);

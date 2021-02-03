@@ -30,7 +30,8 @@ import org.springframework.lang.Nullable;
 public interface HttpRequest extends HttpMessage {
 
 	/**
-	 * Return the HTTP method of the request.
+	 *
+	 * 返回request的HTTP方法
 	 * @return the HTTP method as an HttpMethod enum value, or {@code null}
 	 * if not resolvable (e.g. in case of a non-standard HTTP method)
 	 * @see #getMethodValue()

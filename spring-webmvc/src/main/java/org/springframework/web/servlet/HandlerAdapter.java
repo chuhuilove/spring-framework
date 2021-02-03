@@ -20,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.lang.Nullable;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
+import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
@@ -52,10 +54,10 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * 这玩意是怎么和{@link HandlerMapping}进行适配的
  *
  * 这个类的子类有如下几个
- * 1.{@link HttpRequestHandlerAdapter}直接子类,
- * 2.{@link RequestMappingHandlerAdapter}最常用的适配器
- * 3.{@link SimpleControllerHandlerAdapter}
- * 4.{@link SimpleServletHandlerAdapter}
+ * 1.{@link HttpRequestHandlerAdapter}直接子类,支持{@link org.springframework.web.HttpRequestHandler}
+ * 2.{@link RequestMappingHandlerAdapter}最常用的适配器,支持{@link HandlerMethod}
+ * 3.{@link SimpleControllerHandlerAdapter}直接子类,支持{@link Controller}
+ * 4.{@link SimpleServletHandlerAdapter}直接子类,支持{@link javax.servlet.Servlet}
  *
  *
  *

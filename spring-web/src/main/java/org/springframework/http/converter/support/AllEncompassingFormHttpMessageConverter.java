@@ -27,8 +27,8 @@ import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.util.ClassUtils;
 
 /**
- * Extension of {@link org.springframework.http.converter.FormHttpMessageConverter},
- * adding support for XML and JSON-based parts.
+ * {@link org.springframework.http.converter.FormHttpMessageConverter}的扩展,
+ * 增加了对基于XML和JSON的部分的支持.
  *
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller

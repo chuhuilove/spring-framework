@@ -31,7 +31,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
 
 /**
- * Implementation of {@link HttpMessageConverter} that can read and write strings.
+ * {@link HttpMessageConverter}的实现,可以读写字符串
  *
  * <p>By default, this converter supports all media types ({@code &#42;&#47;&#42;}),
  * and writes with a {@code Content-Type} of {@code text/plain}. This can be overridden

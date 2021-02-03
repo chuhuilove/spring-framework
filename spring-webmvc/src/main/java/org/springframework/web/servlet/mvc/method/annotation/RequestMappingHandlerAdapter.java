@@ -132,6 +132,9 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 					AnnotatedElementUtils.hasAnnotation(method, ModelAttribute.class));
 
 
+	/**
+	 * 定制方法参数处理器
+	 */
 	@Nullable
 	private List<HandlerMethodArgumentResolver> customArgumentResolvers;
 
@@ -141,9 +144,15 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	@Nullable
 	private HandlerMethodArgumentResolverComposite initBinderArgumentResolvers;
 
+	/**
+	 * 定制返回值处理器
+	 */
 	@Nullable
 	private List<HandlerMethodReturnValueHandler> customReturnValueHandlers;
 
+	/**
+	 * 返回值的代理
+	 */
 	@Nullable
 	private HandlerMethodReturnValueHandlerComposite returnValueHandlers;
 
@@ -157,6 +166,9 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	 */
 	private List<HttpMessageConverter<?>> messageConverters;
 
+	/**
+	 *
+	 */
 	private List<Object> requestResponseBodyAdvice = new ArrayList<>();
 
 	@Nullable

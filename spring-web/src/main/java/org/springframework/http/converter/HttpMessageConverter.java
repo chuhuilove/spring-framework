@@ -53,7 +53,7 @@ public interface HttpMessageConverter<T> {
 	boolean canWrite(Class<?> clazz, @Nullable MediaType mediaType);
 
 	/**
-	 * Return the list of {@link MediaType} objects supported by this converter.
+	 * 返回这个转换器支持的{@link MediaType}对象列表.
 	 * @return the list of supported media types
 	 */
 	List<MediaType> getSupportedMediaTypes();
@@ -67,8 +67,7 @@ public interface HttpMessageConverter<T> {
 	 * @throws IOException in case of I/O errors
 	 * @throws HttpMessageNotReadableException in case of conversion errors
 	 */
-	T read(Class<? extends T> clazz, HttpInputMessage inputMessage)
-			throws IOException, HttpMessageNotReadableException;
+	T read(Class<? extends T> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException;
 
 	/**
 	 * Write an given object to the given output message.
@@ -82,7 +81,6 @@ public interface HttpMessageConverter<T> {
 	 * @throws IOException in case of I/O errors
 	 * @throws HttpMessageNotWritableException in case of conversion errors
 	 */
-	void write(T t, @Nullable MediaType contentType, HttpOutputMessage outputMessage)
-			throws IOException, HttpMessageNotWritableException;
+	void write(T t, @Nullable MediaType contentType, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException;
 
 }

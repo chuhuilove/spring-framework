@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.lang.Nullable;
+import org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
  * spring mvc的组件之一.
@@ -70,6 +73,16 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.web.servlet.handler.AbstractHandlerMapping
  * @see org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping
  * @see org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+ *
+ * 在Spring Framework中,有4个实现类
+ *
+ * 1. {@linkplain SimpleUrlHandlerMapping SimpleUrlHandlerMapping}
+ * 2. {@linkplain RequestMappingHandlerMapping RequestMappingHandlerMapping}
+ * 3. {@linkplain BeanNameUrlHandlerMapping BeanNameUrlHandlerMapping}
+ * 还有一个和WebSocket相关的HandlerMapping
+ * 4. {@linkplain org.springframework.web.socket.server.support.WebSocketHandlerMapping WebSocketHandlerMapping}
+ * 撇开WebSocket
+ *
  */
 public interface HandlerMapping {
 

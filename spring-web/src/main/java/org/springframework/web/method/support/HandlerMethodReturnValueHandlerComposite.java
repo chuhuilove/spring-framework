@@ -31,6 +31,9 @@ import org.springframework.web.context.request.NativeWebRequest;
  * Handles method return values by delegating to a list of registered {@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers}.
  * Previously resolved return types are cached for faster lookups.
  *
+ * 通过委派给已注册的{@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers}列表来处理MethodReturnValue.
+ * 先前解析的返回类型将被缓存,以加快查找速度.
+ *
  * @author Rossen Stoyanchev
  * @since 3.1
  */
