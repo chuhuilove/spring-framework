@@ -27,6 +27,8 @@ import org.springframework.web.servlet.SmartView;
 import org.springframework.web.servlet.View;
 
 /**
+ * 解析返回值为{@link ModelAndView ModelAndView}类型的方法
+ *
  * 处理{@link ModelAndView}类型的返回值,将视图和模型信息复制到{@link ModelAndViewContainer}.
  *
  * <p>如果返回值为{@code null},

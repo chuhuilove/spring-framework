@@ -49,11 +49,25 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 /**
+ * 这个类实现了{@link HandlerMethodReturnValueHandler}和{@link HandlerMethodArgumentResolver},
+ * 所以
+ * 参数值是{@link HttpEntity HttpEntity.class}或{@link RequestEntity RequestEntity.class}的方法可以被这个类解析,
+ * 返回值是{@link HttpEntity HttpEntity.class}并且不是{@link RequestEntity RequestEntity.class}的方法可以被这个类解析.
+ * {@link HttpEntity}的public非static实现子类有:
+ * 1. {@link RequestEntity}
+ * 2. {@link ResponseEntity}
+ * 由于返回值不支持{@link RequestEntity}类型,所以,这个返回值支持{@link ResponseEntity}类型
+ *
+ *
+ *
+
  * Resolves {@link HttpEntity} and {@link RequestEntity} method argument values
  * and also handles {@link HttpEntity} and {@link ResponseEntity} return values.
  *

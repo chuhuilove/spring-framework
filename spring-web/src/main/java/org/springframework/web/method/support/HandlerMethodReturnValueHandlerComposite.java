@@ -72,6 +72,8 @@ public class HandlerMethodReturnValueHandlerComposite implements HandlerMethodRe
 
 	/**
 	 * Iterate over registered {@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers} and invoke the one that supports it.
+	 * 遍历已注册的{@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers}并调用支持它的那个.
+	 * 注意,可以有n多个返回值解析器,但是每个controller中的方法有且只能有一个返回值解析器
 	 * @throws IllegalStateException if no suitable {@link HandlerMethodReturnValueHandler} is found.
 	 */
 	@Override
@@ -82,9 +84,18 @@ public class HandlerMethodReturnValueHandlerComposite implements HandlerMethodRe
 		if (handler == null) {
 			throw new IllegalArgumentException("Unknown return value type: " + returnType.getParameterType().getName());
 		}
+		/**
+		 * 常用{@link org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor }
+		 */
 		handler.handleReturnValue(returnValue, returnType, mavContainer, webRequest);
 	}
 
+	/**
+	 *
+	 * @param value
+	 * @param returnType
+	 * @return
+	 */
 	@Nullable
 	private HandlerMethodReturnValueHandler selectHandler(@Nullable Object value, MethodParameter returnType) {
 		boolean isAsyncValue = isAsyncReturnValue(value, returnType);

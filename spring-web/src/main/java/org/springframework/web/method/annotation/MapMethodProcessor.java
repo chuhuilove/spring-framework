@@ -28,7 +28,7 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
- * 解析{@link Map}方法参数并处理{@link Map}返回值.
+ * 解析返回值和参数值都是{@link Map Map.clss}的controller中的方法
  *
  * <p>根据{@code @ModelAttribute}或{@code @ResponseBody}等注解的存在,
  * 可以以多种方式解释Map返回值.因此,应在支持这些注解的处理程序之后配置此handler.

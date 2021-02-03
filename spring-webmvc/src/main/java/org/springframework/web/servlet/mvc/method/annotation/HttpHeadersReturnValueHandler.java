@@ -28,6 +28,7 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
+ * 解析返回值为{@link HttpHeaders HttpHeaders.class}类型的方法
  * Handles {@link HttpHeaders} return values.
  *
  * @author Stephane Nicoll

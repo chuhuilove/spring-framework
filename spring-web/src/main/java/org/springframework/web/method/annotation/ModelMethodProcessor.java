@@ -27,6 +27,10 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
+ * 这个类实现了{@link HandlerMethodArgumentResolver}和{@link HandlerMethodReturnValueHandler}.
+ * 作为参数解析器,可以解析参数为{@link Model Model.class}类型的参数
+ * 作为返回值解析器,可以解析返回值为{@link Model Model.class}类型的方法
+ *
  * Resolves {@link Model} arguments and handles {@link Model} return values.
  *
  * <p>A {@link Model} return type has a set purpose. Therefore this handler

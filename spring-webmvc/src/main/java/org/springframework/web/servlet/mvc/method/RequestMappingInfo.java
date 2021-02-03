@@ -25,6 +25,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 import org.springframework.web.servlet.mvc.condition.HeadersRequestCondition;
@@ -54,19 +55,46 @@ import org.springframework.web.util.UrlPathHelper;
  */
 public final class RequestMappingInfo implements RequestCondition<RequestMappingInfo> {
 
+//
+//				return new RequestMappingInfo(this.mappingName, patternsCondition,
+//					new RequestMethodsRequestCondition(this.methods),
+//					new ParamsRequestCondition(this.params),
+//					new HeadersRequestCondition(this.headers),
+//					new ConsumesRequestCondition(this.consumes, this.headers),
+//					new ProducesRequestCondition(this.produces, this.headers, manager),
+//					this.customCondition);
+
+
+	/**
+	 * {@linkplain RequestMapping#name()}里面的内容
+	 */
 	@Nullable
 	private final String name;
 
 	private final PatternsRequestCondition patternsCondition;
 
+	/**
+	 * {@linkplain RequestMapping#method()}里面的内容
+	 */
 	private final RequestMethodsRequestCondition methodsCondition;
-
+	/**
+	 * {@linkplain RequestMapping#params()}里面的内容
+	 */
 	private final ParamsRequestCondition paramsCondition;
 
+	/**
+	 * {@linkplain RequestMapping#headers()}里面的内容
+	 */
 	private final HeadersRequestCondition headersCondition;
 
+	/**
+	 * {@linkplain RequestMapping#consumes()}和{@linkplain RequestMapping#headers()}里面的内容
+	 */
 	private final ConsumesRequestCondition consumesCondition;
 
+	/**
+	 * {@linkplain RequestMapping#produces()}和{@linkplain RequestMapping#headers()}里面的内容
+	 */
 	private final ProducesRequestCondition producesCondition;
 
 	private final RequestConditionHolder customConditionHolder;
@@ -173,7 +201,10 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 
 
 	/**
-	 * 两个RequestMappingInfo合并
+	 * 两个RequestMappingInfo合并,
+	 * 一般而言,是从类型上构建的RequestMappingInfo和从方法上构建的RequestMappingInfo进行合并,
+	 * e.g: Class-RequestMappingInfo.combine(Method-RequestMappingInfo)
+	 *
 	 * Combine "this" request mapping info (i.e. the current instance) with another request mapping info instance.
 	 * <p>Example: combine type- and method-level request mappings.
 	 * @return a new request mapping info instance; never {@code null}
@@ -372,43 +403,64 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 
 	/**
 	 * Defines a builder for creating a RequestMappingInfo.
+	 * 为创建RequestMappingInfo定义一个builder,
+	 * 这个Builder就是用来存储{@linkplain org.springframework.web.bind.annotation.RequestMapping}注解里面的值,
+	 * 注意,{@linkplain org.springframework.web.bind.annotation.RequestMapping}不仅可以注解在方法上,
+	 * 还可以注解在controller类上,
+	 * 所以,这个Builder不仅仅存储方法上{@linkplain org.springframework.web.bind.annotation.RequestMapping}注解里面的内容,
+	 * 还可以存储controller类上{@linkplain org.springframework.web.bind.annotation.RequestMapping}注解里面的内容
+	 *
 	 * @since 4.2
 	 */
 	public interface Builder {
 
 		/**
 		 * Set the path patterns.
+		 * 设置路径,这个路径可以存储方法上的.
+		 * 用来存储RequestMapping的{@linkplain RequestMapping#path()}
 		 */
 		Builder paths(String... paths);
 
 		/**
 		 * Set the request method conditions.
+		 * 设置请求方法,GET,HEAD,POST...
+		 * 用来存储RequestMapping的{@linkplain RequestMapping#method()}
 		 */
 		Builder methods(RequestMethod... methods);
 
 		/**
 		 * Set the request param conditions.
+		 * 设置请求参数
+		 * * 用来存储RequestMapping的{@linkplain RequestMapping#params()}
 		 */
 		Builder params(String... params);
 
 		/**
 		 * Set the header conditions.
 		 * <p>By default this is not set.
+		 * 设置header条件,默认不是空集合
+		 * 用来存储RequestMapping的{@linkplain RequestMapping#headers()}
 		 */
 		Builder headers(String... headers);
 
 		/**
 		 * Set the consumes conditions.
+		 * 设置consumes条件
+		 * 用来存储RequestMapping的{@linkplain RequestMapping#consumes()}
 		 */
 		Builder consumes(String... consumes);
 
 		/**
 		 * Set the produces conditions.
+		 * 设置produces条件
+		 * 用来存储RequestMapping的{@linkplain RequestMapping#produces()}
 		 */
 		Builder produces(String... produces);
 
 		/**
 		 * Set the mapping name.
+		 * 设置mapping name
+		 * 用来存储RequestMapping的{@linkplain RequestMapping#name()}
 		 */
 		Builder mappingName(String name);
 

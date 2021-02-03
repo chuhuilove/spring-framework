@@ -243,6 +243,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * WebApplicationContext for this servlet.
+	 * 这个servlet的WebApplicationContext
 	 */
 	@Nullable
 	private WebApplicationContext webApplicationContext;

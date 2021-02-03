@@ -24,6 +24,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.lang.Nullable;
 
 /**
+ * 表示一个server端HTTP请求
  * Represents a server-side HTTP request.
  *
  * @author Arjen Poutsma

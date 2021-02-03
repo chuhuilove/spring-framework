@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.annotation.ModelAndViewResolver;
 
 /**
+ * 这个类支持解析所有返回值
  * This return value handler is intended to be ordered after all others as it
  * attempts to handle _any_ return value type (i.e. returns {@code true} for
  * all return types).

@@ -46,6 +46,13 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 
 	private final List<HandlerMethodArgumentResolver> argumentResolvers = new LinkedList<>();
 
+	/**
+	 * 方法参数+解析器映射
+	 * 每个controller中的方法中的每个参数,都有对应的参数解析器,
+	 * 在每次调用controller中方法的时候,都需要调用参数解析器来设置参数值,
+	 * 一旦某个参数找到了与之对应的参数解析器以后,就存储在这个地方,
+	 * @see #getArgumentResolver(MethodParameter) 
+	 */
 	private final Map<MethodParameter, HandlerMethodArgumentResolver> argumentResolverCache =
 			new ConcurrentHashMap<>(256);
 
@@ -109,6 +116,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	}
 
 	/**
+	 * 调用方法参数的解析器,解析出参数值
 	 * Iterate over registered
 	 * {@link HandlerMethodArgumentResolver HandlerMethodArgumentResolvers}
 	 * and invoke the one that supports it.
@@ -130,9 +138,14 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	/**
 	 * Find a registered {@link HandlerMethodArgumentResolver} that supports
 	 * the given method parameter.
+	 * 在已注册的{@link HandlerMethodArgumentResolver}中查找支持给定方法参数的{@link HandlerMethodArgumentResolver}.
 	 */
 	@Nullable
 	private HandlerMethodArgumentResolver getArgumentResolver(MethodParameter parameter) {
+		// 每个参数的解析器,都设置一个缓存,一旦某个参数和某个参数解析器绑定以后,就存储
+		/**
+		 * 
+		 */
 		HandlerMethodArgumentResolver result = this.argumentResolverCache.get(parameter);
 		if (result == null) {
 			for (HandlerMethodArgumentResolver resolver : this.argumentResolvers) {

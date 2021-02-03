@@ -55,6 +55,11 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
+ * 这个类实现了{@link HandlerMethodArgumentResolver}和{@link HandlerMethodReturnValueHandler}.
+ * 作为参数解析器,可以解析方法上添加了{@link ModelAttribute}注解的参数,
+ * 或者{@link #annotationNotRequired annotationNotRequired==tue}&&{@code !BeanUtils.isSimpleProperty}成立的方法.
+ * 作为返回值解析器,解析条件和参数解析条件相同
+ *
  * Resolve {@code @ModelAttribute} annotated method arguments and handle
  * return values from {@code @ModelAttribute} annotated methods.
  *

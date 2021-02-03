@@ -48,6 +48,7 @@ public final class MethodIntrospector {
 
 
 	/**
+	 * 根据相关联的元数据查找,选择给定目标类型上的方法.
 	 * Select methods on the given target type based on the lookup of associated metadata.
 	 * <p>Callers define methods of interest through the {@link MetadataLookup} parameter,
 	 * allowing to collect the associated metadata into the result map.

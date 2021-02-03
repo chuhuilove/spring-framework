@@ -40,10 +40,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 /**
+ *
+ * 这个类实现了{@link HandlerMethodArgumentResolver}和{@link HandlerMethodReturnValueHandler}.
+ * 作为参数解析器,解析了参数添加了{@link RequestBody @RequestBody.class}注解的参数
+ * 作为返回值解析器,解析返回值或方法上添加了{@link ResponseBody ResponseBosy.class}注解的方法
+ *
+ *
  * 解析使用{@code @RequestBody}注解的方法参数,
  * 并通过使用{@link HttpMessageConverter}
  * 读写请求或响应的主体来处理来自使用{@code @ResponseBody}注解的方法的返回值.
@@ -190,6 +198,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 		ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
 
 		// Try even with null return value. ResponseBodyAdvice could get involved.
+		// 尝试使用null返回值. ResponseBodyAdvice可能会参与其中.
 		writeWithMessageConverters(returnValue, returnType, inputMessage, outputMessage);
 	}
 

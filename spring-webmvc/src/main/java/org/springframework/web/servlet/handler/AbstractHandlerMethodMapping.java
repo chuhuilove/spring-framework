@@ -261,7 +261,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
-	 * 在给定的handler bean查找 handler 方法(查找带有RequestMapping注解的方法).
+	 * 在给定的handler bean查找 handler 方法(查找带有{@linkplain org.springframework.web.bind.annotation.RequestMapping}注解的方法).
 	 *
 	 * @param handler either a bean name or an actual handler instance
 	 * @see #getMappingForMethod
@@ -271,6 +271,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				obtainApplicationContext().getType((String) handler) : handler.getClass());
 
 		if (handlerType != null) {
+			// 解析controller中的所有带有RequestMapping注解的方法映射
 			Class<?> userType = ClassUtils.getUserClass(handlerType);
 
 

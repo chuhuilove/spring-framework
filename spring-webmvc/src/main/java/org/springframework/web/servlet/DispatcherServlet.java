@@ -1083,6 +1083,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * Exposes the DispatcherServlet-specific request attributes and delegates to {@link #doDispatch}
 	 * for the actual dispatching.
+	 * 做实际的处理
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1195,7 +1196,8 @@ public class DispatcherServlet extends FrameworkServlet {
 				//
 				/**
 				 * 获取当前请求的handler,
-				 * 助于这个handler是{@linkplain HandlerMapping  HandlerMapping的子类}
+				 * 这个handler是{@linkplain HandlerMapping  HandlerMapping的子类},
+				 * 遍历{@link handlerMappings},以获取当前{@link request}的handler
 				 */
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
@@ -1205,6 +1207,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 				// Determine handler adapter for the current request.
 				// 确定当前请求的处理程序适配器. 获取适配器
+				// 一般是RequestMappingAdapter
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
