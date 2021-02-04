@@ -42,9 +42,17 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.GenericHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
+import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.lang.Nullable;
@@ -274,25 +282,41 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 		if (selectedMediaType != null) {
 			selectedMediaType = selectedMediaType.removeQualityValue();
 			for (HttpMessageConverter<?> converter : this.messageConverters) {
-				GenericHttpMessageConverter genericConverter = (converter instanceof GenericHttpMessageConverter ?
-						(GenericHttpMessageConverter<?>) converter : null);
-				if (genericConverter != null ?
-						((GenericHttpMessageConverter) converter).canWrite(targetType, valueType, selectedMediaType) :
-						converter.canWrite(valueType, selectedMediaType)) {
-					body = getAdvice().beforeBodyWrite(body, returnType, selectedMediaType,
-							(Class<? extends HttpMessageConverter<?>>) converter.getClass(),
-							inputMessage, outputMessage);
+
+				/**
+				 * {@link ByteArrayHttpMessageConverter} 不是
+				 * {@link StringHttpMessageConverter} 不是
+				 * {@link ResourceHttpMessageConverter} 不是
+				 * {@link ResourceRegionHttpMessageConverter}是{@link GenericHttpMessageConverter}的实例
+				 * {@link SourceHttpMessageConverter} 不是
+				 * {@link AllEncompassingFormHttpMessageConverter}不是
+				 * {@link MappingJackson2HttpMessageConverter} 是{@link GenericHttpMessageConverter}的实例
+				 * {@link Jaxb2RootElementHttpMessageConverter} 不是
+				 * 一般情况下,会注入以上这几个HttpMessageConverter实例
+				 */
+
+				GenericHttpMessageConverter genericConverter = (converter instanceof GenericHttpMessageConverter ? (GenericHttpMessageConverter<?>) converter : null);
+				if (genericConverter != null ?((GenericHttpMessageConverter) converter).canWrite(targetType, valueType, selectedMediaType) :converter.canWrite(valueType, selectedMediaType)) {
+
+					body = getAdvice().beforeBodyWrite(body, returnType, selectedMediaType,(Class<? extends HttpMessageConverter<?>>) converter.getClass(),inputMessage, outputMessage);
 					if (body != null) {
+
 						Object theBody = body;
 						LogFormatUtils.traceDebug(logger, traceOn ->
 								"Writing [" + LogFormatUtils.formatValue(theBody, !traceOn) + "]");
 						addContentDispositionHeader(inputMessage, outputMessage);
-						if (genericConverter != null) {
-							genericConverter.write(body, targetType, selectedMediaType, outputMessage);
+						{
+							// 把数据写出去.......
+							// 就是ServletServerHttpResponse...
+							// 自己定义了HttpMessageConverter,就需要还需要编写 write方法,
+							if (genericConverter != null) {
+								genericConverter.write(body, targetType, selectedMediaType, outputMessage);
+							}
+							else {
+								((HttpMessageConverter) converter).write(body, selectedMediaType, outputMessage);
+							}
 						}
-						else {
-							((HttpMessageConverter) converter).write(body, selectedMediaType, outputMessage);
-						}
+
 					}
 					else {
 						if (logger.isDebugEnabled()) {

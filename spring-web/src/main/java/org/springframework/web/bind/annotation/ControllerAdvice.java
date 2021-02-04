@@ -27,6 +27,11 @@ import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
 /**
+ *
+ * 对于声明{@link ExceptionHandler @ExceptionHandler},
+ * {@link InitBinder @InitBinder}或{@link ModelAttribute @ModelAttribute}方法以在多个{@code @Controller}类之间共享的类,
+ * 专门使用{@link Component @Component}.
+ *
  * Specialization of {@link Component @Component} for classes that declare
  * {@link ExceptionHandler @ExceptionHandler}, {@link InitBinder @InitBinder}, or
  * {@link ModelAttribute @ModelAttribute} methods to be shared across

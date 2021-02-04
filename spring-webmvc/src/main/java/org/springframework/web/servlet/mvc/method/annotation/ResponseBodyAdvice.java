@@ -24,6 +24,9 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.lang.Nullable;
 
 /**
+ * 允许在执行{@code @ResponseBody}或{@code ResponseEntity}控制器方法之后,
+ * 但在使用{@code HttpMessageConverter}编码正文之前自定义响应.
+ *
  * Allows customizing the response after the execution of an {@code @ResponseBody}
  * or a {@code ResponseEntity} controller method but before the body is written
  * with an {@code HttpMessageConverter}.

@@ -32,6 +32,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 /**
+ * 封装关于{@linkplain ControllerAdvice @ControllerAdvice} spring管理bean的信息,而不必实例化它.
  * Encapsulates information about an {@linkplain ControllerAdvice @ControllerAdvice}
  * Spring-managed bean without necessarily requiring it to be instantiated.
  *
