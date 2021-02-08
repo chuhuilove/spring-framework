@@ -72,6 +72,9 @@ public class ObjectToStringHttpMessageConverter extends AbstractHttpMessageConve
 	 * @param defaultCharset the default charset
 	 */
 	public ObjectToStringHttpMessageConverter(ConversionService conversionService, Charset defaultCharset) {
+		/**
+		 * 支持的媒体类型为text/plain
+		 */
 		super(defaultCharset, MediaType.TEXT_PLAIN);
 
 		Assert.notNull(conversionService, "ConversionService is required");

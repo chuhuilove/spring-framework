@@ -25,8 +25,23 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 
 /**
+ * {@link org.springframework.http.converter.HttpMessageConverter}的实现,使用
+ * <a href="https://github.com/FasterXML/jackson">Jackson 2.x's</a> {@link ObjectMapper}来读写JSON.
+ *
+ * <p>这个converter可以被用于绑定到类型化的bean或未类型化的{@code HashMap}实例
+ *
+ * <p>默认情况下,这个converter支持{@code UTF-8}字符集的{@code application/json} and {@code application/*+json}.
+ * 可以通过重写{@link #setSupportedMediaTypes supportedMediaTypes}方法来设置属性{@code supportedMediaTypes}的值.
+ *
+ * <p> 默认构造函数使用{@link Jackson2ObjectMapperBuilder}提供的默认配置.
+ *
+ * <p> 从Spring 5.0开始与Jackson 2.9以及更高版本兼容.
+ *
+ *
  * Implementation of {@link org.springframework.http.converter.HttpMessageConverter} that can read and
  * write JSON using <a href="https://github.com/FasterXML/jackson">Jackson 2.x's</a> {@link ObjectMapper}.
+ *
+ *
  *
  * <p>This converter can be used to bind to typed beans, or untyped {@code HashMap} instances.
  *
@@ -65,6 +80,9 @@ public class MappingJackson2HttpMessageConverter extends AbstractJackson2HttpMes
 	 * @see Jackson2ObjectMapperBuilder#json()
 	 */
 	public MappingJackson2HttpMessageConverter(ObjectMapper objectMapper) {
+		/**
+		 * 支持的媒体类型为application/json和application/*+json
+		 */
 		super(objectMapper, MediaType.APPLICATION_JSON, new MediaType("application", "*+json"));
 	}
 

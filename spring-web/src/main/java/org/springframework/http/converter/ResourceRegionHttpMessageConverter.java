@@ -37,6 +37,8 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StreamUtils;
 
 /**
+ * {@link HttpMessageConverter}的实现,可以写单个{@link ResourceRegion}或一个{@link ResourceRegion ResourceRegions}集合.
+ * 支持所有媒体类型
  * Implementation of {@link HttpMessageConverter} that can write a single {@link ResourceRegion},
  * or Collections of {@link ResourceRegion ResourceRegions}.
  *

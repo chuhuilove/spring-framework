@@ -52,15 +52,13 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 /**
- * A data structure representing HTTP request or response headers, mapping String header names
- * to a list of String values, also offering accessors for common application-level data types.
- *
- * <p>In addition to the regular methods defined by {@link Map}, this class offers many common
- * convenience methods, for example:
+ * 表示HTTP请求和响应头的数据类型,将String header名称映射到String values列表,
+ * 还为常见的应用程序级数据类型提供访问器.
+ * <p>除了{@link Map}定义的常规方法外,此类还提供许多常用的便捷方法,例如:
  * <ul>
- * <li>{@link #getFirst(String)} returns the first value associated with a given header name</li>
- * <li>{@link #add(String, String)} adds a header value to the list of values for a header name</li>
- * <li>{@link #set(String, String)} sets the header value to a single string value</li>
+ * <li>{@link #getFirst(String)} 返回给定header name关联的第一个值</li>
+ * <li>{@link #add(String, String)} 将header值添加到header名称的值列表中</li>
+ * <li>{@link #set(String, String)} 将header值设置为单个string值</li>
  * </ul>
  *
  * <p>Note that {@code HttpHeaders} generally treats header names in a case-insensitive manner.
@@ -78,6 +76,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 
 
 	/**
+	 * 客户端用Accept header来通知服务器可以接受哪些媒体类型.
 	 * The HTTP {@code Accept} header field name.
 	 * @see <a href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Section 5.3.2 of RFC 7231</a>
 	 */
@@ -198,6 +197,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 	 */
 	public static final String CONTENT_RANGE = "Content-Range";
 	/**
+	 * Content-Type header说明了报文中对象的媒体类型
 	 * The HTTP {@code Content-Type} header field name.
 	 * @see <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Section 3.1.1.5 of RFC 7231</a>
 	 */

@@ -178,8 +178,8 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 	/**
 	 * 将给定的return type写到给定的output message
 	 * Writes the given return type to the given output message.
-	 * @param value the value to write to the output message
-	 * @param returnType the type of the value
+	 * @param value the value to write to the output message  写到{@code outputMessage}的返回值,其实也就是方法执行后的值
+	 * @param returnType the type of the value   返回值的类型,用{@link MethodParameter MethodParameter}进行封装
 	 * @param inputMessage the input messages. Used to inspect the {@code Accept} header.
 	 * @param outputMessage the output message to write to
 	 * @throws IOException thrown in case of I/O errors
@@ -195,18 +195,27 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 		Class<?> valueType;
 		Type targetType;
 
+		/**
+		* 如果值的类型是{@link CharSequence}类型,则将{@link valueType}和{@link targetType}设置为{@link String}
+		*/
 		if (value instanceof CharSequence) {
 			body = value.toString();
 			valueType = String.class;
 			targetType = String.class;
 		}
 		else {
+			/**
+			 * 获取返回值的类型
+			 */
 			body = value;
 			valueType = getReturnValueType(body, returnType);
 			targetType = GenericTypeResolver.resolveType(getGenericType(returnType), returnType.getContainingClass());
 		}
 
 		if (isResourceType(value, returnType)) {
+			/**
+			 * 返回值或返回值声明的类型是{@link Resource}的子类...
+			 */
 			outputMessage.getHeaders().set(HttpHeaders.ACCEPT_RANGES, "bytes");
 			if (value != null && inputMessage.getHeaders().getFirst(HttpHeaders.RANGE) != null &&
 					outputMessage.getServletResponse().getStatus() == 200) {
@@ -234,7 +243,9 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 			selectedMediaType = contentType;
 		}
 		else {
+			// 获取 HttpServletRequest
 			HttpServletRequest request = inputMessage.getServletRequest();
+
 			List<MediaType> acceptableTypes = getAcceptableMediaTypes(request);
 			List<MediaType> producibleTypes = getProducibleMediaTypes(request, valueType, targetType);
 
@@ -345,6 +356,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 
 	/**
 	 * Return whether the returned value or the declared return type extends {@link Resource}.
+	 * 判断返回值或者声明的返回类型是否是{@link Resource}的子类
 	 */
 	protected boolean isResourceType(@Nullable Object value, MethodParameter returnType) {
 		Class<?> clazz = getReturnValueType(value, returnType);

@@ -36,6 +36,7 @@ import org.springframework.lang.Nullable;
 public interface HttpMessageConverter<T> {
 
 	/**
+	 * 指示给定的给定的类是否可以通过这个converter转换
 	 * Indicates whether the given class can be read by this converter.
 	 * @param clazz the class to test for readability
 	 * @param mediaType the media type to read (can be {@code null} if not specified);
@@ -45,6 +46,7 @@ public interface HttpMessageConverter<T> {
 	boolean canRead(Class<?> clazz, @Nullable MediaType mediaType);
 
 	/**
+	 * 指示给定的类是否可以通过这个converter转换
 	 * Indicates whether the given class can be written by this converter.
 	 * @param clazz the class to test for writability
 	 * @param mediaType the media type to write (can be {@code null} if not specified);
@@ -60,18 +62,19 @@ public interface HttpMessageConverter<T> {
 	List<MediaType> getSupportedMediaTypes();
 
 	/**
-	 * Read an object of the given type from the given input message, and returns it.
+	 * 从inout message中读取出给定类型的一个对象,并且返回这个对象
+	 *
 	 * @param clazz the type of object to return. This type must have previously been passed to the
 	 * {@link #canRead canRead} method of this interface, which must have returned {@code true}.
 	 * @param inputMessage the HTTP input message to read from
-	 * @return the converted object
+	 * @return 读取出的对象
 	 * @throws IOException in case of I/O errors
 	 * @throws HttpMessageNotReadableException in case of conversion errors
 	 */
 	T read(Class<? extends T> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException;
 
 	/**
-	 * Write an given object to the given output message.
+	 * 将给定的对象写到给定的output message.
 	 * @param t the object to write to the output message. The type of this object must have previously been
 	 * passed to the {@link #canWrite canWrite} method of this interface, which must have returned {@code true}.
 	 * @param contentType the content type to use when writing. May be {@code null} to indicate that the

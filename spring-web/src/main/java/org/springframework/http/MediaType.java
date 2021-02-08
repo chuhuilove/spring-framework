@@ -36,7 +36,17 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link MimeType}的子类,添加对HTTP规范中定义的质量参数的支持.
+ * {@link MimeType}的子类,添加对http规范中定义的质量参数的支持.
+ *
+ * mime媒体类型是描述报文实体主体内容的一些标准化名称(比如,text/html,image/jpeg).
+ * 在http中,mime媒体类型被广泛应用于content-type和accept请求头.比如:
+ * <ul>
+ *     <li>content-type:video/quicktime</li>
+ *     <li>Content-Type:text/html;charset="iso-8859-6"</li>
+ *     <li>Content-Type:multipart/mixed;boundary=gc0p4Jq0M2Yt08j34c0p</li>
+ *     <li>Accept:image/gif</li>
+ * </ul>
+ *
  *
  *
  * @author Arjen Poutsma
@@ -54,6 +64,7 @@ public class MediaType extends MimeType implements Serializable {
 	private static final long serialVersionUID = 2069937152339670231L;
 
 	/**
+	 * 所有媒体范围
 	 * Public constant media type that includes all media ranges (i.e. "&#42;/&#42;").
 	 */
 	public static final MediaType ALL;
@@ -279,6 +290,7 @@ public class MediaType extends MimeType implements Serializable {
 	public static final String TEXT_EVENT_STREAM_VALUE = "text/event-stream";
 
 	/**
+	 * HTML文本
 	 * Public constant media type for {@code text/html}.
 	 */
 	public static final MediaType TEXT_HTML;
@@ -301,6 +313,7 @@ public class MediaType extends MimeType implements Serializable {
 	public static final String TEXT_MARKDOWN_VALUE = "text/markdown";
 
 	/**
+	 * 普通的文本
 	 * Public constant media type for {@code text/plain}.
 	 */
 	public static final MediaType TEXT_PLAIN;
@@ -311,6 +324,7 @@ public class MediaType extends MimeType implements Serializable {
 	public static final String TEXT_PLAIN_VALUE = "text/plain";
 
 	/**
+	 * Extensible Markup语言格式文件(如果下载时希望浏览器将文件保存下来就使用{@link #APPLICATION_XML}
 	 * Public constant media type for {@code text/xml}.
 	 */
 	public static final MediaType TEXT_XML;

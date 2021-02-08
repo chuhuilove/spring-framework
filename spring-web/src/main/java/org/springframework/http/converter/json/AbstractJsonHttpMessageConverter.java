@@ -60,6 +60,9 @@ public abstract class AbstractJsonHttpMessageConverter extends AbstractGenericHt
 
 
 	public AbstractJsonHttpMessageConverter() {
+		/**
+		 * 支持的媒体类型为application/json和所有application/*+json类型
+		 */
 		super(MediaType.APPLICATION_JSON, new MediaType("application", "*+json"));
 		setDefaultCharset(DEFAULT_CHARSET);
 	}

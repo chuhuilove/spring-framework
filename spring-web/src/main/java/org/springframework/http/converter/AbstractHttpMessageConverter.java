@@ -54,6 +54,9 @@ public abstract class AbstractHttpMessageConverter<T> implements HttpMessageConv
 	/** Logger available to subclasses. */
 	protected final Log logger = HttpLogging.forLogName(getClass());
 
+	/**
+	 * 支持的{@link MediaType MediaType}类型
+	 */
 	private List<MediaType> supportedMediaTypes = Collections.emptyList();
 
 	@Nullable

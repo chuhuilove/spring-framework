@@ -32,6 +32,17 @@ import java.util.TreeSet;
 import org.springframework.lang.Nullable;
 
 /**
+ * 表示MIME类型,该类型最初在RFC 2046中定义,随后在包括HTTP在内的其他Internet协议中使用.
+ * <p>但是,此类不包含对HTTP内容协商中使用的q参数的支持.
+ * 这些可以在{@code spring-web}模块中的子类{@code org.springframework.http.MediaType}中找到.
+ *
+ * <p>由{@linkplain #getType() type} and a {@linkplain #getSubtype() subtype}组成.
+ * 还具有使用{@link #valueOf(String)}从{@code String}解析MIME类型值的功能.
+ * 有关更多解析选项,请参见{@link MimeTypeUtils}.
+ *
+ *
+ *
+ *
  * Represents a MIME Type, as originally defined in RFC 2046 and subsequently
  * used in other Internet protocols including HTTP.
  *
