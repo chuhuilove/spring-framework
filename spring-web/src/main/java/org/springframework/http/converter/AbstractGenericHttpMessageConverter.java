@@ -73,6 +73,8 @@ public abstract class AbstractGenericHttpMessageConverter<T> extends AbstractHtt
 
 	@Override
 	public boolean canWrite(@Nullable Type type, Class<?> clazz, @Nullable MediaType mediaType) {
+		// 子类 AbstractJackson2HttpMessageConverter重写了下面的方法
+
 		return canWrite(clazz, mediaType);
 	}
 
@@ -80,6 +82,7 @@ public abstract class AbstractGenericHttpMessageConverter<T> extends AbstractHtt
 	 * This implementation sets the default headers by calling {@link #addDefaultHeaders},
 	 * and then calls {@link #writeInternal}.
 	 */
+	@Override
 	public final void write(final T t, @Nullable final Type type, @Nullable MediaType contentType,
 			HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
 

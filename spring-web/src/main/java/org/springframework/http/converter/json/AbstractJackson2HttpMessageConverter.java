@@ -149,6 +149,7 @@ public abstract class AbstractJackson2HttpMessageConverter extends AbstractGener
 
 	@Override
 	public boolean canRead(Class<?> clazz, @Nullable MediaType mediaType) {
+		logger.info("AbstractJackson2HttpMessageConverter#canRead........clazz="+clazz.getName()+",MediaType:"+mediaType);
 		return canRead(clazz, null, mediaType);
 	}
 
@@ -168,13 +169,19 @@ public abstract class AbstractJackson2HttpMessageConverter extends AbstractGener
 
 	@Override
 	public boolean canWrite(Class<?> clazz, @Nullable MediaType mediaType) {
+		/**
+		 * 调用父类的{@link org.springframework.http.converter.AbstractHttpMessageConverter#canWrite(MediaType)}
+		 * 单纯的判断媒体类型
+		 */
 		if (!canWrite(mediaType)) {
 			return false;
 		}
+		// 判断给定的类是否可序列化
 		AtomicReference<Throwable> causeRef = new AtomicReference<>();
 		if (this.objectMapper.canSerialize(clazz, causeRef)) {
 			return true;
 		}
+		// 不可以写,记录一下日志...
 		logWarningIfNecessary(clazz, causeRef.get());
 		return false;
 	}
@@ -249,6 +256,7 @@ public abstract class AbstractJackson2HttpMessageConverter extends AbstractGener
 	protected void writeInternal(Object object, @Nullable Type type, HttpOutputMessage outputMessage)
 			throws IOException, HttpMessageNotWritableException {
 
+		// json 写出数据的地方
 		MediaType contentType = outputMessage.getHeaders().getContentType();
 		JsonEncoding encoding = getJsonEncoding(contentType);
 		JsonGenerator generator = this.objectMapper.getFactory().createGenerator(outputMessage.getBody(), encoding);

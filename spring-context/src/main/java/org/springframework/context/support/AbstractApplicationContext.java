@@ -754,7 +754,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		if (singletonObjects.size() > 0) {
 			singletonObjects.forEach((key, value) -> logger.trace(key + "---->" + value.toString()));
 		} else {
-			System.err.println("no something");
+			logger.info("no something");
 		}
 
 

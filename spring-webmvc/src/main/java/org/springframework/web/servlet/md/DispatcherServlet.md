@@ -143,11 +143,28 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
 
 </web-app>
 ```
->如果不需要应用程序上下文层次结构，那么应用程序可能只配置一个“根”上下文，而将contextConfigLocation Servlet参数设置为空。
+>如果不需要应用程序上下文层次结构，那么应用程序可能只配置一个“根”上下文，而将`contextConfigLocation` Servlet参数设置为空。
 
 
 
 ### <span id="specialBeanTypes">1.1.2. Special Bean Types</span>
+
+`DispatcherServlet`委托给特殊的bean处理请求并呈现适当的响应.所谓"special beans",是指实现框架协定的Spring管理`Object`实例.这些Beans和`DispatcherServlet`通常带有内置约定,但是用户可以自定义它们的属性并扩展或替换它们.
+
+下表列出了`DispatcherServlet`委托的特殊Bean:
+
+
+|Bean type|Explanation|
+|:---|:---|
+|HandlerMapping|将request与interceptor列表一起映射到处理程序,以进行pre和post处理(在用户的代码之前pre和之后post进行处理).映射基于某些条件,其细节因`HandlerMapping`实现而异.两个主要的`HandlerMapping`实现分别是`RequestMappingHandlerMapping`(支持被`@RequestMapping`注解的方法)和`SimpleUrlHandlerMapping`(它维护URI path patterns到handler的精准定位).|
+|HandlerAdapter|帮助`DispatcherServlet`调用映射到请求的handler,而不管实际上如何调用该handler.例如,调用带注解的controller需要解析注解.`HandlerAdapter`的主要目的是使`DispatcherServlet`免受具体调用细节的影响.|
+|HandlerExceptionResolver|解决异常的策略,可能将它们映射到handler,HTML error view或 other targets.|
+|ViewResolver|将handler返回的基于逻辑字符串的视图名称解析为实际View,并将其呈现给response.|
+|LocaleResolver,LocaleContextResolver|解析client正在使用的语言环境以及可能的时区,以便能够提供国际化的views.|
+|ThemeResolver|解决Web应用程序可以使用的主题,以此提供个性化的布局.|
+|MultipartResolver|在一些multi-part解析库的帮助下,用于解析multi-part请求(例如,浏览器表单文件上传)的抽象.|
+|FlashMapManager|存储和检索"input"和"output" `FlashMap`,可用于将属性从一个请求传递到另一个请求,usually across a redirect.|
+
 
 ### <span id="webMVCConfig">1.1.3. Web MVC Config</span>
 
@@ -198,7 +215,7 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
 }
 ```
 
-如果使用基于xml的Spring配置,应该直接从AbstractDispatcherServletInitializer继承,如下面的示例所示:
+如果使用基于xml的Spring配置,应该直接从`AbstractDispatcherServletInitializer`继承,如下面的示例所示:
 
 ```java
 public class MyWebAppInitializer extends AbstractDispatcherServletInitializer {

@@ -51,6 +51,7 @@ import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2CollectionHttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -69,6 +70,9 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UrlPathHelper;
 
 /**
+ * 通过使用{@link HttpMessageConverter HttpMessageConverters}写入response,
+ * 可以扩展{@link AbstractMessageConverterMethodArgumentResolver}处理方法返回值的能力.
+ * <p>
  * Extends {@link AbstractMessageConverterMethodArgumentResolver} with the ability to handle method
  * return values by writing to the response with {@link HttpMessageConverter HttpMessageConverters}.
  *
@@ -236,6 +240,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 
 		MediaType selectedMediaType = null;
 		MediaType contentType = outputMessage.getHeaders().getContentType();
+		// 判断 contentType是否为通配符
 		if (contentType != null && contentType.isConcrete()) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Found 'Content-Type:" + contentType + "' in response");
@@ -243,12 +248,15 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 			selectedMediaType = contentType;
 		}
 		else {
+			// 不是通配符
+
 			// 获取 HttpServletRequest
 			HttpServletRequest request = inputMessage.getServletRequest();
 
 			List<MediaType> acceptableTypes = getAcceptableMediaTypes(request);
 			List<MediaType> producibleTypes = getProducibleMediaTypes(request, valueType, targetType);
 
+			// 没有指定的返回Media类型
 			if (body != null && producibleTypes.isEmpty()) {
 				throw new HttpMessageNotWritableException(
 						"No converter found for return value of type: " + valueType);
@@ -294,6 +302,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 			selectedMediaType = selectedMediaType.removeQualityValue();
 			for (HttpMessageConverter<?> converter : this.messageConverters) {
 
+				logger.info("foreach HttpMessageConverter list,current converter is:"+converter.getClass().getName());
 				/**
 				 * {@link ByteArrayHttpMessageConverter} 不是
 				 * {@link StringHttpMessageConverter} 不是
@@ -306,8 +315,21 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 				 * 一般情况下,会注入以上这几个HttpMessageConverter实例
 				 */
 
-				GenericHttpMessageConverter genericConverter = (converter instanceof GenericHttpMessageConverter ? (GenericHttpMessageConverter<?>) converter : null);
-				if (genericConverter != null ?((GenericHttpMessageConverter) converter).canWrite(targetType, valueType, selectedMediaType) :converter.canWrite(valueType, selectedMediaType)) {
+				GenericHttpMessageConverter genericConverter = (converter instanceof GenericHttpMessageConverter ?
+						(GenericHttpMessageConverter<?>) converter : null);
+
+				// 
+				/**
+				 * 如果自定义的{@link HttpMessageConverter}是{@link GenericHttpMessageConverter},
+				 * 则调用
+				 * 1. {@link org.springframework.http.converter.AbstractGenericHttpMessageConverter#canWrite(Type, Class, MediaType)}
+				 * 2. {@link Jaxb2CollectionHttpMessageConverter#canWrite(Type, Class, MediaType)} 默认返回false
+				 * 3. {@link ResourceRegionHttpMessageConverter#canWrite(Type, Class, MediaType)}
+				 */
+				if (genericConverter != null
+						?((GenericHttpMessageConverter) converter).canWrite(targetType, valueType, selectedMediaType)
+						:converter.canWrite(valueType, selectedMediaType)) {
+
 
 					body = getAdvice().beforeBodyWrite(body, returnType, selectedMediaType,(Class<? extends HttpMessageConverter<?>>) converter.getClass(),inputMessage, outputMessage);
 					if (body != null) {
@@ -321,18 +343,18 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 							// 就是ServletServerHttpResponse...
 							// 自己定义了HttpMessageConverter,就需要还需要编写 write方法,
 							if (genericConverter != null) {
+								logger.info("写出数据的genericConverter is:"+genericConverter.getClass().getName());
 								genericConverter.write(body, targetType, selectedMediaType, outputMessage);
 							}
 							else {
+								logger.info("写出数据的converter is:"+converter.getClass().getName());
 								((HttpMessageConverter) converter).write(body, selectedMediaType, outputMessage);
 							}
 						}
 
 					}
 					else {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Nothing to write: null body");
-						}
+							logger.info("Nothing to write: null body");
 					}
 					return;
 				}
@@ -387,24 +409,35 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 
 	/**
 	 * Returns the media types that can be produced. The resulting media types are:
+	 * 返回可以产生的media类型.产生的media类型为：
 	 * <ul>
-	 * <li>The producible media types specified in the request mappings, or
-	 * <li>Media types of configured converters that can write the specific return value, or
+	 * <li>请求映射中已指定可生成的media类型,或The producible media types specified in the request mappings, or
+	 * <li>可写入特定返回值的已配置converter的Media类型,Media types of configured converters that can write the specific return value, or
 	 * <li>{@link MediaType#ALL}
 	 * </ul>
 	 * @since 4.2
+	 *
+	 * 请求映射中指定的可生产媒体类型,或可写入特定返回值的已配置转换器的媒体类型,或{@link MediaType＃ALL}
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<MediaType> getProducibleMediaTypes(
 			HttpServletRequest request, Class<?> valueClass, @Nullable Type targetType) {
 
+		/*
+		 * 获取请求映射中已指定可生成的media类型
+		 */
 		Set<MediaType> mediaTypes =
 				(Set<MediaType>) request.getAttribute(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE);
 		if (!CollectionUtils.isEmpty(mediaTypes)) {
 			return new ArrayList<>(mediaTypes);
 		}
 		else if (!this.allSupportedMediaTypes.isEmpty()) {
+			/*
+			 * 可写入特定返回值的已配置的HttpMessageConverter,
+			 * 调用canWrite
+			 */
 			List<MediaType> result = new ArrayList<>();
+
 			for (HttpMessageConverter<?> converter : this.messageConverters) {
 				if (converter instanceof GenericHttpMessageConverter && targetType != null) {
 					if (((GenericHttpMessageConverter<?>) converter).canWrite(targetType, valueClass, null)) {
@@ -418,6 +451,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 			return result;
 		}
 		else {
+			// 返回 MediaType.ALL
 			return Collections.singletonList(MediaType.ALL);
 		}
 	}

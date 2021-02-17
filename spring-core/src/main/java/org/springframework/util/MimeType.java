@@ -242,6 +242,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
 	/**
 	 * Indicates whether the {@linkplain #getType() type} is the wildcard character
 	 * <code>&#42;</code> or not.
+	 * 指示{@linkplain #getType() type}是否为通配符<code>&#42;</code>.
 	 */
 	public boolean isWildcardType() {
 		return WILDCARD_TYPE.equals(getType());
@@ -251,7 +252,8 @@ public class MimeType implements Comparable<MimeType>, Serializable {
 	 * Indicates whether the {@linkplain #getSubtype() subtype} is the wildcard
 	 * character <code>&#42;</code> or the wildcard character followed by a suffix
 	 * (e.g. <code>&#42;+xml</code>).
-	 * @return whether the subtype is a wildcard
+	 * 指示{@linkplain #getSubtype() subtype}是通配符<code>&#42;</code> 还是通配符后跟后缀(e.g. <code>&#42;+xml</code>).
+	 * @return 子类型是否为通配符
 	 */
 	public boolean isWildcardSubtype() {
 		return WILDCARD_TYPE.equals(getSubtype()) || getSubtype().startsWith("*+");
@@ -260,6 +262,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
 	/**
 	 * Indicates whether this MIME Type is concrete, i.e. whether neither the type
 	 * nor the subtype is a wildcard character <code>&#42;</code>.
+	 * 指示此MIME类型是否为具体的MIME类型,即该类型或子类型是否都不是通配符<code>&#42;</code>.
 	 * @return whether this MIME Type is concrete
 	 */
 	public boolean isConcrete() {

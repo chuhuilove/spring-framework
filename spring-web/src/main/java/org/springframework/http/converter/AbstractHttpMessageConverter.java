@@ -137,6 +137,7 @@ public abstract class AbstractHttpMessageConverter<T> implements HttpMessageConv
 	 */
 	@Override
 	public boolean canRead(Class<?> clazz, @Nullable MediaType mediaType) {
+		logger.info("AbstractHttpMessageConverter#canRead........clazz="+clazz.getName()+",MediaType:"+mediaType);
 		return supports(clazz) && canRead(mediaType);
 	}
 

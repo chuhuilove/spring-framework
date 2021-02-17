@@ -850,6 +850,8 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	}
 
 	/**
+	 * 这个实现总是返回-1.{@code @RequestMapping}方法可以计算lastModified值,
+	 * 调用{@link WebRequest#checkNotModified(long)},如果该调用的结果为{@code true},则返回{@code null}.
 	 * This implementation always returns -1. An {@code @RequestMapping} method can
 	 * calculate the lastModified value, call {@link WebRequest#checkNotModified(long)},
 	 * and return {@code null} if the result of that call is {@code true}.

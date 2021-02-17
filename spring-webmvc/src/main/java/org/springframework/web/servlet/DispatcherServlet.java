@@ -432,6 +432,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * List of HandlerExceptionResolvers used by this servlet.
+	 * 当前servlet使用的HandlerExceptionResolvers列表
 	 */
 	@Nullable
 	private List<HandlerExceptionResolver> handlerExceptionResolvers;
@@ -1200,15 +1201,21 @@ public class DispatcherServlet extends FrameworkServlet {
 				 * 遍历{@link handlerMappings},以获取当前{@link request}的handler
 				 */
 				mappedHandler = getHandler(processedRequest);
+
+
 				if (mappedHandler == null) {
+					logger.warn(request.getMethod().toUpperCase()+" method request path:" + request.getRequestURI()+",mappedHandler is:null");
+
 					noHandlerFound(processedRequest, response);
 					return;
 				}
 
 				// Determine handler adapter for the current request.
 				// 确定当前请求的处理程序适配器. 获取适配器
-				// 一般是RequestMappingAdapter
+				// 一般是RequestMappingAdapter,这里的适配器并没有做什么实际调用的处理
+				// 只是进行判断
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
+				logger.warn(request.getMethod().toUpperCase()+" method request path:" + request.getRequestURI()+",mappedHandler is:"+mappedHandler.getClass().getName()+",HandlerAdapter is:"+ha.getClass().getName());
 
 				// Process last-modified header, if supported by the handler.
 				String method = request.getMethod();
@@ -1220,6 +1227,10 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
+
+				/**
+				 * 预处理,调用spring mvc中的{@link HandlerInterceptor}
+				 */
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
@@ -1240,6 +1251,11 @@ public class DispatcherServlet extends FrameworkServlet {
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
+			// Handler调用业务代码已经完成之后,触发
+			/**
+			 * Handler调用业务代码完成以后,
+			 * 触发{@link HandlerInterceptor#afterCompletion(HttpServletRequest, HttpServletResponse, Object, Exception)}
+			 */
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		} catch (Exception ex) {
 			triggerAfterCompletion(processedRequest, response, mappedHandler, ex);

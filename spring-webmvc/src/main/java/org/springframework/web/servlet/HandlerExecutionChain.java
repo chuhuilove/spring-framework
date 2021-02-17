@@ -66,6 +66,7 @@ public class HandlerExecutionChain {
 	 * (in the given order) before the handler itself executes
 	 */
 	public HandlerExecutionChain(Object handler, @Nullable HandlerInterceptor... interceptors) {
+		logger.info("create HandlerExecutionChain ,handler:"+handler.getClass().getName());
 		if (handler instanceof HandlerExecutionChain) {
 			HandlerExecutionChain originalChain = (HandlerExecutionChain) handler;
 			this.handler = originalChain.getHandler();
@@ -140,6 +141,14 @@ public class HandlerExecutionChain {
 		HandlerInterceptor[] interceptors = getInterceptors();
 		if (!ObjectUtils.isEmpty(interceptors)) {
 			for (int i = 0; i < interceptors.length; i++) {
+				// 在每个Handler中,可以有n多个
+				/**
+				 * 在每个Handler中,可以有多个{@link HandlerInterceptor},换句话说,{@link HandlerInterceptor}在
+				 * 在Handler中都是以一个集合形式存储在的.
+				 * 循环这个集合,若是有一个{@link HandlerInterceptor}不符合{@link HandlerInterceptor#preHandle(HttpServletRequest, HttpServletResponse, Object)},
+				 * 则立即调用{@link HandlerInterceptor#afterCompletion(HttpServletRequest, HttpServletResponse, Object, Exception)},
+				 * 以终止当前Handler的继续执行
+				 */
 				HandlerInterceptor interceptor = interceptors[i];
 				if (!interceptor.preHandle(request, response, this.handler)) {
 					triggerAfterCompletion(request, response, null);
@@ -152,6 +161,7 @@ public class HandlerExecutionChain {
 	}
 
 	/**
+	 * 在handler执行完毕以后,调用的{@link HandlerInterceptor}
 	 * Apply postHandle methods of registered interceptors.
 	 */
 	void applyPostHandle(HttpServletRequest request, HttpServletResponse response, @Nullable ModelAndView mv)

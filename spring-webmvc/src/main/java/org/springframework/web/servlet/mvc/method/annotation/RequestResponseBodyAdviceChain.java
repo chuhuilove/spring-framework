@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.MediaType;
@@ -41,7 +43,7 @@ import org.springframework.web.method.ControllerAdviceBean;
  * @since 4.2
  */
 class RequestResponseBodyAdviceChain implements RequestBodyAdvice, ResponseBodyAdvice<Object> {
-
+	protected final Log logger = LogFactory.getLog(getClass());
 	private final List<Object> requestBodyAdvice = new ArrayList<>(4);
 
 	private final List<Object> responseBodyAdvice = new ArrayList<>(4);
@@ -137,6 +139,7 @@ class RequestResponseBodyAdviceChain implements RequestBodyAdvice, ResponseBodyA
 			ServerHttpRequest request, ServerHttpResponse response) {
 
 		for (ResponseBodyAdvice<?> advice : getMatchingAdvice(returnType, ResponseBodyAdvice.class)) {
+			logger.info("ResponseBodyAdvice is:"+advice.getClass().getName()+",converterType is:"+converterType.getName());
 			if (advice.supports(returnType, converterType)) {
 				body = ((ResponseBodyAdvice<T>) advice).beforeBodyWrite((T) body, returnType,
 						contentType, converterType, request, response);
