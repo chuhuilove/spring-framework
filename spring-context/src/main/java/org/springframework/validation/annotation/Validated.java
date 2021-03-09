@@ -27,6 +27,9 @@ import java.lang.annotation.Target;
  * specification of validation groups. Designed for convenient use with
  * Spring's JSR-303 support but not JSR-303 specific.
  *
+ * JSR-303的{@link javax.validation.Valid}变体,支持验证组的规范.
+ * 为方便使用Spring的JSR-303支持而设计,但不是JSR-303特有的.
+ *
  * <p>Can be used e.g. with Spring MVC handler methods arguments.
  * Supported through {@link org.springframework.validation.SmartValidator}'s
  * validation hint concept, with validation group classes acting as hint objects.
@@ -54,6 +57,7 @@ import java.lang.annotation.Target;
 public @interface Validated {
 
 	/**
+	 * 指定一个或多个validation groups,应用于由此注解启动的验证步骤.
 	 * Specify one or more validation groups to apply to the validation step
 	 * kicked off by this annotation.
 	 * <p>JSR-303 defines validation groups as custom annotations which an application declares
