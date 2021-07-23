@@ -610,6 +610,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
+		logger.info("invoke onRefresh method...by cyzi 2021年7月23日13:15:58");
 		initStrategies(context);
 	}
 
@@ -1088,6 +1089,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		logger.info("invoke doService method...by cyzi 2021年7月23日13:15:58");
 		logRequest(request);
 
 		// Keep a snapshot of the request attributes in case of an include,
@@ -1105,9 +1107,13 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		// Make framework objects available to handlers and view objects.
+		// org.springframework.web.servlet.DispatcherServlet.CONTEXT
 		request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());
+		// org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER
 		request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);
+		// org.springframework.web.servlet.DispatcherServlet.THEME_RESOLVER
 		request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);
+		// org.springframework.web.servlet.DispatcherServlet.THEME_SOURCE
 		request.setAttribute(THEME_SOURCE_ATTRIBUTE, getThemeSource());
 
 		if (this.flashMapManager != null) {
@@ -1199,6 +1205,9 @@ public class DispatcherServlet extends FrameworkServlet {
 				 * 获取当前请求的handler,
 				 * 这个handler是{@linkplain HandlerMapping  HandlerMapping的子类},
 				 * 遍历{@link handlerMappings},以获取当前{@link request}的handler
+				 *
+				 * 从{@link request}中解析出一个{@code HandlerExecutionChain}
+				 *
 				 */
 				mappedHandler = getHandler(processedRequest);
 
@@ -1346,6 +1355,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected LocaleContext buildLocaleContext(final HttpServletRequest request) {
+		logger.info("invoke buildLocaleContext method...by cyzi 2021年7月23日13:15:58");
 		LocaleResolver lr = this.localeResolver;
 		if (lr instanceof LocaleContextResolver) {
 			return ((LocaleContextResolver) lr).resolveLocaleContext(request);
@@ -1355,7 +1365,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Convert the request into a multipart request, and make multipart resolver available.
+	 * 将当前{@coe request}转换成multipart request,并使multipart resolver可用.
+	 *
 	 * <p>If no multipart resolver is set, simply use the existing request.
 	 *
 	 * @param request current HTTP request

@@ -167,7 +167,7 @@ public interface HandlerMapping {
 	String PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE = HandlerMapping.class.getName() + ".producibleMediaTypes";
 
 	/**
-	 * 返回此请求的处理程序和所有拦截器.可以根据请求URL、会话状态或实现类等任何因素进行选择.
+	 * 返回此请求的处理程序和所有拦截器.可以根据请求URL、session状态或实现类等任何因素进行选择.
 	 * <p>返回的HandlerExecutionChain包含一个处理程序对象,而不是标记接口,因此处理程序不受任何约束.
 	 * 例如,可以编写HandlerAdapter来允许使用另一个框架的处理程序对象.
 	 * <p>如果未找到匹配项,则返回{@code null}.这不是错误.

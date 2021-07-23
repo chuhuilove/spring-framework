@@ -151,7 +151,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	public static final String DEFAULT_NAMESPACE_SUFFIX = "-servlet";
 
 	/**
-	 * Default context class for FrameworkServlet.
+	 * FrameworkServlet的默认content类.
 	 *
 	 * @see org.springframework.web.context.support.XmlWebApplicationContext
 	 */
@@ -242,7 +242,6 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	private boolean enableLoggingRequestDetails = false;
 
 	/**
-	 * WebApplicationContext for this servlet.
 	 * 这个servlet的WebApplicationContext
 	 */
 	@Nullable
@@ -553,6 +552,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 */
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) {
+		logger.info("invoke setApplicationContext method...by cyzi 2021年7月23日13:15:58");
 		if (this.webApplicationContext == null && applicationContext instanceof WebApplicationContext) {
 			this.webApplicationContext = (WebApplicationContext) applicationContext;
 			this.webApplicationContextInjected = true;
@@ -566,6 +566,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 */
 	@Override
 	protected final void initServletBean() throws ServletException {
+		logger.info("invoke initServletBean method...by cyzi 2021年7月23日13:15:58");
 		getServletContext().log("Initializing Spring " + getClass().getSimpleName() + " '" + getServletName() + "'");
 		if (logger.isInfoEnabled()) {
 			logger.info("Initializing Servlet '" + getServletName() + "'");
@@ -915,6 +916,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 */
 	@Override
 	public void destroy() {
+		logger.info("invoke destroy method...by cyzi 2021年7月23日13:15:58");
 		getServletContext().log("Destroying Spring FrameworkServlet '" + getServletName() + "'");
 		// Only call close() on WebApplicationContext if locally managed...
 		if (this.webApplicationContext instanceof ConfigurableApplicationContext && !this.webApplicationContextInjected) {
@@ -929,7 +931,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		logger.info("invoke service method...by cyzi 2021年7月23日13:15:58");
 		HttpMethod httpMethod = HttpMethod.resolve(request.getMethod());
 		if (httpMethod == HttpMethod.PATCH || httpMethod == null) {
 			processRequest(request, response);
@@ -950,7 +952,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	protected final void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-
+		logger.info("invoke doGet method...by cyzi 2021年7月23日13:15:58");
 		processRequest(request, response);
 	}
 
@@ -963,7 +965,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	protected final void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-
+		logger.info("invoke doPost method...by cyzi 2021年7月23日13:15:58");
 		processRequest(request, response);
 	}
 
@@ -975,7 +977,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected final void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		logger.info("invoke doPut method...by cyzi 2021年7月23日13:15:58");
 		processRequest(request, response);
 	}
 
@@ -987,7 +989,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected final void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		logger.info("invoke doDelete method...by cyzi 2021年7月23日13:15:58");
 		processRequest(request, response);
 	}
 
@@ -1001,7 +1003,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		logger.info("invoke doOptions method...by cyzi 2021年7月23日13:15:58");
 		if (this.dispatchOptionsRequest || CorsUtils.isPreFlightRequest(request)) {
 			processRequest(request, response);
 			if (response.containsHeader("Allow")) {
@@ -1031,7 +1033,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected void doTrace(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		logger.info("invoke doTrace method...by cyzi 2021年7月23日13:15:58");
 		if (this.dispatchTraceRequest) {
 			processRequest(request, response);
 			if ("message/http".equals(response.getContentType())) {
@@ -1080,6 +1082,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 				requestAttributes.requestCompleted();
 			}
 			logResult(request, response, failureCause, asyncManager);
+			// 请求处理完成以后,发布Event
 			publishRequestHandledEvent(request, response, startTime, failureCause);
 		}
 	}
